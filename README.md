@@ -7,6 +7,9 @@
 [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![DOI](https://zenodo.org/badge/287501190.svg)](https://zenodo.org/badge/latestdoi/287501190)
 
+> \[!WARNING]
+> You're currently on the `han2020` branch of the [stable-gym](https://github.com/rickstaa/stable-gym) repository. This branch includes parameter modifications necessary to replicate the results of [Han et al. 2020](https://arxiv.org/abs/2004.14288). For the most recent version of the package, please switch to the `main` branch.
+
 A Python package that contains several [gymnasium environments](https://gymnasium.farama.org/) with positive definite cost functions, designed for compatibility with stable RL agents. It was initially created for the stable RL algorithms in the [Stable Learning Control](https://github.com/rickstaa/stable-learning-control) package but can be used with any RL agent requiring a **positive definite cost function**. For more information about stable RL agents see the [Stable Learning Control documentation](https://rickstaa.dev/stable-learning-control).
 
 ## Installation and Usage

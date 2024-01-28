@@ -22,11 +22,10 @@ class CartPoleCost(gym.Env):
         :gymnasium:`gym.vector <api/vector>` documentation for details.
 
     .. attention::
-        If you're using this environment to reproduce the results of `Han et al.`_
-        (2020), please note that slight differences may occur due to the
-        modifications mentioned below. For an accurate reproduction, refer to the
-        separate ``han2020`` branch, which mirrors the environment used in their
-        study. It can be accessed `here <here_branch_>`_.
+        You're currently on the ``han2020`` branch of the :stable-gym:`stable-gym <>`
+        repository. This branch includes parameter modifications necessary to replicate
+        the results of `Han et al.`_ 2020. For the most recent version of the package,
+        please switch to the `main` branch.
 
     Source:
         This environment is a modified version of the CartPole environment from the
@@ -62,11 +61,6 @@ class CartPoleCost(gym.Env):
             - Unlike the original environment's fixed cost threshold of ``100``, this
               version allows users to adjust the maximum cost threshold via the
               :obj:`max_cost` input, improving training adaptability.
-            - The gravity constant is adjusted back from ``10`` to the real-world value
-              of ``9.8``, aligning it closer with the original CartPole environment.
-            - The data types for action and observation spaces are set to ``np.float64``,
-              diverging from the ``np.float32`` used by Han et al. 2020. This aligns
-              the Gymnasium implementation with the original CartPole environment.
 
     Observation:
         **Type**: Box(4) or Box(6)
@@ -163,7 +157,6 @@ class CartPoleCost(gym.Env):
 
     .. _`Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problem`: https://ieeexplore.ieee.org/document/6313077
     .. _`Han et al.`: https://arxiv.org/abs/2004.14288
-    .. _`here_branch`: https://github.com/rickstaa/stable-gym/tree/han2020
     """  # noqa: E501
 
     metadata = {
@@ -177,8 +170,8 @@ class CartPoleCost(gym.Env):
         # NOTE: Custom environment arguments.
         max_cost=100.0,
         clip_action=True,
-        action_space_dtype=np.float64,  # NOTE: Han et al. 2020 uses np.float32.
-        observation_space_dtype=np.float64,  # NOTE: Han et al. 2020 uses np.float32.
+        action_space_dtype=np.float32,  # NOTE: Set to np.float32 as Han et al. 2020. Main branch uses np.float64  # noqa: E501
+        observation_space_dtype=np.float32,  # NOTE: Set to np.float32 as Han et al. 2020. Main branch uses np.float64  # noqa: E501
     ):
         """Initialise a new CartPoleCost environment instance.
 
@@ -205,7 +198,9 @@ class CartPoleCost(gym.Env):
         # NOTE: Compared to the original I store the initial values for the reset
         # function and replace the `self.total_mass` and `self.polemass_length` with
         # properties.
-        self.gravity = self._gravity_init = 9.8  # NOTE: Han et al. 2020 uses 10.
+        self.gravity = (
+            self._gravity_init
+        ) = 10.0  # NOTE: Set to 10 as Han et al. 2020. Main branch uses 9.8.  # noqa: E501
         self.masscart = self._mass_cart_init = 1.0
         self.masspole = self._mass_pole_init = 0.1
         self.length = self._length_init = (

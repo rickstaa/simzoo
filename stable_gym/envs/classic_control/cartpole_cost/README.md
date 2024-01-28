@@ -7,7 +7,7 @@
 <!--alex ignore joint-->
 
 :::{attention}
-If you're using this environment to reproduce the results of [Han et al. (2020)](https://arxiv.org/abs/2004.14288), please note that slight differences may occur due to the modifications mentioned below. For an accurate reproduction, refer to the separate `han2020` branch, which mirrors the environment used in their study. It can be accessed [here](https://github.com/rickstaa/stable-gym/tree/han2020).
+You're currently on the `han2020` branch of the [stable-gym](https://github.com/rickstaa/stable-gym) repository. This branch includes parameter modifications necessary to replicate the results of [Han et al. 2020](https://arxiv.org/abs/2004.14288). For the most recent version of the package, please switch to the `main` branch.
 :::
 
 An unactuated joint attaches a pole to a cart, which moves along a frictionless track. This environment is a modified version of the [CartPole-v1](https://gymnasium.farama.org/environments/classic_control/cart_pole/) found in the Gymnasium package, with several key alterations:
