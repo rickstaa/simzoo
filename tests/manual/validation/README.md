@@ -54,5 +54,5 @@ For the reset method validation, due to differences in seeding methods, temporar
 
 ## Note
 
-* Ensure identical step counts and seed usage in the original and validation scripts for an accurate comparison.
-* Adjust the tolerance level in the script as needed for your validation precision requirements.
+- Ensure identical step counts and seed usage in the original and validation scripts for an accurate comparison.
+- Adjust the tolerance level in the script as needed for your validation precision requirements.
