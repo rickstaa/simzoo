@@ -19,15 +19,15 @@ To validate the step method of the environments:
    pip install -r requirements.txt
    ```
 
-2. **Generate Reference CSV**: Run the validation script from the `validation` folder in the [Actor-critic-with-stability-guarantee](https://github.com/rickstaa/Actor-critic-with-stability-guarantee/tree/rstaa2024/validation) repository to generate a reference CSV file.
+2. **Generate Reference CSV**: Run the validation script in the `validation` folder in the [Actor-critic-with-stability-guarantee](https://github.com/rickstaa/Actor-critic-with-stability-guarantee/tree/rstaa2024/validation) repository to generate a reference CSV file. The CSV file will be saved in the `validation/results` folder of the repository.
 
    ```bash
    python original_repo_cartPoleCost_translation_validation.py
    ```
 
-3. **Copy Validation CSV**: Transfer the generated reference CSV file to the `validation` folder of the [stable-gym](https://github.com/rickstaa/stable-gym/tree/han2020/tests/manual/validation) package.
+3. **Copy Validation CSV**: Transfer the generated reference CSV file to the `tests/manual/validation/results` folder of the [stable-gym](https://github.com/rickstaa/stable-gym/tree/han2020/tests/manual/validation/results) package.
 
-4. **Run Validation Script**: Execute the corresponding validation script in the `validation` folder of the [stable-gym](https://github.com/rickstaa/stable-gym/tree/fix_tests/tests/manual/validation) package.
+4. **Run Validation Script**: Execute the corresponding validation script in the `tests/manual/validation` folder of the [stable-gym](https://github.com/rickstaa/stable-gym/tree/fix_tests/tests/manual/validation) package.
 
    ```bash
    python my_cartPoleCost_translation_validation.py

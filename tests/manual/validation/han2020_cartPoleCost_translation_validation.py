@@ -1,4 +1,4 @@
-"""CartPoleCost Environment Translation Validation Script
+"""CartPoleCost Environment Translation Validation Script.
 
 This script validates the translation of the 'CartPoleCost' environment from the
 'Actor-critic-with-stability-guarantee' repository to the 'stable_gym' package. It does
@@ -118,8 +118,10 @@ if __name__ == "__main__":
         ]
     )
     for i in range(STEPS):
-        delta = (2.0 / STEPS) * i
-        action = np.array([-20 + delta], dtype=np.float32)
+        delta = (
+            (env_cost.action_space.high - env_cost.action_space.low)[0] / STEPS
+        ) * i
+        action = np.array([env_cost.action_space.low[0] + delta], dtype=np.float32)
         observation, reward, terminated, truncated, info = env_cost.step(action)
 
         # Store the results in a table.
@@ -172,19 +174,19 @@ if __name__ == "__main__":
 
     # Check if the reference CSV file exists.
     if not os.path.isfile(
-        os.path.join(SCRIPT_DIR, "cartPoleCost_translation_validation.csv")
+        os.path.join(SCRIPT_DIR, "results/cartPoleCost_translation_validation.csv")
     ):
         print(
-            "\nNo 'cartPoleCost_translation_validation.csv' file found. Please "
+            "\nNo 'results/cartPoleCost_translation_validation.csv' file found. Please "
             "run the same script in the 'Actor-critic-with-stability-guarantee' "
-            "repository to generate the file and place it in the same folder as this "
-            "script to get a comparison result. "
+            "repository to generate the file and place it in the 'results' folder "
+            "found alongside this script to get a comparison result."
         )
         exit()
 
     # Load the reference fil CSV file.
     df2 = pd.read_csv(
-        os.path.join(SCRIPT_DIR, "cartPoleCost_translation_validation.csv"),
+        os.path.join(SCRIPT_DIR, "results/cartPoleCost_translation_validation.csv"),
     )
 
     # Print the reference CSV file results as a pretty table.
