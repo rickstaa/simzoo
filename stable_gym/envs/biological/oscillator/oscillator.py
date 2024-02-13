@@ -132,8 +132,8 @@ class Oscillator(gym.Env):
         clip_action=True,
         exclude_reference_from_observation=False,
         exclude_reference_error_from_observation=False,
-        action_space_dtype=np.float64,
-        observation_space_dtype=np.float64,
+        action_space_dtype=np.float32,  # NOTE: Set to np.float32 as Han et al. 2020. Main branch uses np.float64  # noqa: E501
+        observation_space_dtype=np.float32,  # NOTE: Set to np.float32 as Han et al. 2020. Main branch uses np.float64  # noqa: E501
     ):
         """Initialise a new Oscillator environment instance.
 
@@ -154,9 +154,9 @@ class Oscillator(gym.Env):
             exclude_reference_error_from_observation (bool, optional): Whether the error
                 should be excluded from the observation. Defaults to ``False``.
             action_space_dtype (union[numpy.dtype, str], optional): The data type of the
-                action space. Defaults to ``np.float64``.
+                action space. Defaults to ``np.float32``.
             observation_space_dtype (union[numpy.dtype, str], optional): The data type
-                of the observation space. Defaults to ``np.float64``.
+                of the observation space. Defaults to ``np.float32``.
         """
         super().__init__()
         assert max_cost > 0, "The maximum cost must be greater than 0."

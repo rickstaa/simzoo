@@ -182,9 +182,9 @@ class CartPoleCost(gym.Env):
             clip_action (str, optional): Whether the actions should be clipped if
                 they are greater than the set action limit. Defaults to ``True``.
             action_space_dtype (union[numpy.dtype, str], optional): The data type of the
-                action space. Defaults to ``np.float64``.
+                action space. Defaults to ``np.float32``.
             observation_space_dtype (union[numpy.dtype, str], optional): The data type
-                of the observation space. Defaults to ``np.float64``.
+                of the observation space. Defaults to ``np.float32``.
         """
         super().__init__()
         self.render_mode = render_mode
@@ -198,9 +198,9 @@ class CartPoleCost(gym.Env):
         # NOTE: Compared to the original I store the initial values for the reset
         # function and replace the `self.total_mass` and `self.polemass_length` with
         # properties.
-        self.gravity = (
-            self._gravity_init
-        ) = 10.0  # NOTE: Set to 10 as Han et al. 2020. Main branch uses 9.8.  # noqa: E501
+        self.gravity = self._gravity_init = (
+            10.0  # NOTE: Set to 10 as Han et al. 2020. Main branch uses 9.8.  # noqa: E501
+        )
         self.masscart = self._mass_cart_init = 1.0
         self.masspole = self._mass_pole_init = 0.1
         self.length = self._length_init = (
