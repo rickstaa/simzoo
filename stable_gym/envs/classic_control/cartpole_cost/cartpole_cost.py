@@ -406,6 +406,8 @@ class CartPoleCost(gym.Env):
         cost = self.cost(x, theta)
 
         # Define stopping criteria.
+        # NOTE: Han et al. 2020 doesn't use reward-based stopping criteria. It's
+        # irrelevant as the max cost doesn't exceed the reward range
         terminated = bool(
             abs(x) > self.x_threshold
             or abs(theta) > self.theta_threshold_radians
