@@ -1,6 +1,6 @@
-"""OscillatorComplicated Environment Translation Validation Script.
+"""FetchReachCost Environment Translation Validation Script.
 
-This script validates the translation of the 'OscillatorComplicated' environment from the
+This script validates the translation of the 'FetchReachCost' environment from the
 'Actor-critic-with-stability-guarantee' repository to the 'stable_gym' package. It does
 this by comparing the output of the 'step' method in the translated environment with the
 output from the original implementation.
@@ -22,7 +22,7 @@ import pandas as pd
 import math
 
 STEPS = 10
-CHECK_TOLERANCE = 1e-7
+CHECK_TOLERANCE = 1e-2
 SEED = 0
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -49,14 +49,14 @@ def get_accuracy(number):
 
 
 if __name__ == "__main__":
-    print("===OscillatorComplicated Environment Translation Validation===")
+    print("=== FetchReachCost Environment Translation Validation===")
     print(
         textwrap.dedent(
             f"""
-            Welcome to the OscillatorComplicated environment translation validation
-            script. This script initializes the stable-gym OscillatorComplicated
-            environment and executes '{STEPS}' steps to validate in against the original
-            implementation in the'Actor-critic-with-stability-guarantee' repository.
+            Welcome to the FetchReachCost environment translation validation script. This
+            script initializes the stable-gym FetchReachCost environment and executes
+            '{STEPS}' steps to validate in against the original implementation in the
+            'Actor-critic-with-stability-guarantee' repository.
 
             Compare the output of this script with the equivalent script in the
             'Actor-critic-with-stability-guarantee' repository. Matching outputs
@@ -69,41 +69,71 @@ if __name__ == "__main__":
         )
     )
 
-    # Initialize OscillatorComplicated environment.
+    # Initialize FetchReachCost environment.
     # NOTE: The state is set directly due to non-deterministic behaviour across different
     # numpy and gym versions.
     env_cost = gym.make(
-        "OscillatorComplicated",
+        "FetchReachCost",
         action_space_dtype=np.float32,
         observation_space_dtype=np.float32,
     )
-    env_cost.reset(seed=SEED)
-    env_cost.unwrapped.state = np.array(
+    env_cost.unwrapped.initial_time = 0.4000000000000003
+    env_cost.unwrapped.initial_qpos = np.array(
         [
-            1.0046369,
-            2.1169252,
-            0.01870239,
-            0.01570958,
-            2.0646853,
-            1.2112826,
-            1.9610515,
-            0.34511724,
-        ],
-        dtype=np.float32,
+            4.04899887e-01,
+            4.80000000e-01,
+            2.79906896e-07,
+            -2.10804408e-05,
+            1.80448057e-10,
+            6.00288106e-02,
+            9.67580396e-03,
+            -8.28231087e-01,
+            -3.05625957e-03,
+            1.44397975e00,
+            2.53423937e-03,
+            9.55099996e-01,
+            5.96093593e-03,
+            1.97805133e-04,
+            7.15193042e-05,
+        ]
     )
+    env_cost.unwrapped.initial_qvel = np.array(
+        [
+            -8.20972730e-10,
+            -5.42827776e-13,
+            3.01801009e-07,
+            -2.06118511e-05,
+            1.60548710e-11,
+            7.22090854e-05,
+            7.12945378e-04,
+            9.39598373e-04,
+            -1.38720810e-03,
+            -1.63417143e-03,
+            1.15341321e-03,
+            1.24855991e-03,
+            -9.73707041e-04,
+            1.18331413e-04,
+            -5.71138070e-05,
+        ]
+    )
+    env_cost.reset(seed=SEED)
+    env_cost.unwrapped.goal = np.array([1.37384575, 0.81794948, 0.54779444])
 
     # Create a pretty table to display the results in.
+    obs_cols = [
+        f"Obs{i+1}" for i in range(env_cost.observation_space["observation"].shape[0])
+    ]
+    achieved_goal_cols = [f"AchievedGoal{dim}" for dim in ["x", "y", "z"]]
+    desired_goal_cols = [f"DesiredGoal{dim}" for dim in ["x", "y", "z"]]
     table = PrettyTable()
     table.field_names = [
         "Step",
-        "Obs1",
-        "Obs2",
-        "Obs3",
-        "Obs4",
+        *obs_cols,
         "Reward",
         "Done",
-        "Reference",
-        "State of Interest",
+        *achieved_goal_cols,
+        *desired_goal_cols,
+        "IsSuccess",
     ]
 
     # Perform N steps for the stable-gym environment comparison.
@@ -111,14 +141,12 @@ if __name__ == "__main__":
     df = pd.DataFrame(
         columns=[
             "Step",
-            "Obs1",
-            "Obs2",
-            "Obs3",
-            "Obs4",
+            *obs_cols,
             "Reward",
             "Done",
-            "Reference",
-            "StateOfInterest",
+            *achieved_goal_cols,
+            *desired_goal_cols,
+            "IsSuccess",
         ]
     )
     for i in range(STEPS):
@@ -138,87 +166,85 @@ if __name__ == "__main__":
 
         # Store the results in a table.
         done = terminated or truncated
-        reference = info["reference"]
-        state_of_interest = info["state_of_interest"]
         table.add_row(
             [
                 i,
-                observation[0],
-                observation[1],
-                observation[2],
-                observation[3],
+                *observation["observation"],
                 reward,
                 done,
-                reference,
-                state_of_interest,
+                *observation["achieved_goal"],
+                *observation["desired_goal"],
+                info["is_success"],
             ]
         )
-        new_row = pd.DataFrame(
-            {
-                "Step": [np.int64(i)],
-                "Obs1": [observation[0]],
-                "Obs2": [observation[1]],
-                "Obs3": [observation[2]],
-                "Obs4": [observation[3]],
-                "Reward": [reward],
-                "Done": [done],
-                "Reference": [reference],
-                "StateOfInterest": [state_of_interest],
-            }
-        )
+        obs_dict = {
+            f"Obs{i+1}": [obs] for i, obs in enumerate(observation["observation"])
+        }
+        achieved_goal_dict = {
+            f"AchievedGoal{dim}": [obs]
+            for dim, obs in zip(["x", "y", "z"], observation["achieved_goal"])
+        }
+        desired_goal_dict = {
+            f"DesiredGoal{dim}": [obs]
+            for dim, obs in zip(["x", "y", "z"], observation["desired_goal"])
+        }
+        data = {
+            "Step": [np.int64(i)],
+            "Reward": [reward],
+            "Done": [done],
+            **obs_dict,
+            **achieved_goal_dict,
+            **desired_goal_dict,
+            "IsSuccess": [
+                info["is_success"],
+            ],
+        }
+        new_row = pd.DataFrame(data)
         df = pd.concat([df, new_row], ignore_index=True)
 
     # Save the results to a CSV file.
     df.to_csv(
         os.path.join(
-            SCRIPT_DIR,
-            "results/stableGym_oscillatorComplicated_translation_validation.csv",
+            SCRIPT_DIR, "results/stableGym_fetchReachCost_translation_validation.csv"
         )
     )
     env_cost.close()
     print(
-        "Stable gym OscillatorComplicated comparison table generated and stored in "
-        "'results/stableGym_oscillatorComplicated_translation_validation.csv'."
+        "Stable gym fetchReachCost comparison table generated and stored in "
+        "'results/stableGym_fetchReachCost_translation_validation.csv'."
     )
 
     # Print the results of the stable-gym environment steps.
-    print("\nStable gym OscillatorComplicated comparison table:")
+    print("\nStable gym FetchReach comparison table:")
     print(f"{table}\n")
 
     # Check if the reference CSV file exists.
     if not os.path.isfile(
-        os.path.join(
-            SCRIPT_DIR, "results/oscillatorComplicated_translation_validation.csv"
-        )
+        os.path.join(SCRIPT_DIR, "results/fetchReach_translation_validation.csv")
     ):
         print(
-            "\nNo 'results/oscillatorComplicated_translation_validation.csv' file "
-            "found. Please run the same script in the "
-            "'Actor-critic-with-stability-guarantee' repository to generate the file "
-            "and place it in the 'results' folder found alongside this script to get "
-            "a comparison result."
+            "\nNo 'results/fetchReach_translation_validation.csv' file found. Please "
+            "run the same script in the 'Actor-critic-with-stability-guarantee' "
+            "repository to generate the file and place it in the 'results' folder "
+            "found alongside this script to get a comparison result."
         )
         exit()
 
     # Load the reference fil CSV file.
     df2 = pd.read_csv(
-        os.path.join(
-            SCRIPT_DIR, "results/oscillatorComplicated_translation_validation.csv"
-        ),
+        os.path.join(SCRIPT_DIR, "results/fetchReach_translation_validation.csv"),
     )
 
     # Print the reference CSV file results as a pretty table.
     table2 = PrettyTable()
     table2.field_names = [
         "Step",
-        "Obs1",
-        "Obs2",
-        "Obs3",
-        "Obs4",
+        *obs_cols,
         "Reward",
         "Done",
-        "Reference",
-        "StateOfInterest",
+        *achieved_goal_cols,
+        *desired_goal_cols,
+        "IsSuccess",
     ]
     df2_tmp = df2.round(7)
     for i, row in df2_tmp.iterrows():
@@ -229,7 +255,7 @@ if __name__ == "__main__":
     # Compare the results.
     print(
         "\nComparing stable-gym step results with results in the "
-        "'results/oscillatorComplicated_translation_validation.csv' file."
+        "'results/fetchReachCost_translation_validation.csv' file."
     )
     numeric_cols = df.select_dtypes(include=[np.number]).columns
     boolean_cols = df.select_dtypes(include=["bool"]).columns
