@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.robotics.fetch &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="stable_gym.envs.robotics.fetch.fetch_reach_cost" href="fetch_reach_cost/index.html" />
+    <link rel="prev" title="stable_gym.envs.robotics" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html">
+            
+              <img src="../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../common/index.html">stable_gym.common</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym.envs</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.envs.robotics</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.robotics.fetch</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/envs/robotics/fetch/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.envs.robotics.fetch">
+<span id="stable-gym-envs-robotics-fetch"></span><h1>stable_gym.envs.robotics.fetch<a class="headerlink" href="#module-stable_gym.envs.robotics.fetch" title="Permalink to this heading"></a></h1>
+<p>Stable Gym gymnasium environments that are based on the
+<a class="reference external" href="https://robotics.farama.org/envs/fetch/">Fetch environments</a> in the
+<a class="reference external" href="https://robotics.farama.org/">Gymnasium Robotics</a> package.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These environments are based on the <code class="xref py py-class docutils literal notranslate"><span class="pre">gym.GoalEnv</span></code> class. This means
+that the <code class="docutils literal notranslate"><span class="pre">step</span></code> method returns a dictionary with the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: The observation of the environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: The goal that was achieved during execution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: The desired goal that we asked the agent to attempt to achieve.</p></li>
+</ul>
+<p>If you want to use these environments with RL algorithms that expect the <code class="docutils literal notranslate"><span class="pre">step</span></code>
+method to return a <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code> instead of a dictionary, you can use the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">gym.wrappers.FlattenObservation</span></code> wrapper to flatten the dictionary into a
+single <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>.</p>
+</div>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="fetch_reach_cost/index.html">stable_gym.envs.robotics.fetch.fetch_reach_cost</a></li>
+</ul>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.robotics.fetch.FetchReachCost" title="stable_gym.envs.robotics.fetch.FetchReachCost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FetchReachCost</span></code></a></p></td>
+<td><p>Custom FetchReach gymnasium robotics environment.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stable_gym.envs.robotics.fetch.</span></span><span class="sig-name descname"><span class="pre">FetchReachCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float64</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/robotics/fetch/fetch_reach_cost/fetch_reach_cost.html#FetchReachCost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium_robotics.envs.fetch.reach.MujocoFetchReachEnv</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium.utils.EzPickle</span></code></p>
+<p>Custom FetchReach gymnasium robotics environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Can also be used in a vectorized manner. See the
+<a class="reference external" href="https://gymnasium.farama.org/api/vector">gym.vector</a> documentation.</p>
+</div>
+<dl>
+<dt>Source:</dt><dd><p>Modified version of the FetchReach Mujoco environment found in the
+<a class="reference external" href="https://robotics.farama.org/envs/fetch/">Gymnasium Robotics library</a>.
+This modification was first described by
+<a class="reference external" href="https://arxiv.org/abs/2004.14288">Han et al. 2020</a>. In this modified version:</p>
+<ul class="simple">
+<li><p>The reward was replaced with a cost. This was done by taking the absolute
+value of the reward.</p></li>
+</ul>
+<p>The rest of the environment is the same as the original FetchReach environment.
+Below, the modified cost is described. For more information about the
+environment (e.g. observation space, action space, episode termination, etc.),
+please refer to the
+<a class="reference external" href="https://robotics.farama.org/envs/fetch/reach/">gymnasium robotics library</a>.</p>
+</dd>
+<dt>Modified cost:</dt><dd><p>A cost, computed using the <a class="reference internal" href="#stable_gym.envs.robotics.fetch.FetchReachCost.cost" title="stable_gym.envs.robotics.fetch.FetchReachCost.cost"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FetchReachCost.cost()</span></code></a> method, is given for each
+simulation step, including the terminal step. This cost is defined as the error
+between FetchReach’s end-effector position and the desired goal position (i.e. Euclidean distance).
+The cost is computed as:</p>
+<div class="math notranslate nohighlight">
+\[cost = \left | reward \right |\]</div>
+</dd>
+<dt>Solved Requirements:</dt><dd><p>Considered solved when the average cost is less than or equal to 50 over
+100 consecutive trials.</p>
+</dd>
+<dt>How to use:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stable_gyms</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:FetchReachCost-v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.state" title="Permalink to this definition"></a></dt>
+<dd><p>The current system state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.dt" title="Permalink to this definition"></a></dt>
+<dd><p>The environment step size. Also available as <a class="reference internal" href="#stable_gym.envs.robotics.fetch.FetchReachCost.tau" title="stable_gym.envs.robotics.fetch.FetchReachCost.tau"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tau</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Accepts all arguments of the original <code class="xref py py-class docutils literal notranslate"><span class="pre">MujocoFetchReachEnv</span></code>
+class except for the <code class="docutils literal notranslate"><span class="pre">reward_type</span></code> argument. This is because we require dense
+rewards to calculate the cost.</p>
+</div>
+<p>Initialise a new FetchReachCost environment instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type of the
+action space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float32</span></code>.</p></li>
+<li><p><strong>observation_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type
+of the observation space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Keyword arguments passed to the original
+<code class="xref py py-class docutils literal notranslate"><span class="pre">MujocoFetchReachEnv</span></code> class.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost._action_space_dtype">
+<span class="sig-name descname"><span class="pre">_action_space_dtype</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost._action_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost._observation_space_dtype">
+<span class="sig-name descname"><span class="pre">_observation_space_dtype</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost._observation_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost._action_dtype_conversion_warning">
+<span class="sig-name descname"><span class="pre">_action_dtype_conversion_warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost._action_dtype_conversion_warning" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.action_space">
+<span class="sig-name descname"><span class="pre">action_space</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.action_space" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reward</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/robotics/fetch/fetch_reach_cost/fetch_reach_cost.html#FetchReachCost.cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.cost" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the cost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reward</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The reward returned from the FetchReach environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cost (i.e. negated reward).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/robotics/fetch/fetch_reach_cost/fetch_reach_cost.html#FetchReachCost.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.step" title="Permalink to this definition"></a></dt>
+<dd><p>Take step into the environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method overrides the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method
+such that the new cost function is used.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> (<em>np.ndarray</em>) – Action to take in the environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>): Environment observation.</p></li>
+<li><p>cost (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Cost of the action.</p></li>
+<li><p>terminated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode is terminated.</p></li>
+<li><p>truncated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode was truncated. This
+value is set by wrappers when for example a time limit is reached or
+the agent goes out of bounds.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Additional information about the environment.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/robotics/fetch/fetch_reach_cost/fetch_reach_cost.html#FetchReachCost.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset gymnasium environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – A random seed for the environment. By default
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – A dictionary containing additional options for
+resetting the environment. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>. Not used in this
+environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>): Initial environment observation.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Dictionary containing additional information.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.tau">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tau</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.tau" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">environment</span> <span class="pre">step</span> <span class="pre">size.</span> <span class="pre">Done</span> <span class="pre">for</span> <span class="pre">compatibility</span> <span class="pre">with</span> <span class="pre">the</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">other</span> <span class="pre">gymnasium</span> <span class="pre">environments.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.t" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Environment</span> <span class="pre">time.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.fetch.FetchReachCost.physics_time">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">physics_time</span></span><a class="headerlink" href="#stable_gym.envs.robotics.fetch.FetchReachCost.physics_time" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Returns</span> <span class="pre">the</span> <span class="pre">physics</span> <span class="pre">time.</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="stable_gym.envs.robotics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fetch_reach_cost/index.html" class="btn btn-neutral float-right" title="stable_gym.envs.robotics.fetch.fetch_reach_cost" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

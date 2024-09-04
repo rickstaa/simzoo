@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oscillator gymnasium environment &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Oscillator Complicated gymnasium environment" href="oscillator_complicated.html" />
+    <link rel="prev" title="Environments" href="../envs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../envs.html">Environments</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../envs.html#biological-environments">Biological environments</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Oscillator gymnasium environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#observation-space">Observation space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#action-space">Action space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#episode-termination">Episode Termination</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-goal">Environment goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cost-function">Cost function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-step-return">Environment step return</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-use">How to use</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="oscillator_complicated.html">Oscillator Complicated gymnasium environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#classic-control-environments">Classic control environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#mujoco-environments">Mujoco environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#robotics-environment">Robotics environment</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../envs.html">Environments</a></li>
+      <li class="breadcrumb-item active">Oscillator gymnasium environment</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/envs/biological/oscillator.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="oscillator-gymnasium-environment">
+<span id="oscillator"></span><h1>Oscillator gymnasium environment<a class="headerlink" href="#oscillator-gymnasium-environment" title="Permalink to this heading"></a></h1>
+<p>A gymnasium environment for a synthetic oscillatory network of transcriptional regulators called a repressilator. A repressilator is a three-gene regulatory network where the dynamics of mRNA and proteins follow an oscillatory behaviour. First presented by <a class="reference external" href="https://arxiv.org/abs/2004.14288">Han et al. 2020</a>. Compared to the original implementation, our version introduces several enhancements to the environment, making it more flexible and user-friendly:</p>
+<ul class="simple">
+<li><p>We’ve added environment arguments that allow for the modification of reference signal parameters.</p></li>
+<li><p>System parameters can now be individually tailored for each protein, instead of applying a uniform set of parameters across all proteins.</p></li>
+<li><p>The reference can now be excluded from the observation if desired.</p></li>
+<li><p>The reference error can be included in the ‘info’ dictionary for additional context.</p></li>
+<li><p>The observation space was expanded to accurately reproduce the plots presented in <a class="reference external" href="https://arxiv.org/abs/2004.14288">Han et al. 2020</a>, which was not possible with the original code’s observation space.</p></li>
+<li><p>Introduced an adjustable <code class="docutils literal notranslate"><span class="pre">max_cost</span></code> variable for terminating episodes, defaulting to <span class="math notranslate nohighlight">\(100\)</span> for consistency with the original environment.</p></li>
+</ul>
+<section id="observation-space">
+<h2>Observation space<a class="headerlink" href="#observation-space" title="Permalink to this heading"></a></h2>
+<p>By default, the environment returns the following observation:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(m_1\)</span> - The lacl mRNA transcripts concentration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_2\)</span> - The tetR mRNA transcripts concentration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_3\)</span> - The CI mRNA transcripts concentration.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_1\)</span> - The lacI (repressor) protein concentration (Inhibits transcription of tetR gene).</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_2\)</span> - The tetR (repressor) protein concentration (Inhibits transcription of CI gene).</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_3\)</span> - The CI (repressor) protein concentration (Inhibits transcription of lacI gene).</p></li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span> - The reference we want to follow.</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_{error}\)</span> - The error between the state of interest (i.e. <span class="math notranslate nohighlight">\(p_1\)</span>) and the reference.</p></li>
+</ul>
+<p>The last two variables can be excluded from the observation space by setting the <code class="docutils literal notranslate"><span class="pre">exclude_reference_from_observation</span></code> and <code class="docutils literal notranslate"><span class="pre">exclude_reference_error_from_observation</span></code> environment arguments to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Please note that the environment needs the reference or the reference error to be included in the observation space when the reference signal is not constant to function correctly. If both are excluded, the environment will raise an error.</p>
+</section>
+<section id="action-space">
+<h2>Action space<a class="headerlink" href="#action-space" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(u_1\)</span> - Relative intensity of the light signal that induces the Lacl mRNA gene expression.</p></li>
+<li><p><span class="math notranslate nohighlight">\(u_2\)</span> - Relative intensity of the light signal that induces the tetR mRNA gene expression.</p></li>
+<li><p><span class="math notranslate nohighlight">\(u_3\)</span> - Relative intensity of the light signal that induces the expression of the CI mRNA gene.</p></li>
+</ul>
+</section>
+<section id="episode-termination">
+<h2>Episode Termination<a class="headerlink" href="#episode-termination" title="Permalink to this heading"></a></h2>
+<p>An episode is terminated when the maximum step limit is reached, or the step cost exceeds 100.</p>
+</section>
+<section id="environment-goal">
+<h2>Environment goal<a class="headerlink" href="#environment-goal" title="Permalink to this heading"></a></h2>
+<p>The agent’s goal in the oscillator environment is to act in such a way that one of the proteins of the synthetic oscillatory network follows a supplied reference signal.</p>
+</section>
+<section id="cost-function">
+<h2>Cost function<a class="headerlink" href="#cost-function" title="Permalink to this heading"></a></h2>
+<p>The Oscillator environment uses the absolute difference between the reference and the state of interest as the cost function:</p>
+<div class="math notranslate nohighlight">
+\[
+cost = (p_1 - r_1)^2
+\]</div>
+</section>
+<section id="environment-step-return">
+<h2>Environment step return<a class="headerlink" href="#environment-step-return" title="Permalink to this heading"></a></h2>
+<p>In addition to the observations, the cost and a termination and truncation boolean, the environment also returns an info dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">observation</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">termination</span><span class="p">,</span> <span class="n">truncation</span><span class="p">,</span> <span class="n">info_dict</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The info dictionary contains the following keys:</p>
+<ul class="simple">
+<li><p><strong>reference</strong>: The set cart position reference.</p></li>
+<li><p><strong>state_of_interest</strong>: The state that should track the reference (SOI).</p></li>
+<li><p><strong>reference_error</strong>: The error between SOI and the reference.</p></li>
+</ul>
+</section>
+<section id="how-to-use">
+<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h2>
+<p>This environment is part of the <a class="reference external" href="https://github.com/rickstaa/stable-gym">Stable Gym package</a>. It is therefore registered as the <code class="docutils literal notranslate"><span class="pre">stable_gym:Oscillator-v1</span></code> gymnasium environment when you import the Stable Gym package. If you want to use the environment in stand-alone mode, you can register it yourself.</p>
+</section>
+</section>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This environment does not have a render function.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../envs.html" class="btn btn-neutral float-left" title="Environments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="oscillator_complicated.html" class="btn btn-neutral float-right" title="Oscillator Complicated gymnasium environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

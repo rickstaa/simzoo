@@ -1,0 +1,52 @@
+stable_gym.common
+=================
+
+.. py:module:: stable_gym.common
+
+.. autoapi-nested-parse::
+
+   Contains several functions that can be used across all the Stable Gym gymnasium
+   environments.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/stable_gym/common/max_episode_steps_injection_wrapper/index
+   /autoapi/stable_gym/common/utils/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.common.MaxEpisodeStepsInjectionWrapper
+
+
+Package Contents
+----------------
+
+.. py:class:: MaxEpisodeStepsInjectionWrapper(env)
+
+   Bases: :py:obj:`gymnasium.Wrapper`
+
+
+   A gymnasium wrapper that injects the ``max_episode_steps`` attribute of the
+   ``TimeLimit`` wrapper into the base environment as the
+   ``_time_limit_max_episode_steps`` attribute. If the environment is not wrapped in
+   a ``TimeLimit`` wrapper, then the ``_time_limit_max_episode_steps`` attribute is
+   set to ``None``.
+
+   Wrap a gymnasium environment.
+   :param env: The gymnasium environment.
+   :type env: gym.Env
+
+
+   .. py:attribute:: max_episode_steps
+
+

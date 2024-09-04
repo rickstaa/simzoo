@@ -1,0 +1,388 @@
+stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost
+============================================================================
+
+.. py:module:: stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost
+
+.. autoapi-nested-parse::
+
+   The QuadXWaypointsCost gymnasium environment.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost.EPISODES
+   stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost.RANDOM_STEP
+   stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost.env
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost.quadx_waypoints_cost.QuadXWaypointsCost
+
+
+Module Contents
+---------------
+
+.. py:data:: EPISODES
+   :value: 10
+
+
+.. py:data:: RANDOM_STEP
+   :value: True
+
+
+.. py:class:: QuadXWaypointsCost(num_targets=4, use_yaw_targets=False, goal_reach_distance=0.2, goal_reach_angle=0.1, flight_dome_size=5.0, angle_representation='quaternion', agent_hz=30, render_mode=None, render_resolution=(480, 480), include_health_penalty=True, health_penalty_size=None, exclude_waypoint_targets_from_observation=False, only_observe_immediate_waypoint=True, exclude_waypoint_target_deltas_from_observation=True, only_observe_immediate_waypoint_target_delta=True, action_space_dtype=np.float64, observation_space_dtype=np.float64, **kwargs)
+
+   Bases: :py:obj:`PyFlyt.gym_envs.quadx_envs.quadx_waypoints_env.QuadXWaypointsEnv`, :py:obj:`gymnasium.utils.EzPickle`
+
+
+   Custom QuadXWaypoints Bullet gymnasium environment.
+
+   .. note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Source:
+       Modified version of the `QuadXWaypoints environment`_ found in the
+       :PyFlyt:`PyFlyt package <>`. This environment was first described by `Tai et al. 2023`_.
+       In this modified version:
+
+       -   The reward has been changed to a cost. This was done by negating the reward always
+           to be positive definite.
+       -   A health penalty has been added. This penalty is applied when the quadrotor moves
+           outside the flight dome or crashes. The penalty equals the maximum episode steps
+           minus the steps taken or a user-defined penalty.
+       -   The ``max_duration_seconds`` has been removed. Instead, the ``max_episode_steps``
+           parameter of the :class:`gym.wrappers.TimeLimit` wrapper is used to limit
+           the episode duration.
+
+       The rest of the environment is the same as the original QuadXWaypoints environment.
+       Please refer to the `original codebase <https://github.com/jjshoots/PyFlyt>`__,
+       :PyFlyt:`the PyFlyt documentation <>` or the accompanying
+       `article of Tai et al. 2023`_ for more information.
+
+   .. _`QuadXWaypoints environment`: https://jjshoots.github.io/PyFlyt/documentation/gym_envs/quadx_envs/quadx_waypoints_env.html
+   .. _`Tai et al. 2023`: https://arxiv.org/abs/2304.01305
+   .. _`article of Tai et al. 2023`: https://arxiv.org/abs/2304.01305
+
+   Modified cost:
+       A cost, computed using the :meth:`QuadXWaypointsCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is defined as the Euclidean
+       error between the quadrotors' current position and the position of the current
+       waypoint (i.e. :math:`p=x_{x,y,z}=[0,0,1]`). Additionally, a penalty is
+       given for moving away from the waypoint, and a health penalty can also
+       be included in the cost. This health penalty is added when the drone leaves the
+       flight dome or crashes. It equals the ``max_episode_steps`` minus the
+       number of steps taken in the episode or a fixed value. The cost is
+       computed as:
+
+       .. math::
+
+           cost = 10 \times \| p_{drone} - p_{waypoint} \| - \min(3.0 \times (p_{old} - p_{drone}), 0.0) + p_{health}
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:QuadXWaypointsCost-v1")
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: agent_hz
+
+      The agent looprate.
+
+      :type: int
+
+   .. attribute:: initial_physics_time
+
+      The simulation startup time. The physics time at
+      the start of the episode after all the initialisation has been done.
+
+      :type: float
+
+   Initialise a new QuadXWaypointsCost environment instance.
+
+   :param num_targets: Number of waypoints in the environment. By
+                       default ``4``.
+   :type num_targets: int, optional
+   :param use_yaw_targets: Whether to match yaw targets before a
+                           waypoint is considered reached. By default ``False``.
+   :type use_yaw_targets: bool, optional
+   :param goal_reach_distance: Distance to the waypoints for it to
+                               be considered reached. By default ``0.2``.
+   :type goal_reach_distance: float, optional
+   :param goal_reach_angle: Angle in radians to the waypoints for
+                            it to be considered reached, only in effect if ``use_yaw_targets`` is
+                            used. By default ``0.1``.
+   :type goal_reach_angle: float, optional
+   :param flight_dome_size: Size of the allowable flying area. By
+                            default ``5.0``.
+   :type flight_dome_size: float, optional
+   :param angle_representation: The angle representation to use.
+                                Can be ``"euler"`` or ``"quaternion"``. By default ``"quaternion"``.
+   :type angle_representation: str, optional
+   :param agent_hz: Looprate of the agent to environment interaction.
+                    By default ``30``.
+   :type agent_hz: int, optional
+   :param render_mode: The render mode. Can be ``"human"`` or
+                       ``None``. By default ``None``.
+   :type render_mode: None | str, optional
+   :param render_resolution: The render resolution. By
+                             default ``(480, 480)``.
+   :type render_resolution: tuple[int, int], optional
+   :param include_health_penalty: Whether to penalize the quadrotor
+                                  if it becomes unhealthy (i.e. if it falls over). Defaults to ``True``.
+   :type include_health_penalty: bool, optional
+   :param health_penalty_size: The size of the unhealthy penalty.
+                               Defaults to ``None``. Meaning the penalty is equal to the max episode
+                               steps and the steps taken.
+   :type health_penalty_size: int, optional
+   :param exclude_waypoint_targets_from_observation: Whether to
+                                                     exclude the waypoint targets from the observation. Defaults to
+                                                     ``False``.
+   :type exclude_waypoint_targets_from_observation: bool, optional
+   :param only_observe_immediate_waypoint: Whether to only observe
+                                           the immediate waypoint target. Defaults to ``True``.
+   :type only_observe_immediate_waypoint: bool, optional
+   :param exclude_waypoint_target_deltas_from_observation: Whether
+                                                           to exclude the waypoint target deltas from the observation. Defaults to
+                                                           ``True``.
+   :type exclude_waypoint_target_deltas_from_observation: bool, optional
+   :param only_observe_immediate_waypoint_target_delta: Whether to
+                                                        only observe the immediate waypoint target delta. Defaults to
+                                                        ``True``.
+   :type only_observe_immediate_waypoint_target_delta: bool, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float64``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+   :param \*\*kwargs: Additional keyword arguments passed to the
+                      :class:`~PyFlyt.gym_envs.quadx_envs.quadx_waypoints_env.QuadXWaypointsEnv`
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: initial_physics_time
+      :value: None
+
+
+
+   .. py:attribute:: _max_episode_steps_applied
+      :value: False
+
+
+
+   .. py:attribute:: _previous_num_targets_reached
+      :value: 0
+
+
+
+   .. py:attribute:: _episode_waypoint_targets
+      :value: None
+
+
+
+   .. py:attribute:: _current_immediate_waypoint_target
+      :value: None
+
+
+
+   .. py:attribute:: agent_hz
+
+
+   .. py:attribute:: _include_health_penalty
+
+
+   .. py:attribute:: _health_penalty_size
+
+
+   .. py:attribute:: _exclude_waypoint_targets_from_observation
+
+
+   .. py:attribute:: _only_observe_immediate_waypoint
+
+
+   .. py:attribute:: _exclude_waypoint_target_deltas_from_observation
+
+
+   .. py:attribute:: _only_observe_immediate_waypoint_target_delta
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: low
+
+
+   .. py:attribute:: high
+
+
+   .. py:attribute:: observation_space
+
+      ENVIRONMENT CONSTANTS
+
+
+   .. py:method:: cost(env_completed, num_targets_reached)
+
+      Compute the cost of the current state.
+
+      :param env_completed: Whether the environment is completed.
+      :type env_completed: bool
+      :param num_targets_reached: The number of targets reached.
+      :type num_targets_reached: int
+
+      :returns:
+
+                tuple containing:
+
+                    -  cost (:obj:`float`): The cost of the current state.
+                    -  cost_info (:obj:`dict`): Dictionary containing additional cost
+                        information.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: compute_target_deltas(ang_pos, lin_pos, quarternion)
+
+      Compute the waypoints target deltas.
+
+      .. note::
+          Needed because the `~PyFlyt.gym_envs.quadx_envs.quadx_waypoints_env.QuadXWaypointsEnv`
+          removes the immediate waypoint from the waypoint targets list when it is
+          reached and doesn't expose the old value.
+
+      :param ang_pos: The current angular position.
+      :type ang_pos: np.ndarray
+      :param lin_pos: The current position.
+      :type lin_pos: np.ndarray
+      :param quarternion: The current quarternion.
+      :type quarternion: np.ndarray
+
+      :returns: The waypoints target deltas.
+      :rtype: (np.ndarray)
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      .. note::
+          This method overrides the
+          :meth:`~PyFlyt.gym_envs.quadx_envs.quadx_waypoints_env.QuadXWaypointsEnv.step`
+          method such that the new cost function is used.
+
+      :param action: Action to take in the environment.
+      :type action: np.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached
+                        or the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:property:: immediate_waypoint_target
+      The immediate waypoint target.
+
+
+   .. py:property:: time_limit_max_episode_steps
+      The maximum number of steps that the environment can take before it is
+      truncated by the :class:`gymnasium.wrappers.TimeLimit` wrapper.
+
+
+   .. py:property:: time_limit
+      The maximum duration of the episode in seconds.
+
+
+   .. py:property:: dt
+      The environment step size.
+
+      :returns:
+
+                The simulation step size. Returns ``None`` if the environment is
+                    not yet initialized.
+      :rtype: (float)
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+      :returns:
+
+                The simulation step size. Returns ``None`` if the environment is
+                    not yet initialized.
+      :rtype: (float)
+
+
+   .. py:property:: t
+      Environment time.
+
+
+   .. py:property:: physics_time
+      Returns the physics time.
+
+
+.. py:data:: env
+

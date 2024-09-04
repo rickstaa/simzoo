@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.common.utils &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="stable_gym.envs" href="../../envs/index.html" />
+    <link rel="prev" title="stable_gym.common.max_episode_steps_injection_wrapper" href="../max_episode_steps_injection_wrapper/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">stable_gym.common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../envs/index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.common</a></li>
+      <li class="breadcrumb-item active">stable_gym.common.utils</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/common/utils/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.common.utils">
+<span id="stable-gym-common-utils"></span><h1>stable_gym.common.utils<a class="headerlink" href="#module-stable_gym.common.utils" title="Permalink to this heading"></a></h1>
+<p>Utility functions that are used in multiple Stable Gym gymnasium environments.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.colorize" title="stable_gym.common.utils.colorize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorize</span></code></a>(string, color[, bold, highlight])</p></td>
+<td><p>Colorize a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.get_flattened_values" title="stable_gym.common.utils.get_flattened_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_flattened_values</span></code></a>(input_obj)</p></td>
+<td><p>Retrieves all the values that are present in a nested dictionary and appends them</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.get_flattened_keys" title="stable_gym.common.utils.get_flattened_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_flattened_keys</span></code></a>(input_obj[, include_root])</p></td>
+<td><p>Retrieves all the keys that are present in a nested dictionary and appends them</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.abbreviate" title="stable_gym.common.utils.abbreviate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abbreviate</span></code></a>(input_item[, length, max_length, capitalize])</p></td>
+<td><p>Creates unique abbreviations for a string or list of strings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.get_lowest_next_int" title="stable_gym.common.utils.get_lowest_next_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lowest_next_int</span></code></a>(input_item)</p></td>
+<td><p>Retrieves the lowest next integer that is not present in a string or float list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.friendly_list" title="stable_gym.common.utils.friendly_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">friendly_list</span></code></a>(input_list[, apostrophes])</p></td>
+<td><p>Transforms a list to a human friendly format (separated by commas and ampersand).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.strip_underscores" title="stable_gym.common.utils.strip_underscores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strip_underscores</span></code></a>(text[, position])</p></td>
+<td><p>Strips leading and/or trailing underscores from a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.inject_value" title="stable_gym.common.utils.inject_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inject_value</span></code></a>(input_item, value[, round_accuracy, ...])</p></td>
+<td><p>Injects a value into a list or dictionary if it is not yet present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.verify_number_and_cast" title="stable_gym.common.utils.verify_number_and_cast"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_number_and_cast</span></code></a>(x)</p></td>
+<td><p>Verify parameter is a single number and cast to a float.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.maybe_parse_reset_bounds" title="stable_gym.common.utils.maybe_parse_reset_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maybe_parse_reset_bounds</span></code></a>(options, default_low, ...)</p></td>
+<td><p>This function can be called during a reset() to customize the sampling</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.change_dict_key" title="stable_gym.common.utils.change_dict_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_dict_key</span></code></a>(d, old_key, new_key[, default_value])</p></td>
+<td><p>Changes the key of a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.utils.convert_gym_box_to_gymnasium_box" title="stable_gym.common.utils.convert_gym_box_to_gymnasium_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gym_box_to_gymnasium_box</span></code></a>(gym_box_space, **kwargs)</p></td>
+<td><p>Converts a gym box space to a gymnasium box space.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.utils.change_precision" title="stable_gym.common.utils.change_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_precision</span></code></a>(input_value[, precision])</p></td>
+<td><p>Changes the precision of a value.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.colorize">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">colorize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#colorize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.colorize" title="Permalink to this definition"></a></dt>
+<dd><p>Colorize a string.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>This function wraps the <code class="xref py py-meth docutils literal notranslate"><span class="pre">gym.utils.colorize()</span></code> function to make sure that it
+also works with empty color strings.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The string you want to colorize.</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The color you want to use.</p></li>
+<li><p><strong>bold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether you want the text to be bold. Defaults to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>highlight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether you want to highlight the text. Defaults to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Colorized string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.get_flattened_values">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">get_flattened_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#get_flattened_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.get_flattened_values" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves all the values that are present in a nested dictionary and appends them
+to a list. Its like a recursive version of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict.values" title="(in Python v3.12)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dict.values()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – The input dictionary from which you want
+to retrieve all the values.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list containing all the values that were present in the nested</dt><dd><p>dictionary.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.get_flattened_keys">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">get_flattened_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#get_flattened_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.get_flattened_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves all the keys that are present in a nested dictionary and appends them
+to a list. Its like a recursive version of the <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict.keys" title="(in Python v3.12)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">dict.keys()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – The input dictionary from which you want
+to retrieve all the keys.</p></li>
+<li><p><strong>include_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – Whether you want to include the root level keys. Defaults
+to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list containing all the keys that were present in the nested</dt><dd><p>dictionary.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.abbreviate">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">abbreviate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capitalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#abbreviate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.abbreviate" title="Permalink to this definition"></a></dt>
+<dd><p>Creates unique abbreviations for a string or list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_item</strong> (<em>union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>]</em>) – The string of list of strings which you want to
+abbreviate.</p></li>
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The desired length of the abbreviation. Defaults to
+<code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>max_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum length of the abbreviation. Defaults to
+4.</p></li>
+<li><p><strong>capitalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the abbrevaitions should be capitalized.
+Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List with abbreviations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.get_lowest_next_int">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">get_lowest_next_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#get_lowest_next_int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.get_lowest_next_int" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves the lowest next integer that is not present in a string or float list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_item</strong> (<em>union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>]</em>) – The input for which you want to determine
+the next lowest interger.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The next lowest integer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.friendly_list">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">friendly_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apostrophes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#friendly_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.friendly_list" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms a list to a human friendly format (separated by commas and ampersand).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – The input list.</p></li>
+<li><p><strong>apostrophes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the list items should be encapsuled with
+apostrophes. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Human friendly list string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.strip_underscores">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">strip_underscores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'all'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#strip_underscores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.strip_underscores" title="Permalink to this definition"></a></dt>
+<dd><p>Strips leading and/or trailing underscores from a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The input string.</p></li>
+<li><p><strong>position</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – From which position underscores should be removed.
+Options are ‘leading’, ‘trailing’ &amp; ‘both’. Defaults to “both”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String without the underscores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.inject_value">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">inject_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_accuracy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#inject_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.inject_value" title="Permalink to this definition"></a></dt>
+<dd><p>Injects a value into a list or dictionary if it is not yet present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_item</strong> (<em>union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>]</em>) – The input list or dictionary.</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The value you want to inject.</p></li>
+<li><p><strong>round_accuracy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The accuracy used for checking whether a value
+is present. Defaults to 2.</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the list should be ordered when returned.
+Defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which you want to inject the value. Only
+used when the input is a numpy array. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list or dictionary that contains the value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>union[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a>,<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)">dict</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.verify_number_and_cast">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">verify_number_and_cast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#verify_number_and_cast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.verify_number_and_cast" title="Permalink to this definition"></a></dt>
+<dd><p>Verify parameter is a single number and cast to a float.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.maybe_parse_reset_bounds">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">maybe_parse_reset_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_high</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#maybe_parse_reset_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.maybe_parse_reset_bounds" title="Permalink to this definition"></a></dt>
+<dd><p>This function can be called during a reset() to customize the sampling
+ranges for setting the initial state distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options</strong> – Options passed in to reset().</p></li>
+<li><p><strong>default_low</strong> – Default lower limit to use, if none specified in options.</p></li>
+<li><p><strong>default_high</strong> – Default upper limit to use, if none specified in options.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>a tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>low (<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>): Lower limit for each dimension.</p></li>
+<li><p>high ():obj:<cite>np.ndarray</cite>): Upper limit for each dimension.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.change_dict_key">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">change_dict_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#change_dict_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.change_dict_key" title="Permalink to this definition"></a></dt>
+<dd><p>Changes the key of a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – The dictionary.</p></li>
+<li><p><strong>old_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The old key.</p></li>
+<li><p><strong>new_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The new key.</p></li>
+<li><p><strong>default_value</strong> (<em>any</em><em>, </em><em>optional</em>) – The default value to use if the old key is not
+present in the dictionary. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.convert_gym_box_to_gymnasium_box">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">convert_gym_box_to_gymnasium_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gym_box_space</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#convert_gym_box_to_gymnasium_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.convert_gym_box_to_gymnasium_box" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a gym box space to a gymnasium box space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gym_box_space</strong> (<a class="reference external" href="https://www.gymlibrary.dev/api/spaces/#gym.spaces.Box" title="(in Gym)"><em>gym.spaces.Box</em></a>) – The gym box space.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments that are passed to the gymnasium box
+space.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The gymnasium box space.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>gymnasium.spaces.Box</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.utils.change_precision">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.utils.</span></span><span class="sig-name descname"><span class="pre">change_precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/utils.html#change_precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.utils.change_precision" title="Permalink to this definition"></a></dt>
+<dd><p>Changes the precision of a value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><em>object</em></a>) – The input value.</p></li>
+<li><p><strong>precision</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The precision (i.e. number of decimals) to use.
+Defaults to <code class="docutils literal notranslate"><span class="pre">16</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the input value is returned as is.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input value with the new precision.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)">object</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../max_episode_steps_injection_wrapper/index.html" class="btn btn-neutral float-left" title="stable_gym.common.max_episode_steps_injection_wrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../envs/index.html" class="btn btn-neutral float-right" title="stable_gym.envs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

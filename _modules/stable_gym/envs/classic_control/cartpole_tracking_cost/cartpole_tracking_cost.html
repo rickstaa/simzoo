@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html">
+            
+              <img src="../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../../stable_gym.html">stable_gym</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The CartPoleTrackingCost gymnasium environment.&quot;&quot;&quot;</span>
+
+<span class="c1"># NOTE: You can find the changes by searching for the ``NOTE:`` keyword.</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">spaces</span>
+<span class="kn">from</span> <span class="nn">gymnasium.error</span> <span class="kn">import</span> <span class="n">DependencyNotInstalled</span>
+
+<div class="viewcode-block" id="EPISODES"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.EPISODES">[docs]</a><span class="n">EPISODES</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Number of env episodes to run when __main__ is called.</span></div>
+<div class="viewcode-block" id="RANDOM_STEP"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.RANDOM_STEP">[docs]</a><span class="n">RANDOM_STEP</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Use random action in __main__. Zero action otherwise.</span></div>
+
+
+<span class="c1"># TODO: Update solving criteria after training.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost">[docs]</a><span class="k">class</span> <span class="nc">CartPoleTrackingCost</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Custom CartPole Gymnasium environment.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This environment can be used in a vectorized manner. Refer to the</span>
+<span class="sd">        :gymnasium:`gym.vector &lt;api/vector&gt;` documentation for details.</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        This environment is a modified version of the CartPole environment from the</span>
+<span class="sd">        Farma Foundation&#39;s :gymnasium:`Gymnasium &lt;&gt;` package, first used by `Han et al.`_</span>
+<span class="sd">        in 2020. Modifications made by Han et al. include:</span>
+
+<span class="sd">            - The action space is **continuous**, contrasting with the original **discrete**</span>
+<span class="sd">              setting.</span>
+<span class="sd">            - Offers an optional feature to confine actions within the defined action space,</span>
+<span class="sd">              preventing the agent from exceeding set boundaries when activated.</span>
+<span class="sd">            - The **reward** function is replaced with a (positive definite) **cost**</span>
+<span class="sd">              function (negated reward), in line with Lyapunov stability theory. This cost is the difference between a state variable and a reference value (error).</span>
+<span class="sd">            - Maximum cart force is increased from ``10`` to ``20``.</span>
+<span class="sd">            - Episode length is reduced from ``500`` to ``250``.</span>
+<span class="sd">            - A termination cost of :math:`c=100` is introduced for early episode</span>
+<span class="sd">              termination, to promote cost minimization.</span>
+<span class="sd">            - The terminal angle limit is expanded from the original ``12`` degrees to</span>
+<span class="sd">              ``20`` degrees, enhancing recovery potential.</span>
+<span class="sd">            - The terminal position limit is extended from ``2.4`` meters to ``10``</span>
+<span class="sd">              meters, broadening the recovery range.</span>
+<span class="sd">            - Velocity limits are adjusted from :math:`\pm \infty` to :math:`\pm 50`,</span>
+<span class="sd">              accelerating training.</span>
+<span class="sd">            - Angular velocity termination threshold is lowered from :math:`\pm \infty`</span>
+<span class="sd">              to :math:`\pm 50`, likely for improved training efficiency.</span>
+<span class="sd">            - Random initial state range is modified from ``[-0.05, 0.05]`` to ``[-5, 5]``</span>
+<span class="sd">              for the cart position and ``[-0.2, 0.2]`` for all other states, allowing</span>
+<span class="sd">              for expanded exploration.</span>
+
+<span class="sd">        Additional modifications in our implementation:</span>
+
+<span class="sd">            - Unlike the original environment&#39;s fixed cost threshold of ``100``, this</span>
+<span class="sd">              version allows users to adjust the maximum cost threshold via the</span>
+<span class="sd">              :obj:`max_cost` input, improving training adaptability.</span>
+<span class="sd">            - The gravity constant is adjusted back from ``10`` to the real-world value</span>
+<span class="sd">              of ``9.8``, aligning it closer with the original CartPole environment.</span>
+<span class="sd">            - The stabilization objective is replaced with a **reference tracking task**</span>
+<span class="sd">              for enhanced control.</span>
+<span class="sd">            - Two additional observations are introduced, facilitating</span>
+<span class="sd">              **reference tracking**.</span>
+<span class="sd">            - The info dictionary now provides **extra information** about the reference</span>
+<span class="sd">              to be tracked.</span>
+<span class="sd">            - The data types for action and observation spaces are set to ``np.float64``,</span>
+<span class="sd">              diverging from the ``np.float32`` used by Han et al. 2020. This aligns</span>
+<span class="sd">              the Gymnasium implementation with the original CartPole environment.</span>
+
+<span class="sd">    Observation:</span>
+<span class="sd">        **Type**: Box(4) or Box(6)</span>
+
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | Num | Observation                   | Min                   | Max                 |</span>
+<span class="sd">        +=====+===============================+=======================+=====================+</span>
+<span class="sd">        | 0   | Cart Position                 | -20                   | 20                  |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | 1   | Cart Velocity                 | -50                   | 50                  |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | 2   | Pole Angle                    | ~ -.698 rad (-40 deg) | ~ .698 rad (40 deg) |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | 3   | Pole Angular Velocity         | -50rad                | 50rad               |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | 4   | The cart position reference   | -20                   | 20                  |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+<span class="sd">        | (5) || **Optional** - The reference | -20                   | 20                  |</span>
+<span class="sd">        |     || tracking error               |                       |                     |</span>
+<span class="sd">        +-----+-------------------------------+-----------------------+---------------------+</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            While the ranges above denote the possible values for observation space of</span>
+<span class="sd">            each element, it is not reflective of the allowed values of the state space</span>
+<span class="sd">            in an un-terminated episode. Particularly:</span>
+
+<span class="sd">                -   The cart x-position (index 0) can be take values between</span>
+<span class="sd">                    ``(-20, 20)``, but the episode terminates if the cart leaves the</span>
+<span class="sd">                    ``(-10, 10)`` range.</span>
+<span class="sd">                -   The pole angle can be observed between  ``(-0.698, .698)`` radians</span>
+<span class="sd">                    (or **±40°**), but the episode terminates if the pole angle is not</span>
+<span class="sd">                    in  the range ``(-.349, .349)`` (or **±20°**)</span>
+
+<span class="sd">    Actions:</span>
+<span class="sd">        **Type**: Box(1)</span>
+
+<span class="sd">        +-----+----------------------+-----------------------+---------------------+</span>
+<span class="sd">        | Num | Action               | Min                   | Max                 |</span>
+<span class="sd">        +=====+======================+=======================+=====================+</span>
+<span class="sd">        | 0   | The controller Force | -20                   | 20                  |</span>
+<span class="sd">        +-----+----------------------+-----------------------+---------------------+</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The velocity that is reduced or increased by the applied force is not fixed</span>
+<span class="sd">            and it depends on the angle the pole is pointing. The center of gravity of</span>
+<span class="sd">            the pole varies the amount of energy needed to move the cart underneath it.</span>
+
+<span class="sd">    Cost:</span>
+<span class="sd">        A cost, computed using the :meth:`CartPoleTrackingCost.cost` method, is given for each</span>
+<span class="sd">        simulation step, including the terminal step. This cost is defined as a error</span>
+<span class="sd">        between a state variable and a reference value. The cost is set to the maximum</span>
+<span class="sd">        cost when the episode is terminated. The cost is defined as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            cost = (x - x_{ref})^2 + (\theta / \theta_{threshold})^2</span>
+
+<span class="sd">    Starting State:</span>
+<span class="sd">        The position is assigned a random value in ``[-5,5]`` and the other states are</span>
+<span class="sd">        assigned a uniform random value in ``[-0.2..0.2]``.</span>
+
+<span class="sd">    Episode Termination:</span>
+<span class="sd">        -   Pole Angle is more than 60 degrees.</span>
+<span class="sd">        -   Cart Position is more than 10 m (center of the cart reaches the edge of the</span>
+<span class="sd">            display).</span>
+<span class="sd">        -   Episode length is greater than 200.</span>
+<span class="sd">        -   The cost is greater than a threshold (100 by default). This threshold can</span>
+<span class="sd">            be changed using the ``max_cost`` environment argument.</span>
+
+<span class="sd">    Solved Requirements:</span>
+<span class="sd">        Considered solved when the average cost is less than or equal to 50 over</span>
+<span class="sd">        100 consecutive trials.</span>
+
+<span class="sd">    How to use:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import stable_gym</span>
+<span class="sd">            import gymnasium as gym</span>
+<span class="sd">            env = gym.make(&quot;stable_gym:CartPoleTrackingCost-v1&quot;)</span>
+
+<span class="sd">        On reset, the ``options`` parameter allows the user to change the bounds used to</span>
+<span class="sd">        determine the new random state when ``random=True``.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        state (numpy.ndarray): The current state.</span>
+<span class="sd">        t (float): Current time step.</span>
+<span class="sd">        tau (float): The time step size. Also available as ``self.dt``.</span>
+<span class="sd">        target_pos (float): The target position.</span>
+<span class="sd">        constraint_pos (float): The constraint position.</span>
+<span class="sd">        kinematics_integrator (str): The kinematics integrator used to update the state.</span>
+<span class="sd">            Options are ``euler`` and ``semi-implicit euler``.</span>
+<span class="sd">        theta_threshold_radians (float): The angle at which the pole is considered to be</span>
+<span class="sd">            at a terminal state.</span>
+<span class="sd">        x_threshold (float): The position at which the cart is considered to be at a</span>
+<span class="sd">            terminal state.</span>
+<span class="sd">        max_v (float): The maximum velocity of the cart.</span>
+<span class="sd">        max_w (float): The maximum angular velocity of the pole.</span>
+<span class="sd">        max_cost (float): The maximum cost.</span>
+
+<span class="sd">    .. _`Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problem`: https://ieeexplore.ieee.org/document/6313077</span>
+<span class="sd">    .. _`Han et al.`: https://arxiv.org/abs/2004.14288</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.metadata"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.metadata">[docs]</a>    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;render_modes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb_array&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;render_fps&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="p">}</span>  <span class="c1"># Not used during training but in other gymnasium utilities.</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">render_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># NOTE: Custom environment arguments.</span>
+        <span class="n">reference_target_position</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">reference_amplitude</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+        <span class="n">reference_frequency</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+        <span class="n">max_cost</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">clip_action</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">exclude_reference_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">exclude_reference_error_from_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">action_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+        <span class="n">observation_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a new CartPoleTrackingCost environment instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            render_mode (str, optional): Gym rendering mode. By default ``None``.</span>
+<span class="sd">            reference_target_position: The reference target position, by default</span>
+<span class="sd">                ``0.0`` (i.e. the mean of the reference signal).</span>
+<span class="sd">            reference_amplitude: The reference amplitude, by default ``7.0``.</span>
+<span class="sd">            reference_frequency: The reference frequency, by default ``0.005``.</span>
+<span class="sd">            max_cost (float, optional): The maximum cost allowed before the episode is</span>
+<span class="sd">                terminated. Defaults to ``100.0``.</span>
+<span class="sd">            clip_action (str, optional): Whether the actions should be clipped if</span>
+<span class="sd">                they are greater than the set action limit. Defaults to ``True``.</span>
+<span class="sd">            exclude_reference_from_observation (bool, optional): Whether the reference</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``False``.</span>
+<span class="sd">            exclude_reference_error_from_observation (bool, optional): Whether the error</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``True``.</span>
+<span class="sd">            action_space_dtype (union[numpy.dtype, str], optional): The data type of the</span>
+<span class="sd">                action space. Defaults to ``np.float64``.</span>
+<span class="sd">            observation_space_dtype (union[numpy.dtype, str], optional): The data type</span>
+<span class="sd">                of the observation space. Defaults to ``np.float64``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.render_mode"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render_mode">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">=</span> <span class="n">render_mode</span></div>
+        <span class="k">assert</span> <span class="n">max_cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The maximum cost must be greater than 0.&quot;</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.max_cost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_cost">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span> <span class="o">=</span> <span class="n">max_cost</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._clip_action"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._clip_action">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_clip_action</span> <span class="o">=</span> <span class="n">clip_action</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._action_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span> <span class="o">=</span> <span class="n">action_space_dtype</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._observation_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._observation_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span> <span class="o">=</span> <span class="n">observation_space_dtype</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._action_dtype_conversion_warning"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_dtype_conversion_warning">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+        <span class="c1"># Validate input arguments.</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">reference_amplitude</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">reference_frequency</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">exclude_reference_from_observation</span>
+            <span class="ow">and</span> <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;The agent needs to observe either the reference or the reference error &quot;</span>
+            <span class="s2">&quot;for it to be able to learn when the reference is not constant.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">reference_frequency</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;The reference frequency must be greater than 0.&quot;</span>
+
+        <span class="c1"># NOTE: Compared to the original I store the initial values for the reset</span>
+        <span class="c1"># function and replace the `self.total_mass` and `self.polemass_length` with</span>
+        <span class="c1"># properties.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gravity_init</span> <span class="o">=</span> <span class="mf">9.8</span>  <span class="c1"># NOTE: Han et al. 2020 uses 10.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_cart_init</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_pole_init</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length_init</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">1.0</span>  <span class="c1"># NOTE: The 0.5 of the original is moved to the `com_length` property.</span>
+        <span class="p">)</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.force_mag"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.force_mag">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">force_mag</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># NOTE: Original uses 10.</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.tau"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.tau">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="mf">0.02</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.kinematics_integrator"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.kinematics_integrator">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">kinematics_integrator</span> <span class="o">=</span> <span class="s2">&quot;euler&quot;</span></div>
+
+        <span class="c1"># Position and angle at which to fail the episode.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.theta_threshold_radians"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.theta_threshold_radians">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">theta_threshold_radians</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mi">60</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">360</span>
+        <span class="p">)</span>  <span class="c1"># NOTE: Original uses 12 degrees.</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.x_threshold"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.x_threshold">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># NOTE: original uses 2.4.</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.max_v"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_v">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">max_v</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># NOTE: Original uses np.finfo(np.float32).max (i.e. inf).</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.max_w"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_w">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">max_w</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># NOTE: Original uses np.finfo(np.float32).max (i.e. inf).</span></div>
+
+        <span class="c1"># Create observation space bounds.</span>
+        <span class="c1"># Angle limit set to 2 * theta_threshold_radians so failing observation</span>
+        <span class="c1"># is still within bounds.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost._exclude_reference_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span> <span class="o">=</span> <span class="n">exclude_reference_from_observation</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._exclude_reference_error_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_error_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.high"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.high">[docs]</a>        <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_v</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">theta_threshold_radians</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_w</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.action_space"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.action_space">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=-</span><span class="bp">self</span><span class="o">.</span><span class="n">force_mag</span><span class="p">,</span>
+            <span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">force_mag</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># NOTE: Original uses discrete version.</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.observation_space"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.observation_space">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="o">-</span><span class="n">high</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># Clip the reward.</span>
+        <span class="c1"># NOTE: Original does not do this. Here this is done because we want to decrease</span>
+        <span class="c1"># the cost.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.reward_range"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reward_range">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_cost</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.screen_width"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_width">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">=</span> <span class="mi">600</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.screen_height"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_height">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span> <span class="o">=</span> <span class="mi">400</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.screen"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.clock"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.clock">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.isopen"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.isopen">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">isopen</span> <span class="o">=</span> <span class="kc">True</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.state"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.state">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.steps_beyond_terminated"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.steps_beyond_terminated">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+        <span class="c1"># NOTE: custom parameters that are not found in the original environment.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.t"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.t">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mi">0</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._action_clip_warning"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_clip_warning">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span> <span class="o">=</span> <span class="kc">False</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._init_state"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_init_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span>
+        <span class="p">)</span>  <span class="c1"># Used when random is disabled in reset.</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost._init_state_range"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state_range">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">],</span>
+            <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+        <span class="p">}</span>  <span class="c1"># Used when random is enabled in reset.</span></div>
+        <span class="c1"># NOTE: Original uses the following values in the reset function.</span>
+        <span class="c1"># self._init_state_range = {</span>
+        <span class="c1">#     &quot;low&quot;: np.repeat(-0.05, 4),</span>
+        <span class="c1">#     &quot;high&quot;: np.repeat(0.05, 4),</span>
+        <span class="c1"># }</span>
+
+        <span class="c1"># Reference target, amplitude and frequency.</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.reference_target_pos"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_target_pos">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_target_pos</span> <span class="o">=</span> <span class="n">reference_target_position</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.reference_amplitude"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_amplitude">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_amplitude</span> <span class="o">=</span> <span class="n">reference_amplitude</span></div>
+<div class="viewcode-block" id="CartPoleTrackingCost.reference_frequency"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_frequency">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_frequency</span> <span class="o">=</span> <span class="n">reference_frequency</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.set_params"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">mass_of_cart</span><span class="p">,</span> <span class="n">mass_of_pole</span><span class="p">,</span> <span class="n">gravity</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the most important system parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            length (float): The pole length.</span>
+<span class="sd">            mass_of_cart (float): Cart mass.</span>
+<span class="sd">            mass_of_pole (float): Pole mass.</span>
+<span class="sd">            gravity (float): The gravity constant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">=</span> <span class="n">mass_of_pole</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span> <span class="o">=</span> <span class="n">mass_of_cart</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="n">gravity</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.get_params"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieves the most important system parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   length(:obj:`float`): The pole length.</span>
+<span class="sd">                -   pole_mass (:obj:`float`): The pole mass.</span>
+<span class="sd">                -   pole_mass (:obj:`float`): The cart mass.</span>
+<span class="sd">                -   gravity (:obj:`float`): The gravity constant.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.reset_params"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset_params">[docs]</a>    <span class="k">def</span> <span class="nf">reset_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the most important system parameters.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_length_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_pole_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_cart_init</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gravity_init</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.reference"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference">[docs]</a>    <span class="k">def</span> <span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current value of the periodic cart reference signal that is</span>
+<span class="sd">        tracked by the cart-pole system.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t (float): The current time step.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The current reference value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_target_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+            <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_frequency</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.cost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.cost">[docs]</a>    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the cost for a given cart position (x) and a pole angle (theta).</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                x (float): The current cart position.</span>
+<span class="sd">                theta (float): The current pole angle (rads).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   cost (float): The current cost.</span>
+<span class="sd">                -   r_1 (float): The current position reference.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Fine-tune cost function. The current one is a initial test.</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">ref_cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">ref</span><span class="p">)</span>
+        <span class="n">stab_cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">theta</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta_threshold_radians</span><span class="p">)</span>
+
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">stab_cost</span> <span class="o">+</span> <span class="n">ref_cost</span>
+
+        <span class="k">return</span> <span class="n">cost</span><span class="p">,</span> <span class="n">ref</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.step"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take step into the environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (numpy.ndarray): The action we want to perform in the environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`np.ndarray`): Environment observation.</span>
+<span class="sd">                -   cost (:obj:`float`): Cost of the action.</span>
+<span class="sd">                -   terminated (:obj:`bool`): Whether the episode is terminated.</span>
+<span class="sd">                -   truncated (:obj:`bool`): Whether the episode was truncated. This</span>
+<span class="sd">                    value is set by wrappers when for example a time limit is reached or</span>
+<span class="sd">                    the agent goes out of bounds.</span>
+<span class="sd">                -   info (:obj:`dict`): Additional information about the environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Convert action to correct data type if needed.</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;The data type of the action that is supplied to the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;ros_gazebo_gym:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39; environment (</span><span class="si">{</span><span class="n">action</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">) &quot;</span>
+                    <span class="s2">&quot;does not match the data type of the action space &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). The action data type will &quot;</span>
+                    <span class="s2">&quot;be converted to the action space data type.&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">)</span>
+
+        <span class="c1"># Clip action if needed.</span>
+        <span class="c1"># NOTE: This is not done in the original environment.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clip_action</span><span class="p">:</span>
+            <span class="c1"># Throw warning if clipped and not already thrown.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Action &#39;</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2">&#39; was clipped as it is not in the action_space &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;high: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">high</span><span class="si">}</span><span class="s2">, low: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">low</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">force</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+                <span class="n">action</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">high</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">action</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">action</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">action</span><span class="p">)</span><span class="si">}</span><span class="s2">) invalid&quot;</span>
+            <span class="n">force</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Call reset before using step method.&quot;</span>
+
+        <span class="c1"># Get the new state by solving 3 first-order differential equations.</span>
+        <span class="c1"># For the interested reader:</span>
+        <span class="c1"># https://coneural.org/florian/papers/05_cart_pole.pdf</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">x_dot</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">theta_dot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">costheta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">sintheta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">force</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">polemass_length</span> <span class="o">*</span> <span class="n">theta_dot</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sintheta</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span>
+        <span class="n">thetaacc</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gravity</span> <span class="o">*</span> <span class="n">sintheta</span> <span class="o">-</span> <span class="n">costheta</span> <span class="o">*</span> <span class="n">temp</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_com_length</span>
+            <span class="o">*</span> <span class="p">(</span><span class="mf">4.0</span> <span class="o">/</span> <span class="mf">3.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">*</span> <span class="n">costheta</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">xacc</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">polemass_length</span> <span class="o">*</span> <span class="n">thetaacc</span> <span class="o">*</span> <span class="n">costheta</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kinematics_integrator</span> <span class="o">==</span> <span class="s2">&quot;euler&quot;</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">x_dot</span>
+            <span class="n">x_dot</span> <span class="o">=</span> <span class="n">x_dot</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">xacc</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">theta_dot</span>
+            <span class="n">theta_dot</span> <span class="o">=</span> <span class="n">theta_dot</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">thetaacc</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># semi-implicit euler</span>
+            <span class="n">x_dot</span> <span class="o">=</span> <span class="n">x_dot</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">xacc</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">x_dot</span>
+            <span class="n">theta_dot</span> <span class="o">=</span> <span class="n">theta_dot</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">thetaacc</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">theta_dot</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_dot</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">theta_dot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span>  <span class="c1"># NOTE: Not done in the original environment.</span>
+
+        <span class="c1"># Calculate cost.</span>
+        <span class="c1"># NOTE: Different cost function compared to the original.</span>
+        <span class="n">cost</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># Define stopping criteria.</span>
+        <span class="n">terminated</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span>
+            <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta_threshold_radians</span>
+            <span class="ow">or</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># NOTE: Added compared to original.</span>
+            <span class="ow">or</span> <span class="n">cost</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># NOTE: Added compared to original.</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Handle termination.</span>
+        <span class="k">if</span> <span class="n">terminated</span><span class="p">:</span>
+            <span class="c1"># Ensure cost is at max cost.</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span>  <span class="c1"># NOTE: Different cost compared to the original.</span>
+
+            <span class="c1"># Throw warning if already done.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Pole just fell!</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="s2">&quot;You are calling &#39;step()&#39; even though this &quot;</span>
+                        <span class="s2">&quot;environment has already returned terminated = True. You &quot;</span>
+                        <span class="s2">&quot;should always call &#39;reset()&#39; once you receive &#39;terminated = &quot;</span>
+                        <span class="s2">&quot;True&#39; -- any further steps are undefined behaviour.&quot;</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Render environment if requested.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+        <span class="c1"># Create observation and info dict.</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="n">ref</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span>
+                    <span class="k">else</span> <span class="p">[</span><span class="n">ref</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">ref</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span>
+            <span class="n">state_of_interest</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">reference_error</span><span class="o">=</span><span class="n">x</span> <span class="o">-</span> <span class="n">ref</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># NOTE: The original returns an empty info dict.</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">obs</span><span class="p">,</span>
+            <span class="n">cost</span><span class="p">,</span>
+            <span class="n">terminated</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">info_dict</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.reset"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset gymnasium environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            seed (int, optional): A random seed for the environment. By default</span>
+<span class="sd">                ``None``.</span>
+<span class="sd">            options (dict, optional): A dictionary containing additional options for</span>
+<span class="sd">                resetting the environment. By default ``None``. Not used in this</span>
+<span class="sd">                environment.</span>
+<span class="sd">            random (bool, optional): Whether we want to randomly initialise the</span>
+<span class="sd">                environment. By default True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`numpy.ndarray`): Initial environment observation.</span>
+<span class="sd">                -   info (:obj:`dict`): Dictionary containing additional information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># Initialise custom bounds while ensuring that the bounds are valid.</span>
+        <span class="c1"># NOTE: If you use custom reset bounds, it may lead to out-of-bound</span>
+        <span class="c1"># state/observations.</span>
+        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;low&quot;</span> <span class="ow">in</span> <span class="n">options</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;high&quot;</span> <span class="ow">in</span> <span class="n">options</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">low</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">low</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">high</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">low</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;Reset bounds must be within the observation space bounds &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set random initial state and reset several env variables.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">high</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+            <span class="k">if</span> <span class="n">random</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Retrieve observation and info_dict.</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span>
+            <span class="n">state_of_interest</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">reference_error</span><span class="o">=</span><span class="n">x</span> <span class="o">-</span> <span class="n">ref</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="p">[</span><span class="n">ref</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span>
+                    <span class="k">else</span> <span class="p">[</span><span class="n">ref</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">ref</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Render environment reset if requested.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+        <span class="c1"># NOTE: The original returns an empty info dict.</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">info_dict</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.render"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render one frame of the environment.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;You are calling render method without specifying any render mode. &quot;</span>
+                <span class="s2">&quot;You can specify the render_mode at initialization, &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;e.g. gym.make(stable_gym:&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">&quot;, render_mode=&quot;rgb_array&quot;)&#39;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pygame</span>
+            <span class="kn">from</span> <span class="nn">pygame</span> <span class="kn">import</span> <span class="n">gfxdraw</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DependencyNotInstalled</span><span class="p">(</span>
+                <span class="s2">&quot;pygame is not installed, run `pip install gymnasium[classic-control]`&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># mode == &quot;rgb_array&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+
+        <span class="n">world_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_threshold</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">/</span> <span class="n">world_width</span>
+        <span class="n">polewidth</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.1</span>  <span class="c1"># NOTE: Original uses 10.0.</span>
+        <span class="n">polelen</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>  <span class="c1"># NOTE: Original uses scale * (2 * self.length)</span>
+        <span class="n">cartwidth</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.5</span>  <span class="c1"># NOTE: Original uses 50.0</span>
+        <span class="n">cartheight</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="mf">0.3</span>  <span class="c1"># NOTE: Original uses 30.0</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">surf</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+        <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">cartwidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cartwidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">cartheight</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">cartheight</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">axleoffset</span> <span class="o">=</span> <span class="n">cartheight</span> <span class="o">/</span> <span class="mf">4.0</span>
+        <span class="n">cartx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span> <span class="o">/</span> <span class="mf">2.0</span>  <span class="c1"># MIDDLE OF CART.</span>
+        <span class="n">carty</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># TOP OF CART.</span>
+        <span class="n">cart_coords</span> <span class="o">=</span> <span class="p">[(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span>
+        <span class="n">cart_coords</span> <span class="o">=</span> <span class="p">[(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cartx</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">carty</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cart_coords</span><span class="p">]</span>
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">aapolygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="n">cart_coords</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">filled_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="n">cart_coords</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">polelen</span> <span class="o">-</span> <span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">pole_coords</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">)]:</span>
+            <span class="n">coord</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">Vector2</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span><span class="o">.</span><span class="n">rotate_rad</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">coord</span> <span class="o">=</span> <span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cartx</span><span class="p">,</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">carty</span> <span class="o">+</span> <span class="n">axleoffset</span><span class="p">)</span>
+            <span class="n">pole_coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">aapolygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="n">pole_coords</span><span class="p">,</span> <span class="p">(</span><span class="mi">202</span><span class="p">,</span> <span class="mi">152</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">filled_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="n">pole_coords</span><span class="p">,</span> <span class="p">(</span><span class="mi">202</span><span class="p">,</span> <span class="mi">152</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
+
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">aacircle</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">cartx</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">carty</span> <span class="o">+</span> <span class="n">axleoffset</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">203</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">filled_circle</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">cartx</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">carty</span> <span class="o">+</span> <span class="n">axleoffset</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">polewidth</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">203</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">gfxdraw</span><span class="o">.</span><span class="n">hline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="n">carty</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">surf</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surf</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">pump</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;render_fps&quot;</span><span class="p">])</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;rgb_array&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pygame</span><span class="o">.</span><span class="n">surfarray</span><span class="o">.</span><span class="n">pixels3d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CartPoleTrackingCost.close"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close down the viewer&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pygame</span>
+
+            <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isopen</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.total_mass"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.total_mass">[docs]</a>    <span class="k">def</span> <span class="nf">total_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property that returns the full mass of the system.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost._com_length"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._com_length">[docs]</a>    <span class="k">def</span> <span class="nf">_com_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property that returns the position of the center of mass.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="mf">0.5</span>  <span class="c1"># half the pole&#39;s length</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.polemass_length"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.polemass_length">[docs]</a>    <span class="k">def</span> <span class="nf">polemass_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property that returns the pole mass times the COM length.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_com_length</span></div>
+
+    <span class="c1"># Aliases.</span>
+    <span class="c1"># NOTE: Added because the original environment doesn&#39;t use the pythonic naming.</span>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.pole_mass_length"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.pole_mass_length">[docs]</a>    <span class="k">def</span> <span class="nf">pole_mass_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :attr:`polemass_length`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">polemass_length</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.mass_pole"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_pole">[docs]</a>    <span class="k">def</span> <span class="nf">mass_pole</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :attr:`masspole`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">masspole</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.mass_cart"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_cart">[docs]</a>    <span class="k">def</span> <span class="nf">mass_cart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :attr:`masscart`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">masscart</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.dt"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.dt">[docs]</a>    <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property that also makes the timestep available under the :attr:`dt`</span>
+<span class="sd">        attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="CartPoleTrackingCost.physics_time"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.physics_time">[docs]</a>    <span class="k">def</span> <span class="nf">physics_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the physics time. Alias for :attr:`.t`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting up &#39;CartPoleTrackingCost&#39; environment.&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="env"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.html#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.env">[docs]</a>    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:CartPoleTrackingCost&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Run episodes.</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">reference</span><span class="p">,</span> <span class="n">references</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Performing &#39;</span><span class="si">{</span><span class="n">EPISODES</span><span class="si">}</span><span class="s2">&#39; in the &#39;CartPoleTrackingCost&#39; environment...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">EPISODES</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">RANDOM_STEP</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">references</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+            <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished &#39;CartPoleTrackingCost&#39; environment simulation.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot results per episode.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Plotting episode data...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Episode: </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">env</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>  <span class="c1"># NOTE: Change if you want to plot less states.</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">path</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CartPoleTrackingCost episode &#39;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Plot reference signal.</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">t</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Reference&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Close plot to see next episode...&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Done&quot;</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

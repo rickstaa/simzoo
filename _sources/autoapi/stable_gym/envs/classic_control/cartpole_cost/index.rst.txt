@@ -1,0 +1,530 @@
+stable_gym.envs.classic_control.cartpole_cost
+=============================================
+
+.. py:module:: stable_gym.envs.classic_control.cartpole_cost
+
+.. autoapi-nested-parse::
+
+   Modified version of the cart-pole environment found in the `gymnasium library`_.
+   This modification was first described by `Han et al. 2020`_. In this modified version:
+
+   -   The action space is continuous, wherein the original version it is discrete.
+   -   The reward is replaced with a cost (i.e. negated reward).
+   -   Some of the environment parameters were changed slightly.
+
+   .. _`gymnasium library`: https://gymnasium.farama.org/environments/classic_control/cart_pole
+   .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/stable_gym/envs/classic_control/cartpole_cost/cartpole_cost/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.classic_control.cartpole_cost.CartPoleCost
+
+
+Package Contents
+----------------
+
+.. py:class:: CartPoleCost(render_mode=None, max_cost=100.0, clip_action=True, action_space_dtype=np.float64, observation_space_dtype=np.float64)
+
+   Bases: :py:obj:`gymnasium.Env`
+
+
+   Custom CartPole Gymnasium environment.
+
+   .. note::
+       This environment can be used in a vectorized manner. Refer to the
+       :gymnasium:`gym.vector <api/vector>` documentation for details.
+
+   .. attention::
+       If you're using this environment to reproduce the results of `Han et al.`_
+       (2020), please note that slight differences may occur due to the
+       modifications mentioned below. For an accurate reproduction, refer to the
+       separate ``han2020`` branch, which mirrors the environment used in their
+       study. It can be accessed `here <here_branch_>`_.
+
+   Source:
+       This environment is a modified version of the CartPole environment from the
+       Farma Foundation's :gymnasium:`Gymnasium <>` package, first used by `Han et al.`_
+       in 2020. Modifications made by Han et al. include:
+
+           - The action space is **continuous**, contrasting with the original **discrete**
+             setting.
+           - Offers an optional feature to confine actions within the defined action space,
+             preventing the agent from exceeding set boundaries when activated.
+           - The **reward** function is replaced with a (positive definite) **cost**
+             function (negated reward), in line with Lyapunov stability theory.
+           - Maximum cart force is increased from ``10`` to ``20``.
+           - Episode length is reduced from ``500`` to ``250``.
+           - A termination cost of :math:`c=100` is introduced for early episode
+             termination, to promote cost minimization.
+           - The terminal angle limit is expanded from the original ``12`` degrees to
+             ``20`` degrees, enhancing recovery potential.
+           - The terminal position limit is extended from ``2.4`` meters to ``10``
+             meters, broadening the recovery range.
+           - Velocity limits are adjusted from :math:`\pm \infty` to :math:`\pm 50`,
+             accelerating training.
+           - Angular velocity termination threshold is lowered from :math:`\pm \infty`
+             to :math:`\pm 50`, likely for improved training efficiency.
+           - Random initial state range is modified from ``[-0.05, 0.05]`` to ``[-5, 5]``
+             for the cart position and ``[-0.2, 0.2]`` for all other states, allowing
+             for expanded exploration.
+           - The info dictionary is expanded to include the reference state, state of
+             interest, and reference error.
+
+       Additional modifications in our implementation:
+
+           - Unlike the original environment's fixed cost threshold of ``100``, this
+             version allows users to adjust the maximum cost threshold via the
+             :obj:`max_cost` input, improving training adaptability.
+           - The gravity constant is adjusted back from ``10`` to the real-world value
+             of ``9.8``, aligning it closer with the original CartPole environment.
+           - The data types for action and observation spaces are set to ``np.float64``,
+             diverging from the ``np.float32`` used by Han et al. 2020. This aligns
+             the Gymnasium implementation with the original CartPole environment.
+
+   Observation:
+       **Type**: Box(4) or Box(6)
+
+       +-----+------------------------------+-----------------------+---------------------+
+       | Num | Observation                  | Min                   | Max                 |
+       +=====+==============================+=======================+=====================+
+       | 0   | Cart Position                | -20                   | 20                  |
+       +-----+------------------------------+-----------------------+---------------------+
+       | 1   | Cart Velocity                | -50                   | 50                  |
+       +-----+------------------------------+-----------------------+---------------------+
+       | 2   | Pole Angle                   | ~ -.698 rad (-40 deg) | ~ .698 rad (40 deg) |
+       +-----+------------------------------+-----------------------+---------------------+
+       | 3   | Pole Angular Velocity        | -50rad                | 50rad               |
+       +-----+------------------------------+-----------------------+---------------------+
+
+       .. note::
+           While the ranges above denote the possible values for observation space of
+           each element, it is not reflective of the allowed values of the state space
+           in an un-terminated episode. Particularly:
+
+               -   The cart x-position (index 0) can be take values between
+                   ``(-20, 20)``, but the episode terminates if the cart leaves the
+                   ``(-10, 10)`` range.
+               -   The pole angle can be observed between  ``(-0.698, .698)`` radians
+                   (or **±40°**), but the episode terminates if the pole angle is not
+                   in  the range ``(-.349, .349)`` (or **±20°**)
+
+   Actions:
+       **Type**: Box(1)
+
+       +-----+----------------------+-----------------------+---------------------+
+       | Num | Action               | Min                   | Max                 |
+       +=====+======================+=======================+=====================+
+       | 0   | The controller Force | -20                   | 20                  |
+       +-----+----------------------+-----------------------+---------------------+
+
+       .. note::
+           The velocity that is reduced or increased by the applied force is not fixed
+           and it depends on the angle the pole is pointing. The center of gravity of
+           the pole varies the amount of energy needed to move the cart underneath it.
+
+   Cost:
+       A cost, computed using the :meth:`CartPoleCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is the error
+       between the cart position and angle and the zero position and angle. The cost
+       is set to the maximum cost when the episode is terminated.The cost is defined as:
+
+       .. math::
+
+           cost = (x / x_{threshold})^2 + 20 * (\theta / \theta_{threshold})^2
+
+   Starting State:
+       The position is assigned a random value in ``[-5,5]`` and the other states are
+       assigned a uniform random value in ``[-0.2..0.2]``.
+
+   Episode Termination:
+       -   Pole Angle is more than 20 degrees.
+       -   Cart Position is more than 10 m (center of the cart reaches the edge of the
+           display).
+       -   Episode length is greater than 200.
+       -   The cost is greater than a threshold (100 by default). This threshold can
+           be changed using the ``max_cost`` environment argument.
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:CartPoleCost-v1")
+
+       On reset, the ``options`` parameter allows the user to change the bounds used to
+       determine the new random state when ``random=True``.
+
+   .. attribute:: state
+
+      The current state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: t
+
+      Current time step.
+
+      :type: float
+
+   .. attribute:: tau
+
+      The time step size. Also available as ``self.dt``.
+
+      :type: float
+
+   .. attribute:: target_pos
+
+      The target position.
+
+      :type: float
+
+   .. attribute:: constraint_pos
+
+      The constraint position.
+
+      :type: float
+
+   .. attribute:: kinematics_integrator
+
+      The kinematics integrator used to update the state.
+      Options are ``euler`` and ``semi-implicit euler``.
+
+      :type: str
+
+   .. attribute:: theta_threshold_radians
+
+      The angle at which the pole is considered to be
+      at a terminal state.
+
+      :type: float
+
+   .. attribute:: x_threshold
+
+      The position at which the cart is considered to be at a
+      terminal state.
+
+      :type: float
+
+   .. attribute:: max_v
+
+      The maximum velocity of the cart.
+
+      :type: float
+
+   .. attribute:: max_w
+
+      The maximum angular velocity of the pole.
+
+      :type: float
+
+   .. attribute:: max_cost
+
+      The maximum cost.
+
+      :type: float
+
+   .. _`Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problem`: https://ieeexplore.ieee.org/document/6313077
+   .. _`Han et al.`: https://arxiv.org/abs/2004.14288
+   .. _`here_branch`: https://github.com/rickstaa/stable-gym/tree/han2020
+
+   Initialise a new CartPoleCost environment instance.
+
+   :param render_mode: Gym rendering mode. By default ``None``.
+   :type render_mode: str, optional
+   :param max_cost: The maximum cost allowed before the episode is
+                    terminated. Defaults to ``100.0``.
+   :type max_cost: float, optional
+   :param clip_action: Whether the actions should be clipped if
+                       they are greater than the set action limit. Defaults to ``True``.
+   :type clip_action: str, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float64``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+
+
+   .. py:attribute:: metadata
+
+
+   .. py:attribute:: render_mode
+
+
+   .. py:attribute:: max_cost
+
+
+   .. py:attribute:: _clip_action
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: force_mag
+      :value: 20
+
+
+
+   .. py:attribute:: tau
+      :value: 0.02
+
+
+
+   .. py:attribute:: kinematics_integrator
+      :value: 'euler'
+
+
+
+   .. py:attribute:: theta_threshold_radians
+
+
+   .. py:attribute:: x_threshold
+      :value: 10
+
+
+
+   .. py:attribute:: max_v
+      :value: 50
+
+
+
+   .. py:attribute:: max_w
+      :value: 50
+
+
+
+   .. py:attribute:: high
+
+
+   .. py:attribute:: action_space
+
+
+   .. py:attribute:: observation_space
+
+
+   .. py:attribute:: reward_range
+
+
+   .. py:attribute:: screen_width
+      :value: 600
+
+
+
+   .. py:attribute:: screen_height
+      :value: 400
+
+
+
+   .. py:attribute:: screen
+      :value: None
+
+
+
+   .. py:attribute:: clock
+      :value: None
+
+
+
+   .. py:attribute:: isopen
+      :value: True
+
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: steps_beyond_terminated
+      :value: None
+
+
+
+   .. py:attribute:: t
+      :value: 0
+
+
+
+   .. py:attribute:: _action_clip_warning
+      :value: False
+
+
+
+   .. py:attribute:: _init_state
+
+
+   .. py:attribute:: _init_state_range
+
+
+   .. py:method:: set_params(length, mass_of_cart, mass_of_pole, gravity)
+
+      Sets the most important system parameters.
+
+      :param length: The pole length.
+      :type length: float
+      :param mass_of_cart: Cart mass.
+      :type mass_of_cart: float
+      :param mass_of_pole: Pole mass.
+      :type mass_of_pole: float
+      :param gravity: The gravity constant.
+      :type gravity: float
+
+
+
+   .. py:method:: get_params()
+
+      Retrieves the most important system parameters.
+
+      :returns:
+
+                tuple containing:
+
+                    -   length(:obj:`float`): The pole length.
+                    -   pole_mass (:obj:`float`): The pole mass.
+                    -   pole_mass (:obj:`float`): The cart mass.
+                    -   gravity (:obj:`float`): The gravity constant.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset_params()
+
+      Resets the most important system parameters.
+
+
+
+   .. py:method:: cost(x, theta)
+
+      Returns the cost for a given cart position (x) and a pole angle (theta).
+
+          Args:
+              x (float): The current cart position.
+              theta (float): The current pole angle (rads).
+
+      :returns:
+
+                tuple containing:
+
+                    -   cost (float): The current cost.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      :param action: The action we want to perform in the environment.
+      :type action: numpy.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None, random=True)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+      :param random: Whether we want to randomly initialise the
+                     environment. By default True.
+      :type random: bool, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: render()
+
+      Render one frame of the environment.
+
+
+
+   .. py:method:: close()
+
+      Close down the viewer
+
+
+
+   .. py:property:: total_mass
+      Property that returns the full mass of the system.
+
+
+   .. py:property:: _com_length
+      Property that returns the position of the center of mass.
+
+
+   .. py:property:: polemass_length
+      Property that returns the pole mass times the COM length.
+
+
+   .. py:property:: pole_mass_length
+      Alias for :attr:`polemass_length`.
+
+
+   .. py:property:: mass_pole
+      Alias for :attr:`masspole`.
+
+
+   .. py:property:: mass_cart
+      Alias for :attr:`masscart`.
+
+
+   .. py:property:: dt
+      Property that also makes the timestep available under the :attr:`dt`
+      attribute.
+
+
+   .. py:property:: physics_time
+      Returns the physics time. Alias for :attr:`.t`.
+
+

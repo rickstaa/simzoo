@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../../../" id="documentation_options" src="../../../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" />
+    <link rel="next" title="stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost" href="../../quadx_waypoints_cost/index.html" />
+    <link rel="prev" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html">
+            
+              <img src="../../../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../../../common/index.html">stable_gym.common</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../../../index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">stable_gym.envs</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">stable_gym.envs.robotics</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym.envs.robotics.quadrotor</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost">
+<span id="stable-gym-envs-robotics-quadrotor-quadx-tracking-cost-quadx-tracking-cost"></span><h1>stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost<a class="headerlink" href="#module-stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost" title="Permalink to this heading"></a></h1>
+<p>The QuadXTrackingCost gymnasium environment.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.EPISODES" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.EPISODES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EPISODES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.RANDOM_STEP" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.RANDOM_STEP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RANDOM_STEP</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.env" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuadXTrackingCost</span></code></a></p></td>
+<td><p>Custom QuadX Bullet gymnasium environment.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.EPISODES">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">EPISODES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#EPISODES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.EPISODES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.RANDOM_STEP">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">RANDOM_STEP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#RANDOM_STEP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.RANDOM_STEP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">QuadXTrackingCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flight_dome_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_representation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'quaternion'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(480,</span> <span class="pre">480)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_target_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_amplitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">0.25)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.25,</span> <span class="pre">0.25,</span> <span class="pre">0.1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_phase_shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">-np.pi</span> <span class="pre">/</span> <span class="pre">2.0,</span> <span class="pre">0.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_health_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">health_penalty_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_reference_from_observation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_reference_error_from_observation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float64</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://jjshoots.github.io/PyFlyt/documentation/gym_envs/quadx_hover_env.html#PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv" title="(in PyFlyt)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium.utils.EzPickle</span></code></p>
+<p>Custom QuadX Bullet gymnasium environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Can also be used in a vectorized manner. See the
+<a class="reference external" href="https://gymnasium.farama.org/api/vector">gym.vector</a> documentation.</p>
+</div>
+<dl>
+<dt>Source:</dt><dd><p>Modified version of the <a class="reference external" href="https://jjshoots.github.io/PyFlyt/documentation/gym_envs/quadx_envs/quadx_hover_env.html">QuadXHover environment</a> found in the
+<a class="reference external" href="https://jjshoots.github.io/PyFlyt/documentation">PyFlyt package</a>. Compared to the original environment:</p>
+<ul class="simple">
+<li><p>The reward has been changed to a cost. This was done by negating the reward always
+to be positive definite.</p></li>
+<li><p>A health penalty has been added. This penalty is applied when the quadrotor moves
+outside the flight dome or crashes. The penalty equals the maximum episode steps
+minus the steps taken or a user-defined penalty.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">max_duration_seconds</span></code> has been removed. Instead, the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code>
+parameter of the <code class="xref py py-class docutils literal notranslate"><span class="pre">gym.wrappers.TimeLimit</span></code> wrapper is used to limit
+the episode duration.</p></li>
+<li><p>The objective has been changed to track a periodic reference trajectory.</p></li>
+<li><p>The info dictionary has been extended with the reference, state of interest
+(i.e. the state to track) and reference error.</p></li>
+</ul>
+<p>The rest of the environment is the same as the original QuadXHover environment.
+Please refer to the <a class="reference external" href="https://github.com/jjshoots/PyFlyt">original codebase</a>,
+<a class="reference external" href="https://jjshoots.github.io/PyFlyt/documentation">the PyFlyt documentation</a> or the accompanying
+<a class="reference external" href="https://arxiv.org/abs/2304.01305">article of Tai et al. 2023</a> for more information.</p>
+</dd>
+</dl>
+<dl>
+<dt>Modified cost:</dt><dd><p>A cost, computed using the <a class="reference internal" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.cost" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.cost"><code class="xref py py-meth docutils literal notranslate"><span class="pre">QuadXTrackingCost.cost()</span></code></a> method, is given for each
+simulation step, including the terminal step. This cost is defined as the
+Euclidean distance error between the quadrotors’ current position and a desired
+reference position (i.e. <span class="math notranslate nohighlight">\(p=x_{x,y,z}=[0,0,1]\)</span>). A health penalty
+can also be included in the cost. This health penalty is added when the drone
+leaves the flight dome or crashes. It equals the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> minus the
+number of steps taken in the episode or a fixed value. The cost is computed as:</p>
+<div class="math notranslate nohighlight">
+\[cost = \| p_{drone} - p_{reference} \| + p_{health}\]</div>
+</dd>
+<dt>Solved Requirements:</dt><dd><p>Considered solved when the average cost is less than or equal to 50 over
+100 consecutive trials.</p>
+</dd>
+<dt>How to use:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stable_gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:QuadXTrackingCost-v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.state" title="Permalink to this definition"></a></dt>
+<dd><p>The current system state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.agent_hz">
+<span class="sig-name descname"><span class="pre">agent_hz</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.agent_hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.agent_hz" title="Permalink to this definition"></a></dt>
+<dd><p>The agent looprate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.initial_physics_time">
+<span class="sig-name descname"><span class="pre">initial_physics_time</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.initial_physics_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.initial_physics_time" title="Permalink to this definition"></a></dt>
+<dd><p>The simulation startup time. The physics time at
+the start of the episode after all the initialisation has been done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a new QuadXTrackingCost environment instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>flight_dome_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – Size of the allowable flying area. By
+default <code class="docutils literal notranslate"><span class="pre">3.0</span></code>.</p></li>
+<li><p><strong>angle_representation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – The angle representation to use.
+Can be <code class="docutils literal notranslate"><span class="pre">&quot;euler&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;quaternion&quot;</span></code>. By default <code class="docutils literal notranslate"><span class="pre">&quot;quaternion&quot;</span></code>.</p></li>
+<li><p><strong>agent_hz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – Looprate of the agent to environment interaction.
+By default <code class="docutils literal notranslate"><span class="pre">40</span></code>.</p></li>
+<li><p><strong>render_mode</strong> (<em>None</em><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – The render mode. Can be <code class="docutils literal notranslate"><span class="pre">&quot;human&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">None</span></code>. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>render_resolution</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – The render resolution. By
+default <code class="docutils literal notranslate"><span class="pre">(480,</span> <span class="pre">480)</span></code>.</p></li>
+<li><p><strong>reference_target_position</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – The
+target position of the reference. Defaults to <code class="docutils literal notranslate"><span class="pre">(0.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0)</span></code>.</p></li>
+<li><p><strong>reference_amplitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – The amplitude
+of the reference. Defaults to <code class="docutils literal notranslate"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">0.25)</span></code>.</p></li>
+<li><p><strong>reference_frequency</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – The frequency
+of the reference. Defaults to <code class="docutils literal notranslate"><span class="pre">(0.25,</span> <span class="pre">0.25,</span> <span class="pre">0.10)</span></code>.</p></li>
+<li><p><strong>reference_phase_shift</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – The phase
+shift of the reference. Defaults to <code class="docutils literal notranslate"><span class="pre">(0.0,</span> <span class="pre">-np.pi</span> <span class="pre">/</span> <span class="pre">2,</span> <span class="pre">0.0)</span></code>.</p></li>
+<li><p><strong>include_health_penalty</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to penalize the quadrotor
+if it becomes unhealthy (i.e. if it falls over). Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>health_penalty_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – The size of the unhealthy penalty.
+Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code>. Meaning the penalty is equal to the max episode
+steps and the steps taken.</p></li>
+<li><p><strong>exclude_reference_from_observation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the reference
+should be excluded from the observation. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>exclude_reference_error_from_observation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the error
+should be excluded from the observation. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>action_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type of the
+action space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
+<li><p><strong>observation_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type
+of the observation space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments passed to the
+<a class="reference external" href="https://jjshoots.github.io/PyFlyt/documentation/gym_envs/quadx_hover_env.html#PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv" title="(in PyFlyt)"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuadXHoverEnv</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_target_position">
+<span class="sig-name descname"><span class="pre">reference_target_position</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reference_target_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_target_position" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_amplitude">
+<span class="sig-name descname"><span class="pre">reference_amplitude</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reference_amplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_amplitude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_frequency">
+<span class="sig-name descname"><span class="pre">reference_frequency</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reference_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_frequency" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_phase_shift">
+<span class="sig-name descname"><span class="pre">reference_phase_shift</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reference_phase_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference_phase_shift" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">initial_physics_time</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.initial_physics_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._max_episode_steps_applied">
+<span class="sig-name descname"><span class="pre">_max_episode_steps_applied</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._max_episode_steps_applied"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._max_episode_steps_applied" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">agent_hz</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.agent_hz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_target_pos">
+<span class="sig-name descname"><span class="pre">_reference_target_pos</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_target_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_target_pos" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_amplitude">
+<span class="sig-name descname"><span class="pre">_reference_amplitude</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_amplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_amplitude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_frequency">
+<span class="sig-name descname"><span class="pre">_reference_frequency</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_frequency" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_phase_shift">
+<span class="sig-name descname"><span class="pre">_reference_phase_shift</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_phase_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_phase_shift" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._include_health_penalty">
+<span class="sig-name descname"><span class="pre">_include_health_penalty</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._include_health_penalty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._include_health_penalty" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._health_penalty_size">
+<span class="sig-name descname"><span class="pre">_health_penalty_size</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._health_penalty_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._health_penalty_size" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._exclude_reference_from_observation">
+<span class="sig-name descname"><span class="pre">_exclude_reference_from_observation</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._exclude_reference_from_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._exclude_reference_from_observation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._exclude_reference_error_from_observation">
+<span class="sig-name descname"><span class="pre">_exclude_reference_error_from_observation</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._exclude_reference_error_from_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._exclude_reference_error_from_observation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._action_space_dtype">
+<span class="sig-name descname"><span class="pre">_action_space_dtype</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._action_space_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._action_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._observation_space_dtype">
+<span class="sig-name descname"><span class="pre">_observation_space_dtype</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._observation_space_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._observation_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._action_dtype_conversion_warning">
+<span class="sig-name descname"><span class="pre">_action_dtype_conversion_warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._action_dtype_conversion_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._action_dtype_conversion_warning" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.PyFlyt_dir">
+<span class="sig-name descname"><span class="pre">PyFlyt_dir</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.PyFlyt_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.PyFlyt_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_obj_dir">
+<span class="sig-name descname"><span class="pre">_reference_obj_dir</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_obj_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_obj_dir" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_visual">
+<span class="sig-name descname"><span class="pre">_reference_visual</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost._reference_visual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost._reference_visual" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.low">
+<span class="sig-name descname"><span class="pre">low</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.low"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.low" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.high">
+<span class="sig-name descname"><span class="pre">high</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.high"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.high" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.observation_space">
+<span class="sig-name descname"><span class="pre">observation_space</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.observation_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.observation_space" title="Permalink to this definition"></a></dt>
+<dd><p>ENVIRONMENT CONSTANTS</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reference" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the current value of the (periodic) drone (x, y, z) reference
+position that should be tracked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The current time step.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The current reference position.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.cost" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the cost of the current state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cost.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.step" title="Permalink to this definition"></a></dt>
+<dd><p>Take step into the environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method overrides the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code>
+method such that the new cost function is used.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> (<em>np.ndarray</em>) – Action to take in the environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>): Environment observation.</p></li>
+<li><p>cost (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Cost of the action.</p></li>
+<li><p>terminated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode is terminated.</p></li>
+<li><p>truncated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode was truncated. This
+value is set by wrappers when for example a time limit is reached
+or the agent goes out of bounds.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Additional information about the environment.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset gymnasium environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – A random seed for the environment. By default
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – A dictionary containing additional options for
+resetting the environment. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>. Not used in this
+environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>): Initial environment observation.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Dictionary containing additional information.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.visualize_reference">
+<span class="sig-name descname"><span class="pre">visualize_reference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.visualize_reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.visualize_reference" title="Permalink to this definition"></a></dt>
+<dd><p>Visualize the reference target.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.time_limit_max_episode_steps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_limit_max_episode_steps</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.time_limit_max_episode_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.time_limit_max_episode_steps" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">maximum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">steps</span> <span class="pre">that</span> <span class="pre">the</span> <span class="pre">environment</span> <span class="pre">can</span> <span class="pre">take</span> <span class="pre">before</span> <span class="pre">it</span> <span class="pre">is</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">truncated</span> <span class="pre">by</span> <span class="pre">the</span> <span class="pre">:class:`gymnasium.wrappers.TimeLimit`</span> <span class="pre">wrapper.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.time_limit">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_limit</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.time_limit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.time_limit" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">maximum</span> <span class="pre">duration</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">episode</span> <span class="pre">in</span> <span class="pre">seconds.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.dt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dt</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.dt" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">environment</span> <span class="pre">step</span> <span class="pre">size.</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The simulation step size. Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the environment is</dt><dd><p>not yet initialized.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.tau">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tau</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.tau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.tau" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">environment</span> <span class="pre">step</span> <span class="pre">size.</span> <span class="pre">Done</span> <span class="pre">for</span> <span class="pre">compatibility</span> <span class="pre">with</span> <span class="pre">the</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">other</span> <span class="pre">gymnasium</span> <span class="pre">environments.</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The simulation step size. Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the environment is</dt><dd><p>not yet initialized.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.t">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">t</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.t" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Environment</span> <span class="pre">time.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.physics_time">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">physics_time</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#QuadXTrackingCost.physics_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.QuadXTrackingCost.physics_time" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Returns</span> <span class="pre">the</span> <span class="pre">physics</span> <span class="pre">time.</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.env">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">env</span></span><a class="reference internal" href="../../../../../../../_modules/stable_gym/envs/robotics/quadrotor/quadx_tracking_cost/quadx_tracking_cost.html#env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.robotics.quadrotor.quadx_tracking_cost.quadx_tracking_cost.env" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="stable_gym.envs.robotics.quadrotor.quadx_tracking_cost" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../quadx_waypoints_cost/index.html" class="btn btn-neutral float-right" title="stable_gym.envs.robotics.quadrotor.quadx_waypoints_cost" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

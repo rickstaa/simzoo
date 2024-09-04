@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.classic_control.ex3_ekf &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="stable_gym.envs.classic_control.ex3_ekf.ex3_ekf" href="ex3_ekf/index.html" />
+    <link rel="prev" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost" href="../cartpole_tracking_cost/cartpole_tracking_cost/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html">
+            
+              <img src="../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../common/index.html">stable_gym.common</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym.envs</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.envs.classic_control</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.classic_control.ex3_ekf</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/envs/classic_control/ex3_ekf/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.envs.classic_control.ex3_ekf">
+<span id="stable-gym-envs-classic-control-ex3-ekf"></span><h1>stable_gym.envs.classic_control.ex3_ekf<a class="headerlink" href="#module-stable_gym.envs.classic_control.ex3_ekf" title="Permalink to this heading"></a></h1>
+<p>Noisy master slave system (Ex3EKF) gymnasium environment.</p>
+<section id="dynamics">
+<h2>Dynamics<a class="headerlink" href="#dynamics" title="Permalink to this heading"></a></h2>
+<p>The dynamics of the system whose state is to be estimated are given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{split}
+x(k+1) &amp;= A x(k) + w(k) \\
+\end{split}
+\]</div><p>In which the state vector <span class="math notranslate nohighlight">\((x(k)\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{align*}
+x_1 &amp;: \text{angle} \\
+x_2 &amp;: \text{frequency} \\
+x_3 &amp;: \text{amplitude}
+\end{align*}
+\]</div><p>and the measurement vector <span class="math notranslate nohighlight">\((y(k))\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{split}
+y(k) &amp;= x_3(k) \cdot \sin(x_1(k)) + v(k) \\
+A &amp;= \begin{bmatrix}
+    1 &amp; dt &amp; 0 \\
+    0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 1
+    \end{bmatrix} \\
+x(0) &amp;\sim \mathcal{N}\left(\begin{bmatrix}0 \\ 10 \\ 1\end{bmatrix}, \begin{bmatrix}
+    3 &amp; 0 &amp; 0 \\
+    0 &amp; 3 &amp; 0 \\
+    0 &amp; 0 &amp; 3
+    \end{bmatrix}\right) \\
+w(k) &amp;\sim \mathcal{N}\left(\begin{bmatrix}0 \\ 0 \\ 0\end{bmatrix}, \begin{bmatrix}
+    \frac{1}{3}dt^3 q_1 &amp; \frac{1}{2}dt^2 q_1 &amp; 0 \\
+    \frac{1}{2}dt^2 q_1 &amp; dt q_1 &amp; 0 \\
+    0 &amp; 0 &amp; dt q_2
+    \end{bmatrix}\right) \\
+v(k) &amp;\sim \mathcal{N}(0, 1)
+\end{split}
+\]</div><p>Estimator design:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{split}
+\hat{x}(k+1) &amp;= A \hat{x}(k) + u \\
+\text{where } u &amp;= [u1, u2, u3]', \ u = l(\hat{x}(k), y(k)) \text{ come from the policy network } l(.,.).
+\end{split}
+\]</div></section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ex3_ekf/index.html">stable_gym.envs.classic_control.ex3_ekf.ex3_ekf</a></li>
+</ul>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF" title="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ex3EKF</span></code></a></p></td>
+<td><p>Noisy master slave system</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stable_gym.envs.classic_control.ex3_ekf.</span></span><span class="sig-name descname"><span class="pre">Ex3EKF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipped_action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/classic_control/ex3_ekf/ex3_ekf.html#Ex3EKF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium.Env</span></code></p>
+<p>Noisy master slave system</p>
+<dl>
+<dt>Description:</dt><dd><p>The goal of the agent in the Ex3EKF environment is to act in such a way that
+estimator perfectly estimated the original noisy system. By doing this it serves
+as a RL based stationary Kalman filter. First presented by <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0005109823001528">Wu et al. 2023</a>.</p>
+</dd>
+<dt>Observation:</dt><dd><p><strong>Type</strong>: Box(4)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>The estimated angle</p></td>
+<td><p>-10000 rad</p></td>
+<td><p>10000 rad</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>The estimated frequency</p></td>
+<td><p>-10000 hz</p></td>
+<td><p>10000 hz</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Actual angle</p></td>
+<td><p>-10000 rad</p></td>
+<td><p>10000 rad</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Actual frequency</p></td>
+<td><p>-10000 rad</p></td>
+<td><p>10000 rad</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Actions:</dt><dd><p><strong>Type</strong>: Box(2)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>First action coming from the RL Kalman filter</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Second action coming from the RL Kalman filter</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Cost:</dt><dd><p>A cost, computed as the sum of the squared differences between the estimated and the actual states:</p>
+<div class="math notranslate nohighlight">
+\[C = {(\hat{x}_1 - x_1)}^2 + {(\hat{x}_2 - x_2)}^2\]</div>
+</dd>
+<dt>Starting State:</dt><dd><p>All observations are assigned a uniform random value in <code class="docutils literal notranslate"><span class="pre">[-0.05..0.05]</span></code></p>
+</dd>
+<dt>Episode Termination:</dt><dd><ul class="simple">
+<li><p>When the step cost is higher than 100.</p></li>
+</ul>
+</dd>
+<dt>Solved Requirements:</dt><dd><p>Considered solved when the average cost is lower than 300.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.state" title="Permalink to this definition"></a></dt>
+<dd><p>The current system state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.t" title="Permalink to this definition"></a></dt>
+<dd><p>The current time step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.dt" title="Permalink to this definition"></a></dt>
+<dd><p>The environment step size. Also available as <a class="reference internal" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.tau" title="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.tau"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tau</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.sigma">
+<span class="sig-name descname"><span class="pre">sigma</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.sigma" title="Permalink to this definition"></a></dt>
+<dd><p>The variance of the system noise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise new Ex3EKF environment instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>render_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – The render mode you want to use. Defaults to
+<code class="docutils literal notranslate"><span class="pre">None</span></code>. Not used in this environment.</p></li>
+<li><p><strong>clipped_action</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Whether the actions should be clipped if
+they are greater than the set action limit. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF._action_clip_warning">
+<span class="sig-name descname"><span class="pre">_action_clip_warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF._action_clip_warning" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">t</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.0</span></em><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">dt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#id1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.q1">
+<span class="sig-name descname"><span class="pre">q1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.01</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.q1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.g">
+<span class="sig-name descname"><span class="pre">g</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.81</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.l_net">
+<span class="sig-name descname"><span class="pre">l_net</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.0</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.l_net" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.mean1">
+<span class="sig-name descname"><span class="pre">mean1</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0,</span> <span class="pre">0]</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.mean1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.cov1">
+<span class="sig-name descname"><span class="pre">cov1</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.cov1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.mean2">
+<span class="sig-name descname"><span class="pre">mean2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.mean2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.cov2">
+<span class="sig-name descname"><span class="pre">cov2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.01</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.cov2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.missing_rate">
+<span class="sig-name descname"><span class="pre">missing_rate</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.missing_rate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#id2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.high">
+<span class="sig-name descname"><span class="pre">high</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.high" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.action_space">
+<span class="sig-name descname"><span class="pre">action_space</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.action_space" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.observation_space">
+<span class="sig-name descname"><span class="pre">observation_space</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.observation_space" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reward_range">
+<span class="sig-name descname"><span class="pre">reward_range</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(0.0,</span> <span class="pre">100.0)</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reward_range" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF._clipped_action">
+<span class="sig-name descname"><span class="pre">_clipped_action</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF._clipped_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.viewer">
+<span class="sig-name descname"><span class="pre">viewer</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.viewer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id3" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.output">
+<span class="sig-name descname"><span class="pre">output</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.output" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.steps_beyond_done">
+<span class="sig-name descname"><span class="pre">steps_beyond_done</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.steps_beyond_done" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/classic_control/ex3_ekf/ex3_ekf.html#Ex3EKF.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.step" title="Permalink to this definition"></a></dt>
+<dd><p>Take step into the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><em>numpy.ndarray</em></a>) – The action we want to perform in the environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>): Environment observation.</p></li>
+<li><p>cost (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Cost of the action.</p></li>
+<li><p>terminated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode is terminated.</p></li>
+<li><p>truncated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode was truncated. This
+value is set by wrappers when for example a time limit is reached or
+the agent goes out of bounds.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Additional information about the environment.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/classic_control/ex3_ekf/ex3_ekf.html#Ex3EKF.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset gymnasium environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – A random seed for the environment. By default
+<cite>None`</cite>.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – A dictionary containing additional options for
+resetting the environment. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>. Not used in this
+environment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>): Initial environment observation.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Dictionary containing additional information.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/classic_control/ex3_ekf/ex3_ekf.html#Ex3EKF.reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.reference" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the current value of the periodic reference signal that is tracked by
+the Synthetic oscillatory network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The reference value.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The current reference value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.render">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'human'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/stable_gym/envs/classic_control/ex3_ekf/ex3_ekf.html#Ex3EKF.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.render" title="Permalink to this definition"></a></dt>
+<dd><p>Render one frame of the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Gym rendering mode. The default mode will do something
+human friendly, such as pop up a window.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.12)"><strong>NotImplementedError</strong></a> – Will throw a NotImplimented error since the render
+method has not yet been implemented.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This currently is not yet implemented.</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.tau">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tau</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.tau" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">environment</span> <span class="pre">step</span> <span class="pre">size.</span> <span class="pre">Done</span> <span class="pre">for</span> <span class="pre">compatibility</span> <span class="pre">with</span> <span class="pre">the</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">other</span> <span class="pre">gymnasium</span> <span class="pre">environments.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.physics_time">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">physics_time</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.ex3_ekf.Ex3EKF.physics_time" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Returns</span> <span class="pre">the</span> <span class="pre">physics</span> <span class="pre">time.</span> <span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">:attr:`.t`.</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../cartpole_tracking_cost/cartpole_tracking_cost/index.html" class="btn btn-neutral float-left" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ex3_ekf/index.html" class="btn btn-neutral float-right" title="stable_gym.envs.classic_control.ex3_ekf.ex3_ekf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

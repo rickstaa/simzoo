@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.common.max_episode_steps_injection_wrapper &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="stable_gym.common.utils" href="../utils/index.html" />
+    <link rel="prev" title="stable_gym.common" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">stable_gym.common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../envs/index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.common</a></li>
+      <li class="breadcrumb-item active">stable_gym.common.max_episode_steps_injection_wrapper</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/common/max_episode_steps_injection_wrapper/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.common.max_episode_steps_injection_wrapper">
+<span id="stable-gym-common-max-episode-steps-injection-wrapper"></span><h1>stable_gym.common.max_episode_steps_injection_wrapper<a class="headerlink" href="#module-stable_gym.common.max_episode_steps_injection_wrapper" title="Permalink to this heading"></a></h1>
+<p>This file contains a small gymnasium wrapper that injects the <cite>max_episode_steps</cite>
+argument of a potentially nested <cite>TimeLimit</cite> wrapper into the base environment under the
+<cite>_time_limit_max_episode_steps</cite> attribute.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper" title="stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaxEpisodeStepsInjectionWrapper</span></code></a></p></td>
+<td><p>A gymnasium wrapper that injects the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> attribute of the</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.common.max_episode_steps_injection_wrapper.get_time_limit_wrapper_max_episode_steps" title="stable_gym.common.max_episode_steps_injection_wrapper.get_time_limit_wrapper_max_episode_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_time_limit_wrapper_max_episode_steps</span></code></a>(env)</p></td>
+<td><p>Returns the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> attribute of a potentially nested</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.common.max_episode_steps_injection_wrapper.inject_attribute_into_base_env" title="stable_gym.common.max_episode_steps_injection_wrapper.inject_attribute_into_base_env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inject_attribute_into_base_env</span></code></a>(env, attribute_name, ...)</p></td>
+<td><p>Injects the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument into the base environment under the</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.max_episode_steps_injection_wrapper.get_time_limit_wrapper_max_episode_steps">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.max_episode_steps_injection_wrapper.</span></span><span class="sig-name descname"><span class="pre">get_time_limit_wrapper_max_episode_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/max_episode_steps_injection_wrapper.html#get_time_limit_wrapper_max_episode_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.max_episode_steps_injection_wrapper.get_time_limit_wrapper_max_episode_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> attribute of a potentially nested
+<code class="docutils literal notranslate"><span class="pre">TimeLimit</span></code> wrapper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>env</strong> (<em>gym.Env</em>) – The gymnasium environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The value of the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> attribute of a potentially nested</dt><dd><p><code class="docutils literal notranslate"><span class="pre">TimeLimit</span></code> wrapper. If the environment is not wrapped in a <code class="docutils literal notranslate"><span class="pre">TimeLimit</span></code>
+wrapper, then this function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="stable_gym.common.max_episode_steps_injection_wrapper.inject_attribute_into_base_env">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.common.max_episode_steps_injection_wrapper.</span></span><span class="sig-name descname"><span class="pre">inject_attribute_into_base_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/max_episode_steps_injection_wrapper.html#inject_attribute_into_base_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.max_episode_steps_injection_wrapper.inject_attribute_into_base_env" title="Permalink to this definition"></a></dt>
+<dd><p>Injects the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument into the base environment under the
+<cite>_time_limit_max_episode_steps</cite> attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<em>gym.Env</em>) – The gymnasium environment.</p></li>
+<li><p><strong>attribute_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – The attribute’s name to inject into the base
+environment.</p></li>
+<li><p><strong>attribute_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><em>object</em></a>) – The attribute’s value to inject into the base
+environment.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stable_gym.common.max_episode_steps_injection_wrapper.</span></span><span class="sig-name descname"><span class="pre">MaxEpisodeStepsInjectionWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/stable_gym/common/max_episode_steps_injection_wrapper.html#MaxEpisodeStepsInjectionWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium.Wrapper</span></code></p>
+<p>A gymnasium wrapper that injects the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> attribute of the
+<code class="docutils literal notranslate"><span class="pre">TimeLimit</span></code> wrapper into the base environment as the
+<code class="docutils literal notranslate"><span class="pre">_time_limit_max_episode_steps</span></code> attribute. If the environment is not wrapped in
+a <code class="docutils literal notranslate"><span class="pre">TimeLimit</span></code> wrapper, then the <code class="docutils literal notranslate"><span class="pre">_time_limit_max_episode_steps</span></code> attribute is
+set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Wrap a gymnasium environment.
+:param env: The gymnasium environment.
+:type env: gym.Env</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper.max_episode_steps">
+<span class="sig-name descname"><span class="pre">max_episode_steps</span></span><a class="reference internal" href="../../../../_modules/stable_gym/common/max_episode_steps_injection_wrapper.html#MaxEpisodeStepsInjectionWrapper.max_episode_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper.max_episode_steps" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="stable_gym.common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utils/index.html" class="btn btn-neutral float-right" title="stable_gym.common.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.biological.oscillator_complicated.oscillator_complicated &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html">
+            
+              <img src="../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../../stable_gym.html">stable_gym</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.biological.oscillator_complicated.oscillator_complicated</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stable_gym.envs.biological.oscillator_complicated.oscillator_complicated</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A more challenging (i.e. complicated) version of the `Oscillator gymnasium environment`_</span>
+<span class="sd">with an additional protein, mRNA transcription concentration variable and light input.</span>
+
+<span class="sd">.. _`Oscillator gymnasium environment`: https://rickstaa.dev/stable-gym/envs/biological/oscillator.html</span>
+<span class="sd">&quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">spaces</span>
+
+<div class="viewcode-block" id="EPISODES"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.EPISODES">[docs]</a><span class="n">EPISODES</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Number of env episodes to run when __main__ is called.</span></div>
+<div class="viewcode-block" id="RANDOM_STEP"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.RANDOM_STEP">[docs]</a><span class="n">RANDOM_STEP</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Use random action in __main__. Zero action otherwise.</span></div>
+
+
+<span class="c1"># TODO: Update solving criteria after training.</span>
+<div class="viewcode-block" id="OscillatorComplicated"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated">[docs]</a><span class="k">class</span> <span class="nc">OscillatorComplicated</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Challenging (i.e. complicated) oscillatory network environment. This environment</span>
+<span class="sd">    class is based on the :class:`~stable_gym.envs.biological.oscillator.oscillator.Oscillator`</span>
+<span class="sd">    environment class but has an additional protein, mRNA transcription and light input.</span>
+
+<span class="sd">    .. Note::</span>
+<span class="sd">        Can also be used in a vectorized manner. See the</span>
+<span class="sd">        :gymnasium:`gym.vector &lt;api/vector&gt;` documentation.</span>
+
+<span class="sd">    Description:</span>
+<span class="sd">        The goal of the agent in the oscillator environment is to act in such a way that</span>
+<span class="sd">        one of the proteins of the synthetic oscillatory network follows a supplied</span>
+<span class="sd">        reference signal.</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        This environment corresponds to the Oscillator environment used in the paper</span>
+<span class="sd">        `Han et al. 2020`_. In our implementation several additional features were added</span>
+<span class="sd">        to the environment to make it more flexible and easier to use:</span>
+
+<span class="sd">            - Environment arguments now allow for modification of the reference signal</span>
+<span class="sd">              parameters.</span>
+<span class="sd">            - System parameters can now be individually adjusted for each protein,</span>
+<span class="sd">              rather than applying the same parameters across all proteins.</span>
+<span class="sd">            - The reference can be omitted from the observation.</span>
+<span class="sd">            - Reference error can be included in the info dictionary.</span>
+<span class="sd">            - The observation space was expanded to accurately reproduce the plots</span>
+<span class="sd">              presented in `Han et al. 2020`_, which was not possible with the original</span>
+<span class="sd">              code&#39;s observation space.</span>
+<span class="sd">            - Added an adjustable ``max_cost`` threshold for episode termination,</span>
+<span class="sd">              defaulting to :math:`\infty` to match the original environment.</span>
+
+<span class="sd">    .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288</span>
+
+<span class="sd">    Observation:</span>
+<span class="sd">        **Type**: Box(9) or Box(10) depending on the ``exclude_reference_error_from_observation`` argument.</span>
+
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | Num | Observation                                     | Min               | Max               |</span>
+<span class="sd">        +=====+=================================================+===================+===================+</span>
+<span class="sd">        | 0   | Lacl mRNA transcripts concentration             | 0                 | :math:`\infty`    |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 1   | tetR mRNA transcripts concentration             | 0                 | :math:`\infty`    |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 2   | CI mRNA transcripts concentration               | 0                 | :math:`\infty`    |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 3   | Extra protein mRNA transcripts concentration    | 0                 | :math:`\infty`    |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 4   || lacI (repressor) protein concentration         | 0                 | :math:`\infty`    |</span>
+<span class="sd">        |     || (Inhibits transcription of the tetR gene)      |                   |                   |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 5   || tetR (repressor) protein concentration         | 0                 | :math:`\infty`    |</span>
+<span class="sd">        |     || (Inhibits transcription of CI gene)            |                   |                   |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 6   || CI (repressor) protein concentration           | 0                 | :math:`\infty`    |</span>
+<span class="sd">        |     || (Inhibits transcription of extra protein gene) |                   |                   |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 7   || Extra (repressor) protein concentration        | 0                 | :math:`\infty`    |</span>
+<span class="sd">        |     || (Inhibits transcription of lacI gene)          |                   |                   |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | 8   | The reference we want to follow                 | 0                 | :math:`\infty`    |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+<span class="sd">        | (9) || **Optional** - The error between the current   | -:math:`\infty`   | :math:`\infty`    |</span>
+<span class="sd">        |     || value of protein 1 and the reference           |                   |                   |</span>
+<span class="sd">        +-----+-------------------------------------------------+-------------------+-------------------+</span>
+
+<span class="sd">    Actions:</span>
+<span class="sd">        **Type**: Box(3)</span>
+
+<span class="sd">        +-----+------------------------------------------------------------+---------+---------+</span>
+<span class="sd">        | Num | Action                                                     | Min     |   Max   |</span>
+<span class="sd">        +=====+============================================================+=========+=========+</span>
+<span class="sd">        | 0   || Relative intensity of light signal that induce the        | 0       | 1       |</span>
+<span class="sd">        |     || expression of the Lacl mRNA gene.                         |         |         |</span>
+<span class="sd">        +-----+------------------------------------------------------------+---------+---------+</span>
+<span class="sd">        | 1   || Relative intensity of light signal that induce the        | 0       | 1       |</span>
+<span class="sd">        |     || expression of the tetR mRNA gene.                         |         |         |</span>
+<span class="sd">        +-----+------------------------------------------------------------+---------+---------+</span>
+<span class="sd">        | 2   || Relative intensity of light signal that induce the        | 0       | 1       |</span>
+<span class="sd">        |     || expression of the CI mRNA gene.                           |         |         |</span>
+<span class="sd">        +-----+------------------------------------------------------------+---------+---------+</span>
+<span class="sd">        | 3   || Relative intensity of light signal that induce the        | 0       | 1       |</span>
+<span class="sd">        |     || expression of the extra protein mRNA gene.                |         |         |</span>
+<span class="sd">        +-----+------------------------------------------------------------+---------+---------+</span>
+
+<span class="sd">    Cost:</span>
+<span class="sd">        A cost, computed as the sum of the squared differences between the estimated and the actual states:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            C = {p_1 - r_1}^2</span>
+
+<span class="sd">    Starting State:</span>
+<span class="sd">        All observations are assigned a uniform random value in ``[0..5]``</span>
+
+<span class="sd">    Episode Termination:</span>
+<span class="sd">        - An episode is terminated when the maximum step limit is reached.</span>
+<span class="sd">        - The step exceeds a threshold (default is :math:`\infty`). This threshold can</span>
+<span class="sd">          be adjusted using the `max_cost` environment argument.</span>
+
+<span class="sd">    Solved Requirements:</span>
+<span class="sd">        Considered solved when the average cost is lower than 300.</span>
+
+<span class="sd">    How to use:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import stable_gym</span>
+<span class="sd">            import gymnasium as gym</span>
+<span class="sd">            env = gym.make(&quot;stable_gym:OscillatorComplicated-v1&quot;)</span>
+
+<span class="sd">        On reset, the ``options`` parameter allows the user to change the bounds used to</span>
+<span class="sd">        determine the new random state when ``random=True``.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        state (numpy.ndarray): The current system state.</span>
+<span class="sd">        t (float): The current time step.</span>
+<span class="sd">        dt (float): The environment step size. Also available as :attr:`.tau`.</span>
+<span class="sd">        sigma (float): The variance of the system noise.</span>
+<span class="sd">        max_cost (float): The maximum cost allowed before the episode is terminated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">render_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># NOTE: Custom environment arguments.</span>
+        <span class="n">max_cost</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+        <span class="n">reference_target_position</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">reference_amplitude</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+        <span class="n">reference_frequency</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">200</span><span class="p">),</span>  <span class="c1"># NOTE: Han et al. 2020 uses a period of 200.</span>
+        <span class="n">reference_phase_shift</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">clip_action</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">exclude_reference_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">exclude_reference_error_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+        <span class="n">observation_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a new OscillatorComplicated environment instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            render_mode (str, optional): The render mode you want to use. Defaults to</span>
+<span class="sd">                ``None``. Not used in this environment.</span>
+<span class="sd">            max_cost (float, optional): The maximum cost allowed before the episode is</span>
+<span class="sd">                terminated. Defaults to :attr:`np.inf`.</span>
+<span class="sd">            reference_target_position: The reference target position, by default</span>
+<span class="sd">                ``8.0`` (i.e. the mean of the reference signal).</span>
+<span class="sd">            reference_amplitude: The reference amplitude, by default ``7.0``.</span>
+<span class="sd">            reference_frequency: The reference frequency, by default ``0.005``.</span>
+<span class="sd">            reference_phase_shift: The reference phase shift, by default ``0.0``.</span>
+<span class="sd">            clip_action (str, optional): Whether the actions should be clipped if</span>
+<span class="sd">                they are greater than the set action limit. Defaults to ``True``.</span>
+<span class="sd">            exclude_reference_from_observation (bool, optional): Whether the reference</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``False``.</span>
+<span class="sd">            exclude_reference_error_from_observation (bool, optional): Whether the error</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``False``.</span>
+<span class="sd">            action_space_dtype (union[numpy.dtype, str], optional): The data type of the</span>
+<span class="sd">                action space. Defaults to ``np.float64``.</span>
+<span class="sd">            observation_space_dtype (union[numpy.dtype, str], optional): The data type</span>
+<span class="sd">                of the observation space. Defaults to ``np.float64``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">max_cost</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The maximum cost must be greater than 0.&quot;</span>
+<div class="viewcode-block" id="OscillatorComplicated.max_cost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.max_cost">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span> <span class="o">=</span> <span class="n">max_cost</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._action_clip_warning"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._action_clip_warning">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span> <span class="o">=</span> <span class="kc">False</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._clip_action"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._clip_action">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_clip_action</span> <span class="o">=</span> <span class="n">clip_action</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._exclude_reference_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._exclude_reference_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span> <span class="o">=</span> <span class="n">exclude_reference_from_observation</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._exclude_reference_error_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._exclude_reference_error_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._action_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._action_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span> <span class="o">=</span> <span class="n">action_space_dtype</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._observation_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._observation_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span> <span class="o">=</span> <span class="n">observation_space_dtype</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._action_dtype_conversion_warning"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._action_dtype_conversion_warning">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+        <span class="c1"># Validate input arguments.</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">reference_amplitude</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">reference_frequency</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">exclude_reference_from_observation</span>
+            <span class="ow">and</span> <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;The agent needs to observe either the reference or the reference error &quot;</span>
+            <span class="s2">&quot;for it to be able to learn when the reference is not constant.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">reference_frequency</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;The reference frequency must be greater than or equal to zero.&quot;</span>
+
+<div class="viewcode-block" id="OscillatorComplicated.t"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.t">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.dt"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.dt">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._init_state"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._init_state">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_init_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">3.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span>
+        <span class="p">)</span>  <span class="c1"># Used when random is disabled in reset.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated._init_state_range"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated._init_state_range">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;low&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;high&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="p">}</span>  <span class="c1"># Used when random is enabled in reset.</span></div>
+
+        <span class="c1"># Set oscillator network parameters.</span>
+<div class="viewcode-block" id="OscillatorComplicated.K1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.K1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">K1</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># mRNA dissociation constants m1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.K2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.K2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">K2</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># mRNA dissociation constant m2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.K3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.K3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">K3</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># mRNA dissociation constant m3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.K4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.K4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">K4</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># mRNA dissociation constant m4.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.a1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.a1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">a1</span> <span class="o">=</span> <span class="mf">1.6</span>  <span class="c1"># Maximum promoter strength m1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.a2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.a2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">a2</span> <span class="o">=</span> <span class="mf">1.6</span>  <span class="c1"># Maximum promoter strength m2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.a3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.a3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">a3</span> <span class="o">=</span> <span class="mf">1.6</span>  <span class="c1"># Maximum promoter strength m3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.a4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.a4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">a4</span> <span class="o">=</span> <span class="mf">1.6</span>  <span class="c1"># Maximum promoter strength m4.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.gamma1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.gamma1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">gamma1</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># mRNA degradation rate m1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.gamma2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.gamma2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">gamma2</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># mRNA degradation rate m2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.gamma3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.gamma3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">gamma3</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># mRNA degradation rate m3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.gamma4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.gamma4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">gamma4</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># mRNA degradation rate m4.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.beta1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.beta1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">beta1</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># Protein production rate p1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.beta2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.beta2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">beta2</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># Protein production rate p2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.beta3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.beta3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">beta3</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># Protein production rate p3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.beta4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.beta4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">beta4</span> <span class="o">=</span> <span class="mf">0.16</span>  <span class="c1"># Protein production rate p4.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.c1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.c1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">c1</span> <span class="o">=</span> <span class="mf">0.06</span>  <span class="c1"># Protein degradation rate p1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.c2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.c2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">c2</span> <span class="o">=</span> <span class="mf">0.06</span>  <span class="c1"># Protein degradation rate p2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.c3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.c3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">c3</span> <span class="o">=</span> <span class="mf">0.06</span>  <span class="c1"># Protein degradation rate p3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.c4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.c4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">c4</span> <span class="o">=</span> <span class="mf">0.06</span>  <span class="c1"># Protein degradation rate p4.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.b1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.b1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Control input gain u1.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.b2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.b2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">b2</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Control input gain u2.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.b3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.b3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">b3</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Control input gain u3.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.b4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.b4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">b4</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># Control input gain u4.</span></div>
+
+        <span class="c1"># Set noise parameters.</span>
+        <span class="c1"># NOTE: Zero during training.</span>
+<div class="viewcode-block" id="OscillatorComplicated.delta1"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta1">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta1</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># m1 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta2"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta2">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta2</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># m2 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta3"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta3">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta3</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># m3 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta4"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta4">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta4</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># m4 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta5"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta5">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta5</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># p1 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta6"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta6">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta6</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># p2 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta7"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta7">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta7</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># p3 noise.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.delta8"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.delta8">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">delta8</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># p4 noise.</span></div>
+
+        <span class="c1"># NOTE: Observation space was changed compared to the original codebase of</span>
+        <span class="c1"># Han et al. 2020 to match paper&#39;s plots.</span>
+<div class="viewcode-block" id="OscillatorComplicated.obs_low"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.obs_low">[docs]</a>        <span class="n">obs_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># NOTE:  Han&#39;s original code used -1.0.</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.obs_high"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.obs_high">[docs]</a>        <span class="n">obs_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># NOTE:  Han&#39;s original code used 1.0.</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">obs_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs_low</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+            <span class="n">obs_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs_high</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">obs_low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs_low</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">obs_high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs_high</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="c1"># NOTE: Han et al. 2020 did not clearly detail the action space in their paper.</span>
+        <span class="c1"># As a result the action space from their original code is used.</span>
+<div class="viewcode-block" id="OscillatorComplicated.action_space"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.action_space">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+            <span class="n">high</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.observation_space"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.observation_space">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">obs_low</span><span class="p">,</span> <span class="n">obs_high</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.reward_range"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reward_range">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_cost</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OscillatorComplicated.viewer"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.viewer">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">viewer</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.state"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.state">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.steps_beyond_done"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.steps_beyond_done">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_done</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+        <span class="c1"># Reference target, amplitude, frequency and phase shift.</span>
+<div class="viewcode-block" id="OscillatorComplicated.reference_target_pos"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reference_target_pos">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_target_pos</span> <span class="o">=</span> <span class="n">reference_target_position</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.reference_amplitude"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reference_amplitude">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_amplitude</span> <span class="o">=</span> <span class="n">reference_amplitude</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.reference_frequency"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reference_frequency">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_frequency</span> <span class="o">=</span> <span class="n">reference_frequency</span></div>
+<div class="viewcode-block" id="OscillatorComplicated.phase_shift"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.phase_shift">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">phase_shift</span> <span class="o">=</span> <span class="n">reference_phase_shift</span></div>
+
+<div class="viewcode-block" id="OscillatorComplicated.step"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take step into the environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (numpy.ndarray): The action we want to perform in the environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`np.ndarray`): Environment observation.</span>
+<span class="sd">                -   cost (:obj:`float`): Cost of the action.</span>
+<span class="sd">                -   terminated (:obj:`bool`): Whether the episode is terminated.</span>
+<span class="sd">                -   truncated (:obj:`bool`): Whether the episode was truncated. This</span>
+<span class="sd">                    value is set by wrappers when for example a time limit is reached or</span>
+<span class="sd">                    the agent goes out of bounds.</span>
+<span class="sd">                -   info (:obj:`dict`): Additional information about the environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Convert action to correct data type if needed.</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;The data type of the action that is supplied to the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;ros_gazebo_gym:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39; environment (</span><span class="si">{</span><span class="n">action</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">) &quot;</span>
+                    <span class="s2">&quot;does not match the data type of the action space &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). The action data type will &quot;</span>
+                    <span class="s2">&quot;be converted to the action space data type.&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">)</span>
+
+        <span class="c1"># Clip action if needed.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clip_action</span><span class="p">:</span>
+            <span class="c1"># Throw warning if clipped and not already thrown.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">action</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Action &#39;</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2">&#39; was clipped as it is not in the action_space &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;high: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">high</span><span class="si">}</span><span class="s2">, low: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">low</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_clip_warning</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">,</span> <span class="n">u4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+                <span class="n">action</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">high</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">action</span>
+            <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">action</span><span class="si">!r}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">action</span><span class="p">)</span><span class="si">}</span><span class="s2">) invalid&quot;</span>
+            <span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">u3</span><span class="p">,</span> <span class="n">u4</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Call reset before using step method.&quot;</span>
+
+        <span class="c1"># Perform action in the environment and return the new state.</span>
+        <span class="c1"># NOTE: The new state is found by solving 3 first-order differential equations.</span>
+        <span class="p">(</span>
+            <span class="n">m1</span><span class="p">,</span>
+            <span class="n">m2</span><span class="p">,</span>
+            <span class="n">m3</span><span class="p">,</span>
+            <span class="n">m4</span><span class="p">,</span>
+            <span class="n">p1</span><span class="p">,</span>
+            <span class="n">p2</span><span class="p">,</span>
+            <span class="n">p3</span><span class="p">,</span>
+            <span class="n">p4</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>  <span class="c1"># NOTE: [x1, x2, x3, x4, x5, x6] in paper.</span>
+        <span class="n">m1_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma1</span> <span class="o">*</span> <span class="n">m1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a1</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p4</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b1</span> <span class="o">*</span> <span class="n">u1</span>
+        <span class="n">m2_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma2</span> <span class="o">*</span> <span class="n">m2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a2</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p1</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2</span> <span class="o">*</span> <span class="n">u2</span>
+        <span class="n">m3_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma3</span> <span class="o">*</span> <span class="n">m3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a3</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p2</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b3</span> <span class="o">*</span> <span class="n">u3</span>
+        <span class="n">m4_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma4</span> <span class="o">*</span> <span class="n">m4</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a4</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K4</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p3</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b4</span> <span class="o">*</span> <span class="n">u4</span>
+        <span class="n">p1_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">c1</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta1</span> <span class="o">*</span> <span class="n">m1</span>
+        <span class="n">p2_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">c2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta2</span> <span class="o">*</span> <span class="n">m2</span>
+        <span class="n">p3_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">c3</span> <span class="o">*</span> <span class="n">p3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta3</span> <span class="o">*</span> <span class="n">m3</span>
+        <span class="n">p4_dot</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">c4</span> <span class="o">*</span> <span class="n">p4</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta4</span> <span class="o">*</span> <span class="n">m4</span>
+
+        <span class="c1"># Calculate mRNA concentrations.</span>
+        <span class="c1"># Note: Use max to make sure concentrations can not be negative.</span>
+        <span class="n">m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">m1</span>
+                <span class="o">+</span> <span class="n">m1_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">m2</span>
+                <span class="o">+</span> <span class="n">m2_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">m3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">m3</span>
+                <span class="o">+</span> <span class="n">m3_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">m4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">m4</span>
+                <span class="o">+</span> <span class="n">m4_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta4</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Calculate protein concentrations.</span>
+        <span class="c1"># Note: Use max to make sure concentrations can not be negative.</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">p1</span>
+                <span class="o">+</span> <span class="n">p1_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">p2</span>
+                <span class="o">+</span> <span class="n">p2_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta6</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">p3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">p3</span>
+                <span class="o">+</span> <span class="n">p3_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta7</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">p4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">p4</span>
+                <span class="o">+</span> <span class="n">p4_dot</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta8</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta8</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Retrieve state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">m3</span><span class="p">,</span> <span class="n">m4</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+
+        <span class="c1"># Calculate cost.</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">r1</span><span class="p">)</span>
+
+        <span class="c1"># Define stopping criteria.</span>
+        <span class="n">terminated</span> <span class="o">=</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">cost</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Create observation and info_dict.</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">m3</span><span class="p">,</span> <span class="n">m4</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span>
+        <span class="p">)</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">r1</span><span class="p">)</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">r1</span><span class="p">,</span>
+            <span class="n">state_of_interest</span><span class="o">=</span><span class="n">p1</span><span class="p">,</span>
+            <span class="n">reference_error</span><span class="o">=</span><span class="n">p1</span> <span class="o">-</span> <span class="n">r1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Return state, cost, terminated, truncated and info_dict.</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">obs</span><span class="p">,</span>
+            <span class="n">cost</span><span class="p">,</span>
+            <span class="n">terminated</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">info_dict</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OscillatorComplicated.reset"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">random</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset gymnasium environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            seed (int, optional): A random seed for the environment. By default</span>
+<span class="sd">                ``None``.</span>
+<span class="sd">            options (dict, optional): A dictionary containing additional options for</span>
+<span class="sd">                resetting the environment. By default ``None``. Not used in this</span>
+<span class="sd">                environment.</span>
+<span class="sd">            random (bool, optional): Whether we want to randomly initialise the</span>
+<span class="sd">                environment. By default True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`numpy.ndarray`): Initial environment observation.</span>
+<span class="sd">                -   info (:obj:`dict`): Dictionary containing additional information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># Initialise custom bounds while ensuring that the bounds are valid.</span>
+        <span class="c1"># NOTE: If you use custom reset bounds, it may lead to out-of-bound</span>
+        <span class="c1"># state/observations.</span>
+        <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;low&quot;</span> <span class="ow">in</span> <span class="n">options</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">options</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;high&quot;</span> <span class="ow">in</span> <span class="n">options</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state_range</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">low</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">low</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">high</span><span class="p">,</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">high</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;Reset bounds must be within the observation space bounds &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set initial state, reset time, retrieve initial observation and info_dict.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">high</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,))</span>
+            <span class="k">if</span> <span class="n">random</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_state</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">obs</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">r1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">p1</span> <span class="o">-</span> <span class="n">r1</span><span class="p">)</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">r1</span><span class="p">,</span>
+            <span class="n">state_of_interest</span><span class="o">=</span><span class="n">p1</span><span class="p">,</span>
+            <span class="n">reference_error</span><span class="o">=</span><span class="n">p1</span> <span class="o">-</span> <span class="n">r1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Return initial observation and info_dict.</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">info_dict</span></div>
+
+<div class="viewcode-block" id="OscillatorComplicated.reference"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.reference">[docs]</a>    <span class="k">def</span> <span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the current value of the periodic reference signal that is tracked by</span>
+<span class="sd">        the Synthetic oscillatory network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t (float): The current time step.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The current reference value.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This uses the general form of a periodic signal:</span>
+
+<span class="sd">            .. math::</span>
+
+<span class="sd">                y(t) = A \sin(\omega t + \phi) + C \\</span>
+<span class="sd">                y(t) = A \sin(2 \pi f t + \phi) + C \\</span>
+<span class="sd">                y(t) = A \sin(\frac{2 \pi}{T} t + \phi) + C</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            -   :math:`t` is the time.</span>
+<span class="sd">            -   :math:`A` is the amplitude of the signal.</span>
+<span class="sd">            -   :math:`\omega` is the frequency of the signal.</span>
+<span class="sd">            -   :math:`f` is the frequency of the signal.</span>
+<span class="sd">            -   :math:`T` is the period of the signal.</span>
+<span class="sd">            -   :math:`\phi` is the phase of the signal.</span>
+<span class="sd">            -   :math:`C` is the offset of the signal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_target_pos</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+            <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_frequency</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_shift</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="OscillatorComplicated.render"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render one frame of the environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mode (str, optional): Gym rendering mode. The default mode will do something</span>
+<span class="sd">                human friendly, such as pop up a window.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: Will throw a NotImplimented error since the render</span>
+<span class="sd">                method has not yet been implemented.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            This currently is not yet implemented.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;No render method was implemented yet for the Oscillator environment.&quot;</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OscillatorComplicated.tau"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.tau">[docs]</a>    <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for the environment step size. Done for compatibility with the</span>
+<span class="sd">        other gymnasium environments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OscillatorComplicated.physics_time"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.OscillatorComplicated.physics_time">[docs]</a>    <span class="k">def</span> <span class="nf">physics_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the physics time. Alias for :attr:`.t`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting up &#39;OscillatorComplicated&#39; environment.&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="env"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/biological/oscillator_complicated/oscillator_complicated/index.html#stable_gym.envs.biological.env">[docs]</a>    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:OscillatorComplicated&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Run episodes.</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">reference</span><span class="p">,</span> <span class="n">references</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Performing &#39;</span><span class="si">{</span><span class="n">EPISODES</span><span class="si">}</span><span class="s2">&#39; in the &#39;OscillatorComplicated&#39; environment...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">EPISODES</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">RANDOM_STEP</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">references</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+            <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="n">reference</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished &#39;OscillatorComplicated&#39; environment simulation.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot results per episode.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Plotting episode data...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Episode: </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">env</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>  <span class="c1"># NOTE: Change if you want to plot less states.</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">path</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OscillatorComplicated episode &#39;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Plot reference signal.</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">t</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Reference&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Close plot to see next episode...&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Done&quot;</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

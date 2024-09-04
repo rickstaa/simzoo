@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CartPoleTrackingCost gymnasium environment &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AntCost gymnasium environment" href="../mujoco/ant_cost.html" />
+    <link rel="prev" title="CartPoleCost gymnasium environment" href="cartpole_cost.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../envs.html">Environments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#biological-environments">Biological environments</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../envs.html#classic-control-environments">Classic control environments</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ex3_ekf.html">Ex3EKF gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cartpole_cost.html">CartPoleCost gymnasium environment</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CartPoleTrackingCost gymnasium environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#observation-space">Observation space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#action-space">Action space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#episode-termination">Episode Termination</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-goals">Environment goals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cost-function">Cost function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-step-return">Environment step return</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-use">How to use</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#mujoco-environments">Mujoco environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs.html#robotics-environment">Robotics environment</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../envs.html">Environments</a></li>
+      <li class="breadcrumb-item active">CartPoleTrackingCost gymnasium environment</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/envs/classic_control/cartpole_tracking_cost.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="cartpoletrackingcost-gymnasium-environment">
+<h1>CartPoleTrackingCost gymnasium environment<a class="headerlink" href="#cartpoletrackingcost-gymnasium-environment" title="Permalink to this heading"></a></h1>
+<div align="center">
+    <img src="https://github.com/rickstaa/stable-gym/assets/17570430/eb3d4f34-1429-4597-a51f-16aea0e7def2" alt="CartPole Cost environment" width="400px">
+</div>
+<!--alex ignore joint-->
+<p>An unactuated joint attaches a pole to a cart, which moves along a frictionless track. This environment is a modified version of the <a class="reference external" href="https://gymnasium.farama.org/environments/classic_control/cart_pole/">CartPole-v1</a> found in the Gymnasium package, with several key alterations:</p>
+<ul class="simple">
+<li><p>The action space is <strong>continuous</strong>, contrasting with the original <strong>discrete</strong> setting.</p></li>
+<li><p>Offers an optional feature to confine actions within the defined action space, preventing the agent from exceeding set boundaries when activated.</p></li>
+<li><p>The <strong>reward</strong> function is replaced with a (positive definite) <strong>cost</strong> function (negated reward), in line with Lyapunov stability theory. This cost is the difference between a state variable and a reference value (error).</p></li>
+<li><p>Maximum cart force is increased from <code class="docutils literal notranslate"><span class="pre">10</span></code> to <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p></li>
+<li><p>Episode length is reduced from <code class="docutils literal notranslate"><span class="pre">500</span></code> to <code class="docutils literal notranslate"><span class="pre">250</span></code>.</p></li>
+<li><p>A termination cost of <code class="docutils literal notranslate"><span class="pre">c=100</span></code> is introduced for early episode termination, to promote cost minimization.</p></li>
+<li><p>The terminal angle limit is expanded from the original <code class="docutils literal notranslate"><span class="pre">12</span></code> degrees to <code class="docutils literal notranslate"><span class="pre">20</span></code> degrees, enhancing recovery potential.</p></li>
+<li><p>The terminal position limit is extended from <code class="docutils literal notranslate"><span class="pre">2.4</span></code> meters to <code class="docutils literal notranslate"><span class="pre">10</span></code> meters, broadening the recovery range.</p></li>
+<li><p>Velocity limits are adjusted from ±∞ to ±50, accelerating training.</p></li>
+<li><p>Angular velocity termination threshold is lowered from ±∞ to ±50, likely for improved training efficiency.</p></li>
+<li><p>Random initial state range is modified from <code class="docutils literal notranslate"><span class="pre">[-0.05,</span> <span class="pre">0.05]</span></code> to <code class="docutils literal notranslate"><span class="pre">[-5,</span> <span class="pre">5]</span></code> for the cart position and <code class="docutils literal notranslate"><span class="pre">[-0.2,</span> <span class="pre">0.2]</span></code> for all other states, allowing for expanded exploration.</p></li>
+</ul>
+<p>Additional modifications in our implementation:</p>
+<ul class="simple">
+<li><p>Unlike the original environment’s fixed cost threshold of <code class="docutils literal notranslate"><span class="pre">100</span></code>, this version allows users to adjust the maximum cost threshold improving training adaptability.</p></li>
+<li><p>An extra termination criterion for cumulative costs over <code class="docutils literal notranslate"><span class="pre">100</span></code> is added to hasten training.</p></li>
+<li><p>The gravity constant is adjusted back from <code class="docutils literal notranslate"><span class="pre">10</span></code> to the real-world value of <code class="docutils literal notranslate"><span class="pre">9.8</span></code>, aligning it closer with the original CartPole environment.</p></li>
+<li><p>The stabilization objective is replaced with a <strong>reference tracking task</strong> for enhanced control.</p></li>
+<li><p>Two additional observations are introduced, facilitating <strong>reference tracking</strong>.</p></li>
+<li><p>The info dictionary now provides <strong>extra information</strong> about the reference to be tracked.</p></li>
+<li><p>The data types for action and observation spaces are set to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>, diverging from the <code class="docutils literal notranslate"><span class="pre">np.float32</span></code> used by Han et al. 2020. This aligns the Gymnasium implementation with the original CartPole environment.</p></li>
+</ul>
+<p>These modifications were first described in <a class="reference external" href="https://arxiv.org/abs/2004.14288">Han et al. 2020</a> and further adapted in our version for enhanced training and exploration.</p>
+<section id="observation-space">
+<h2>Observation space<a class="headerlink" href="#observation-space" title="Permalink to this heading"></a></h2>
+<p>By default, the environment returns the following observation:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span> - Cart Position.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{dot}\)</span> - Cart Velocity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> - Pole angle.</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_{dot}\)</span> - Pole angle velocity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{ref}\)</span> - The cart position reference.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{ref\_error}\)</span> - The reference tracking error.</p></li>
+</ul>
+<p>The last two variables can be excluded from the observation space by setting the <code class="docutils literal notranslate"><span class="pre">exclude_reference_from_observation</span></code> and <code class="docutils literal notranslate"><span class="pre">exclude_reference_error_from_observation</span></code> environment arguments to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Please note that the environment needs the reference or the reference error to be included in the observation space when the reference signal is not constant to function correctly. If both are excluded, the environment will raise an error.</p>
+</section>
+<section id="action-space">
+<h2>Action space<a class="headerlink" href="#action-space" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>u1:</strong> The x-force applied on the cart.</p></li>
+</ul>
+</section>
+<section id="episode-termination">
+<h2>Episode Termination<a class="headerlink" href="#episode-termination" title="Permalink to this heading"></a></h2>
+<p>An episode is terminated when:</p>
+<ul class="simple">
+<li><p>Pole Angle is more than 60 degrees.</p></li>
+<li><p>Cart Position is more than 10 m (center of the cart reaches the edge of the
+display).</p></li>
+<li><p>Episode length is greater than 200.</p></li>
+<li><p>The cost is greater than a set threshold (100 by default). This threshold can be changed using the <code class="docutils literal notranslate"><span class="pre">max_cost</span></code> environment argument.</p></li>
+</ul>
+</section>
+<section id="environment-goals">
+<h2>Environment goals<a class="headerlink" href="#environment-goals" title="Permalink to this heading"></a></h2>
+<p>The goal is similar to the original <code class="docutils literal notranslate"><span class="pre">CartPole-v1</span></code> environment. The pendulum starts upright, and the goal is to prevent it from falling over by increasing and reducing the cart’s control force. This version adds a secondary goal, which is to track a cart position reference signal.</p>
+</section>
+<section id="cost-function">
+<h2>Cost function<a class="headerlink" href="#cost-function" title="Permalink to this heading"></a></h2>
+<p>The cost function of this environment is designed in such a way that it tries to minimize the error between the current cart position and a set reference position. Additionally, it also includes a penalty for the pole angle:</p>
+<div class="math notranslate nohighlight">
+\[
+cost = (x - x_{ref})^2 + (\theta / \theta_{threshold})^2
+\]</div>
+<p>The cost is between <code class="docutils literal notranslate"><span class="pre">0</span></code> and a set threshold value in both tasks, and the maximum cost is used when the episode is terminated.</p>
+</section>
+<section id="environment-step-return">
+<h2>Environment step return<a class="headerlink" href="#environment-step-return" title="Permalink to this heading"></a></h2>
+<p>In addition to the observations, the cost and a termination and truncation boolean, the environment also returns an info dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">observation</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">termination</span><span class="p">,</span> <span class="n">truncation</span><span class="p">,</span> <span class="n">info_dict</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The info dictionary contains the following keys:</p>
+<ul class="simple">
+<li><p><strong>reference</strong>: The set cart position reference.</p></li>
+<li><p><strong>state_of_interest</strong>: The state that should track the reference (SOI).</p></li>
+<li><p><strong>reference_error</strong>: The error between SOI and the reference.</p></li>
+</ul>
+</section>
+<section id="how-to-use">
+<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h2>
+<p>This environment is part of the <a class="reference external" href="https://github.com/rickstaa/stable-gym">Stable Gym package</a>. It is therefore registered as the <code class="docutils literal notranslate"><span class="pre">stable_gym:CartPoleTrackingCost-v1</span></code> gymnasium environment when you import the Stable Gym package. If you want to use the environment in stand-alone mode, you can register it yourself.</p>
+</section>
+</section>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This environment is new and has not been thoroughly tested. As a result it may contain bugs
+and the cost function might be updated in the future.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cartpole_cost.html" class="btn btn-neutral float-left" title="CartPoleCost gymnasium environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mujoco/ant_cost.html" class="btn btn-neutral float-right" title="AntCost gymnasium environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.common.utils &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../stable_gym.html">stable_gym</a></li>
+      <li class="breadcrumb-item active">stable_gym.common.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stable_gym.common.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions that are used in multiple Stable Gym gymnasium environments.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gymnasium.utils</span> <span class="kn">import</span> <span class="n">colorize</span> <span class="k">as</span> <span class="n">gym_colorize</span>
+
+
+<div class="viewcode-block" id="colorize"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.colorize">[docs]</a><span class="k">def</span> <span class="nf">colorize</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">highlight</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Colorize a string.</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        This function wraps the :meth:`gym.utils.colorize` function to make sure that it</span>
+<span class="sd">        also works with empty color strings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        string (str): The string you want to colorize.</span>
+<span class="sd">        color (str): The color you want to use.</span>
+<span class="sd">        bold (bool, optional): Whether you want the text to be bold. Defaults to</span>
+<span class="sd">            ``False``.</span>
+<span class="sd">        highlight (bool, optional):  Whether you want to highlight the text. Defaults to</span>
+<span class="sd">            ``False``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Colorized string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">color</span><span class="p">:</span>  <span class="c1"># If not empty.</span>
+        <span class="k">return</span> <span class="n">gym_colorize</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">bold</span><span class="p">,</span> <span class="n">highlight</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span></div>
+
+
+<div class="viewcode-block" id="get_flattened_values"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.get_flattened_values">[docs]</a><span class="k">def</span> <span class="nf">get_flattened_values</span><span class="p">(</span><span class="n">input_obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieves all the values that are present in a nested dictionary and appends them</span>
+<span class="sd">    to a list. Its like a recursive version of the :meth:`dict.values()` method.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_obj (dict): The input dictionary from which you want</span>
+<span class="sd">            to retrieve all the values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A list containing all the values that were present in the nested</span>
+<span class="sd">            dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat_values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_obj</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">flat_values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">get_flattened_values</span><span class="p">(</span><span class="n">it</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flat_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flat_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flat_values</span></div>
+
+
+<div class="viewcode-block" id="get_flattened_keys"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.get_flattened_keys">[docs]</a><span class="k">def</span> <span class="nf">get_flattened_keys</span><span class="p">(</span><span class="n">input_obj</span><span class="p">,</span> <span class="n">include_root</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieves all the keys that are present in a nested dictionary and appends them</span>
+<span class="sd">    to a list. Its like a recursive version of the :meth:`dict.keys()` method.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_obj (dict): The input dictionary from which you want</span>
+<span class="sd">            to retrieve all the keys.</span>
+<span class="sd">        include_root (bool): Whether you want to include the root level keys. Defaults</span>
+<span class="sd">            to ``False``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A list containing all the keys that were present in the nested</span>
+<span class="sd">            dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat_keys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">include_root</span><span class="p">:</span>
+            <span class="n">flat_keys</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">input_obj</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">input_obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">flat_keys</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">get_flattened_keys</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flat_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flat_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_obj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flat_keys</span></div>
+
+
+<div class="viewcode-block" id="abbreviate"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.abbreviate">[docs]</a><span class="k">def</span> <span class="nf">abbreviate</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">capitalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates unique abbreviations for a string or list of strings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_item (union[str, list]): The string of list of strings which you want to</span>
+<span class="sd">            abbreviate.</span>
+<span class="sd">        length (int, optional): The desired length of the abbreviation. Defaults to</span>
+<span class="sd">            ``1``.</span>
+<span class="sd">        max_length (int, optional): The maximum length of the abbreviation. Defaults to</span>
+<span class="sd">            4.</span>
+<span class="sd">        capitalize (bool, optional): Whether the abbrevaitions should be capitalized.</span>
+<span class="sd">            Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: List with abbreviations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">abbreviations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">input_item</span><span class="p">:</span>
+            <span class="n">unique</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">length_tmp</span> <span class="o">=</span> <span class="n">length</span>
+            <span class="n">suffix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">unique</span><span class="p">:</span>
+                <span class="n">abbreviation</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">it</span><span class="p">[:</span><span class="n">length_tmp</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">capitalize</span>
+                    <span class="k">else</span> <span class="n">it</span><span class="p">[:</span><span class="n">length_tmp</span><span class="p">]</span> <span class="o">+</span> <span class="n">suffix</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">abbreviation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">abbreviations</span><span class="p">:</span>  <span class="c1"># Check if unique.</span>
+                    <span class="n">abbreviations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">abbreviation</span><span class="p">)</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+                    <span class="n">unique</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">prev_item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">abbreviations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">abbreviation</span><span class="p">)]</span>
+                    <span class="k">if</span> <span class="n">it</span> <span class="o">==</span> <span class="n">prev_item</span><span class="p">:</span>  <span class="c1"># Allow if item was equal.</span>
+                        <span class="n">abbreviations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">abbreviation</span><span class="p">)</span>
+                        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+                        <span class="n">unique</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Use longer abbreviation otherwise.</span>
+                        <span class="k">if</span> <span class="n">length_tmp</span> <span class="o">&lt;</span> <span class="n">max_length</span><span class="p">:</span>
+                            <span class="n">length_tmp</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">suffix</span> <span class="o">=</span> <span class="n">get_lowest_next_int</span><span class="p">(</span><span class="n">abbreviations</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">abbreviations</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">input_item</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">if</span> <span class="n">capitalize</span> <span class="k">else</span> <span class="n">input_item</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_lowest_next_int"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.get_lowest_next_int">[docs]</a><span class="k">def</span> <span class="nf">get_lowest_next_int</span><span class="p">(</span><span class="n">input_item</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieves the lowest next integer that is not present in a string or float list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_item (union[int, str, list]): The input for which you want to determine</span>
+<span class="sd">            the next lowest interger.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The next lowest integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">input_ints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^0-9.]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">item</span><span class="p">)))</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^0-9.]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">item</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_item</span>
+        <span class="p">]</span>  <span class="c1"># Trim all non-numeric chars</span>
+        <span class="n">input_ints</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_ints</span> <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_ints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^0-9.]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">input_item</span><span class="p">)))</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[^0-9.]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">input_item</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">input_item</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="n">input_ints</span> <span class="o">=</span> <span class="n">input_ints</span> <span class="k">if</span> <span class="n">input_ints</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">input_ints</span><span class="p">)</span> <span class="o">^</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">input_ints</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">input_ints</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="friendly_list"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.friendly_list">[docs]</a><span class="k">def</span> <span class="nf">friendly_list</span><span class="p">(</span><span class="n">input_list</span><span class="p">,</span> <span class="n">apostrophes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms a list to a human friendly format (separated by commas and ampersand).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_list (list): The input list.</span>
+<span class="sd">        apostrophes(bool, optional): Whether the list items should be encapsuled with</span>
+<span class="sd">            apostrophes. Defaults to ``False``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Human friendly list string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_list</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;&#39;&quot;</span> <span class="o">+</span> <span class="n">item</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_list</span><span class="p">]</span> <span class="k">if</span> <span class="n">apostrophes</span> <span class="k">else</span> <span class="n">input_list</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot; &amp; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_list</span><span class="p">)</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="strip_underscores"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.strip_underscores">[docs]</a><span class="k">def</span> <span class="nf">strip_underscores</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strips leading and/or trailing underscores from a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The input string.</span>
+<span class="sd">        position (str, optional): From which position underscores should be removed.</span>
+<span class="sd">            Options are &#39;leading&#39;, &#39;trailing&#39; &amp; &#39;both&#39;. Defaults to &quot;both&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: String without the underscores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">position</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;leading&quot;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">elif</span> <span class="n">position</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;trailing&quot;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="inject_value"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.inject_value">[docs]</a><span class="k">def</span> <span class="nf">inject_value</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">round_accuracy</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Injects a value into a list or dictionary if it is not yet present.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_item (union[list,dict]): The input list or dictionary.</span>
+<span class="sd">        value (float): The value you want to inject.</span>
+<span class="sd">        round_accuracy (int, optional): The accuracy used for checking whether a value</span>
+<span class="sd">            is present. Defaults to 2.</span>
+<span class="sd">        order (bool, optional): Whether the list should be ordered when returned.</span>
+<span class="sd">            Defaults to ``false``.</span>
+<span class="sd">        axis (int, optional): The axis along which you want to inject the value. Only</span>
+<span class="sd">            used when the input is a numpy array. Defaults to ``0``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        union[list,dict]: The list or dictionary that contains the value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">order_op</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># noqa: E731</span>
+        <span class="nb">sorted</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">order</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">inject_value</span><span class="p">(</span>
+                <span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">round_accuracy</span><span class="o">=</span><span class="n">round_accuracy</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">input_item</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">input_item</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">transpose_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">input_item</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">order_op</span><span class="p">([</span><span class="n">value</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">it</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">item</span> <span class="k">if</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">value</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">input_item</span><span class="p">,</span> <span class="n">transpose_matrix</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">transpose_matrix</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">order_op</span><span class="p">([</span><span class="n">value</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_item</span> <span class="k">if</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">value</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="verify_number_and_cast"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.verify_number_and_cast">[docs]</a><span class="k">def</span> <span class="nf">verify_number_and_cast</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify parameter is a single number and cast to a float.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An option (</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">) could not be converted to a float.&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="maybe_parse_reset_bounds"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.maybe_parse_reset_bounds">[docs]</a><span class="k">def</span> <span class="nf">maybe_parse_reset_bounds</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">default_low</span><span class="p">,</span> <span class="n">default_high</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function can be called during a reset() to customize the sampling</span>
+<span class="sd">    ranges for setting the initial state distributions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      options: Options passed in to reset().</span>
+<span class="sd">      default_low: Default lower limit to use, if none specified in options.</span>
+<span class="sd">      default_high: Default upper limit to use, if none specified in options.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple): a tuple containing:</span>
+
+<span class="sd">            - low (:obj:`np.ndarray`): Lower limit for each dimension.</span>
+<span class="sd">            - high ():obj:`np.ndarray`): Upper limit for each dimension.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default_low</span><span class="p">,</span> <span class="n">default_high</span>
+
+    <span class="n">low</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;low&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;low&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="k">else</span> <span class="n">default_low</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;high&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;high&quot;</span> <span class="ow">in</span> <span class="n">options</span> <span class="k">else</span> <span class="n">default_high</span>
+
+    <span class="c1"># We expect only numerical inputs.</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">verify_number_and_cast</span><span class="p">(</span><span class="n">low</span><span class="p">)</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">verify_number_and_cast</span><span class="p">(</span><span class="n">high</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">low</span> <span class="o">&gt;</span> <span class="n">high</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Lower bound (</span><span class="si">{</span><span class="n">low</span><span class="si">}</span><span class="s2">) must be lower than higher bound (</span><span class="si">{</span><span class="n">high</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span></div>
+
+
+<div class="viewcode-block" id="change_dict_key"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.change_dict_key">[docs]</a><span class="k">def</span> <span class="nf">change_dict_key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">old_key</span><span class="p">,</span> <span class="n">new_key</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Changes the key of a dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        d (dict): The dictionary.</span>
+<span class="sd">        old_key (str): The old key.</span>
+<span class="sd">        new_key (str): The new key.</span>
+<span class="sd">        default_value (any, optional): The default value to use if the old key is not</span>
+<span class="sd">            present in the dictionary. Defaults to ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">old_key</span><span class="p">,</span> <span class="n">default_value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span></div>
+
+
+<div class="viewcode-block" id="convert_gym_box_to_gymnasium_box"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.convert_gym_box_to_gymnasium_box">[docs]</a><span class="k">def</span> <span class="nf">convert_gym_box_to_gymnasium_box</span><span class="p">(</span><span class="n">gym_box_space</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a gym box space to a gymnasium box space.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gym_box_space (gym.spaces.Box): The gym box space.</span>
+<span class="sd">        **kwargs: Additional keyword arguments that are passed to the gymnasium box</span>
+<span class="sd">            space.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        gymnasium.spaces.Box: The gymnasium box space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">low</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="n">gym_box_space</span><span class="o">.</span><span class="n">low</span><span class="p">)</span>
+    <span class="n">high</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;high&quot;</span><span class="p">,</span> <span class="n">gym_box_space</span><span class="o">.</span><span class="n">high</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="n">gym_box_space</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="n">gym_box_space</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;seed&quot;</span><span class="p">,</span> <span class="n">gym_box_space</span><span class="o">.</span><span class="n">np_random</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+        <span class="n">low</span><span class="o">=</span><span class="n">low</span><span class="p">,</span>
+        <span class="n">high</span><span class="o">=</span><span class="n">high</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="change_precision"><a class="viewcode-back" href="../../../autoapi/stable_gym/common/utils/index.html#stable_gym.common.utils.change_precision">[docs]</a><span class="k">def</span> <span class="nf">change_precision</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Changes the precision of a value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_value (object): The input value.</span>
+<span class="sd">        precision (int, optional): The precision (i.e. number of decimals) to use.</span>
+<span class="sd">            Defaults to ``16``. If ``None``, the input value is returned as is.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object: The input value with the new precision.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">precision</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">input_value</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">input_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">input_value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">change_precision</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">input_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="n">input_value</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">input_value</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

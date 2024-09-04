@@ -1,0 +1,83 @@
+stable_gym.common.max_episode_steps_injection_wrapper
+=====================================================
+
+.. py:module:: stable_gym.common.max_episode_steps_injection_wrapper
+
+.. autoapi-nested-parse::
+
+   This file contains a small gymnasium wrapper that injects the `max_episode_steps`
+   argument of a potentially nested `TimeLimit` wrapper into the base environment under the
+   `_time_limit_max_episode_steps` attribute.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.common.max_episode_steps_injection_wrapper.MaxEpisodeStepsInjectionWrapper
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   stable_gym.common.max_episode_steps_injection_wrapper.get_time_limit_wrapper_max_episode_steps
+   stable_gym.common.max_episode_steps_injection_wrapper.inject_attribute_into_base_env
+
+
+Module Contents
+---------------
+
+.. py:function:: get_time_limit_wrapper_max_episode_steps(env)
+
+   Returns the ``max_episode_steps`` attribute of a potentially nested
+   ``TimeLimit`` wrapper.
+
+   :param env: The gymnasium environment.
+   :type env: gym.Env
+
+   :returns:
+
+             The value of the ``max_episode_steps`` attribute of a potentially nested
+                 ``TimeLimit`` wrapper. If the environment is not wrapped in a ``TimeLimit``
+                 wrapper, then this function returns ``None``.
+   :rtype: int
+
+
+.. py:function:: inject_attribute_into_base_env(env, attribute_name, attribute_value)
+
+   Injects the ``max_episode_steps`` argument into the base environment under the
+   `_time_limit_max_episode_steps` attribute.
+
+   :param env: The gymnasium environment.
+   :type env: gym.Env
+   :param attribute_name: The attribute's name to inject into the base
+                          environment.
+   :type attribute_name: str
+   :param attribute_value: The attribute's value to inject into the base
+                           environment.
+   :type attribute_value: object
+
+
+.. py:class:: MaxEpisodeStepsInjectionWrapper(env)
+
+   Bases: :py:obj:`gymnasium.Wrapper`
+
+
+   A gymnasium wrapper that injects the ``max_episode_steps`` attribute of the
+   ``TimeLimit`` wrapper into the base environment as the
+   ``_time_limit_max_episode_steps`` attribute. If the environment is not wrapped in
+   a ``TimeLimit`` wrapper, then the ``_time_limit_max_episode_steps`` attribute is
+   set to ``None``.
+
+   Wrap a gymnasium environment.
+   :param env: The gymnasium environment.
+   :type env: gym.Env
+
+
+   .. py:attribute:: max_episode_steps
+
+

@@ -1,0 +1,296 @@
+stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost
+==========================================================
+
+.. py:module:: stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost
+
+.. autoapi-nested-parse::
+
+   The HalfCheetahCost gymnasium environment.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost.EPISODES
+   stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost.RANDOM_STEP
+   stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost.env
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.mujoco.half_cheetah_cost.half_cheetah_cost.HalfCheetahCost
+
+
+Module Contents
+---------------
+
+.. py:data:: EPISODES
+   :value: 10
+
+
+.. py:data:: RANDOM_STEP
+   :value: True
+
+
+.. py:class:: HalfCheetahCost(reference_forward_velocity=1.0, randomise_reference_forward_velocity=False, randomise_reference_forward_velocity_range=(0.5, 1.5), forward_velocity_weight=1.0, include_ctrl_cost=False, ctrl_cost_weight=0.0001, reset_noise_scale=0.1, exclude_current_positions_from_observation=True, exclude_reference_from_observation=False, exclude_reference_error_from_observation=True, exclude_x_velocity_from_observation=False, action_space_dtype=np.float32, observation_space_dtype=np.float64, **kwargs)
+
+   Bases: :py:obj:`gymnasium.envs.mujoco.half_cheetah_v4.HalfCheetahEnv`, :py:obj:`gymnasium.utils.EzPickle`
+
+
+   Custom HalfCheetah gymnasium environment.
+
+   .. note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Source:
+       This is a modified version of the HalfCheetah Mujoco environment found in the
+       :gymnasium:`gymnasium library <environments/mujoco/half_cheetah>`. This modification
+       was first described by `Han et al. 2020 <https://arxiv.org/abs/2004.14288>`_.
+       Compared to the original HalfCheetah environment in this modified version:
+
+       -   The objective was changed to a velocity-tracking task. To do this, the reward
+           is replaced with a cost. This cost is the squared difference between the
+           HalfCheetah's forward velocity and a reference value (error). Additionally,
+           also a control cost can be included in the cost.
+       -   Three **optional** variables were added to the observation space; The reference velocity, the reference error
+           (i.e. the difference between the cheetah's forward velocity and the reference) and the cheetah's forward velocity.
+           These variables can be enabled using the ``exclude_reference_from_observation``,
+           ``exclude_reference_error_from_observation`` and ``exclude_velocity_from_observation`` environment arguments.
+
+       The rest of the environment is the same as the original HalfCheetah environment.
+       Below, the modified cost is described. For more information about the environment
+       (e.g. observation space, action space, episode termination, etc.), please refer
+       to the :gymnasium:`gymnasium library <environments/mujoco/half_cheetah>`.
+
+       .. important::
+           The original code from `Han et al. 2020 <han_code_>`_ terminates the episode if the cheetah's back thigh angle exceeds :math:`0.5 \pi` or falls below :math:`-0.5 \pi`. This condition, not mentioned in the paper, is not implemented here as it's not part of the original environment.
+
+   Modified cost:
+       A cost, computed using the :meth:`HalfCheetahCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is defined as the error
+       between the Cheetah's forward velocity and a reference value. A control
+       cost can also be included in the cost. The cost is computed as:
+
+       .. math::
+
+           cost = w_{forward\_velocity} \times (x_{velocity} - x_{reference\_x\_velocity})^2 + w_{ctrl} \times c_{ctrl}
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:HalfCheetahCost-v1")
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: dt
+
+      The environment step size. Also available as :attr:`.tau`.
+
+      :type: float
+
+   .. attribute:: reference_forward_velocity
+
+      The forward velocity that the agent should
+      try to track.
+
+      :type: float
+
+   .. _`han_code`: https://github.com/hithmh/Actor-critic-with-stability-guarantee/blob/8a90574fae550e98a9b628bbead6da7f91a51fff/ENV/env/mujoco/half_cheetah_cost.py#L23
+
+   Initialise a new HalfCheetahCost environment instance.
+
+   :param reference_forward_velocity: The forward velocity that the
+                                      agent should try to track. Defaults to ``1.0``.
+   :type reference_forward_velocity: float, optional
+   :param randomise_reference_forward_velocity: Whether to randomize
+                                                the reference forward velocity. Defaults to ``False``.
+   :type randomise_reference_forward_velocity: bool, optional
+   :param randomise_reference_forward_velocity_range: The range of
+                                                      the random reference forward velocity. Defaults to ``(0.5, 1.5)``.
+   :type randomise_reference_forward_velocity_range: tuple, optional
+   :param forward_velocity_weight: The weight used to scale the
+                                   forward velocity error. Defaults to ``1.0``.
+   :type forward_velocity_weight: float, optional
+   :param include_ctrl_cost: Whether you also want to penalize the
+                             half cheetah if it takes actions that are too large. Defaults to
+                             ``False``.
+   :type include_ctrl_cost: bool, optional
+   :param ctrl_cost_weight: The weight used to scale the control
+                            cost. Defaults to ``1e-4``.
+   :type ctrl_cost_weight: float, optional
+   :param reset_noise_scale: Scale of random perturbations of the
+                             initial position and velocity. Defaults to ``0.1``.
+   :type reset_noise_scale: float, optional
+   :param exclude_current_positions_from_observation: Whether to omit
+                                                      the x- and y-coordinates of the front tip from observations. Excluding
+                                                      the position can serve as an inductive bias to induce position-agnostic
+                                                      behaviour in policies. Defaults to ``True``.
+   :type exclude_current_positions_from_observation: bool, optional
+   :param exclude_reference_from_observation: Whether the reference
+                                              should be excluded from the observation. Defaults to ``False``.
+   :type exclude_reference_from_observation: bool, optional
+   :param exclude_reference_error_from_observation: Whether the error
+                                                    should be excluded from the observation. Defaults to ``True``.
+   :type exclude_reference_error_from_observation: bool, optional
+   :param exclude_x_velocity_from_observation: Whether to omit the
+                                               x- component of the velocity from observations. Defaults to ``False``.
+   :type exclude_x_velocity_from_observation: bool, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float32``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+   :param \*\*kwargs: Extra keyword arguments to pass to the
+                      :class:`~gymnasium.envs.mujoco.half_cheetah_v4.HalfCheetahEnv` class.
+
+
+   .. py:attribute:: reference_forward_velocity
+
+
+   .. py:attribute:: _randomise_reference_forward_velocity
+
+
+   .. py:attribute:: _randomise_reference_forward_velocity_range
+
+
+   .. py:attribute:: _forward_velocity_weight
+
+
+   .. py:attribute:: _include_ctrl_cost
+
+
+   .. py:attribute:: _exclude_reference_from_observation
+
+
+   .. py:attribute:: _exclude_reference_error_from_observation
+
+
+   .. py:attribute:: _exclude_x_velocity_from_observation
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: low
+
+
+   .. py:attribute:: high
+
+
+   .. py:attribute:: observation_space
+
+
+   .. py:method:: cost(x_velocity, ctrl_cost)
+
+      Compute the cost of a given x velocity and control cost.
+
+      :param x_velocity: The HalfCheetah's x velocity.
+      :type x_velocity: float
+      :param ctrl_cost: The control cost.
+      :type ctrl_cost: float
+
+      :returns:
+
+                tuple containing:
+
+                    -   cost (float): The cost of the action.
+                    -   info (:obj:`dict`): Additional information about the cost.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      .. note::
+          This method overrides the
+          :meth:`~gymnasium.envs.mujoco.half_cheetah_v4.HalfCheetahEnv.step` method
+          such that the new cost function is used.
+
+      :param action: Action to take in the environment.
+      :type action: np.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+
+   .. py:property:: t
+      Environment time.
+
+
+   .. py:property:: physics_time
+      Returns the physics time.
+
+
+.. py:data:: env
+

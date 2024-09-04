@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="stable_gym.envs.classic_control.ex3_ekf" href="../../ex3_ekf/index.html" />
+    <link rel="prev" title="stable_gym.envs.classic_control.cartpole_tracking_cost" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html">
+            
+              <img src="../../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../../index.html">stable_gym</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../../../common/index.html">stable_gym.common</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../../index.html">stable_gym.envs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">stable_gym</a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">stable_gym.envs</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">stable_gym.envs.classic_control</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">stable_gym.envs.classic_control.cartpole_tracking_cost</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/autoapi/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost">
+<span id="stable-gym-envs-classic-control-cartpole-tracking-cost-cartpole-tracking-cost"></span><h1>stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost<a class="headerlink" href="#module-stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost" title="Permalink to this heading"></a></h1>
+<p>The CartPoleTrackingCost gymnasium environment.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.EPISODES" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.EPISODES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EPISODES</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.RANDOM_STEP" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.RANDOM_STEP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RANDOM_STEP</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.env" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.env"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CartPoleTrackingCost</span></code></a></p></td>
+<td><p>Custom CartPole Gymnasium environment.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.EPISODES">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">EPISODES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#EPISODES"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.EPISODES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.RANDOM_STEP">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">RANDOM_STEP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#RANDOM_STEP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.RANDOM_STEP" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">CartPoleTrackingCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_target_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_amplitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip_action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_reference_from_observation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_reference_error_from_observation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_space_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.float64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">gymnasium.Env</span></code></p>
+<p>Custom CartPole Gymnasium environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This environment can be used in a vectorized manner. Refer to the
+<a class="reference external" href="https://gymnasium.farama.org/api/vector">gym.vector</a> documentation for details.</p>
+</div>
+<dl>
+<dt>Source:</dt><dd><p>This environment is a modified version of the CartPole environment from the
+Farma Foundation’s <a class="reference external" href="https://gymnasium.farama.org/">Gymnasium</a> package, first used by <a class="reference external" href="https://arxiv.org/abs/2004.14288">Han et al.</a>
+in 2020. Modifications made by Han et al. include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The action space is <strong>continuous</strong>, contrasting with the original <strong>discrete</strong>
+setting.</p></li>
+<li><p>Offers an optional feature to confine actions within the defined action space,
+preventing the agent from exceeding set boundaries when activated.</p></li>
+<li><p>The <strong>reward</strong> function is replaced with a (positive definite) <strong>cost</strong>
+function (negated reward), in line with Lyapunov stability theory. This cost is the difference between a state variable and a reference value (error).</p></li>
+<li><p>Maximum cart force is increased from <code class="docutils literal notranslate"><span class="pre">10</span></code> to <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p></li>
+<li><p>Episode length is reduced from <code class="docutils literal notranslate"><span class="pre">500</span></code> to <code class="docutils literal notranslate"><span class="pre">250</span></code>.</p></li>
+<li><p>A termination cost of <span class="math notranslate nohighlight">\(c=100\)</span> is introduced for early episode
+termination, to promote cost minimization.</p></li>
+<li><p>The terminal angle limit is expanded from the original <code class="docutils literal notranslate"><span class="pre">12</span></code> degrees to
+<code class="docutils literal notranslate"><span class="pre">20</span></code> degrees, enhancing recovery potential.</p></li>
+<li><p>The terminal position limit is extended from <code class="docutils literal notranslate"><span class="pre">2.4</span></code> meters to <code class="docutils literal notranslate"><span class="pre">10</span></code>
+meters, broadening the recovery range.</p></li>
+<li><p>Velocity limits are adjusted from <span class="math notranslate nohighlight">\(\pm \infty\)</span> to <span class="math notranslate nohighlight">\(\pm 50\)</span>,
+accelerating training.</p></li>
+<li><p>Angular velocity termination threshold is lowered from <span class="math notranslate nohighlight">\(\pm \infty\)</span>
+to <span class="math notranslate nohighlight">\(\pm 50\)</span>, likely for improved training efficiency.</p></li>
+<li><p>Random initial state range is modified from <code class="docutils literal notranslate"><span class="pre">[-0.05,</span> <span class="pre">0.05]</span></code> to <code class="docutils literal notranslate"><span class="pre">[-5,</span> <span class="pre">5]</span></code>
+for the cart position and <code class="docutils literal notranslate"><span class="pre">[-0.2,</span> <span class="pre">0.2]</span></code> for all other states, allowing
+for expanded exploration.</p></li>
+</ul>
+</div></blockquote>
+<p>Additional modifications in our implementation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Unlike the original environment’s fixed cost threshold of <code class="docutils literal notranslate"><span class="pre">100</span></code>, this
+version allows users to adjust the maximum cost threshold via the
+<a class="reference internal" href="#id0" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_cost</span></code></a> input, improving training adaptability.</p></li>
+<li><p>The gravity constant is adjusted back from <code class="docutils literal notranslate"><span class="pre">10</span></code> to the real-world value
+of <code class="docutils literal notranslate"><span class="pre">9.8</span></code>, aligning it closer with the original CartPole environment.</p></li>
+<li><p>The stabilization objective is replaced with a <strong>reference tracking task</strong>
+for enhanced control.</p></li>
+<li><p>Two additional observations are introduced, facilitating
+<strong>reference tracking</strong>.</p></li>
+<li><p>The info dictionary now provides <strong>extra information</strong> about the reference
+to be tracked.</p></li>
+<li><p>The data types for action and observation spaces are set to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>,
+diverging from the <code class="docutils literal notranslate"><span class="pre">np.float32</span></code> used by Han et al. 2020. This aligns
+the Gymnasium implementation with the original CartPole environment.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>Observation:</dt><dd><p><strong>Type</strong>: Box(4) or Box(6)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Cart Position</p></td>
+<td><p>-20</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Cart Velocity</p></td>
+<td><p>-50</p></td>
+<td><p>50</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Pole Angle</p></td>
+<td><p>~ -.698 rad (-40 deg)</p></td>
+<td><p>~ .698 rad (40 deg)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Pole Angular Velocity</p></td>
+<td><p>-50rad</p></td>
+<td><p>50rad</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>The cart position reference</p></td>
+<td><p>-20</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><ol class="arabic simple" start="5">
+<li></li>
+</ol>
+</td>
+<td><div class="line-block">
+<div class="line"><strong>Optional</strong> - The reference</div>
+<div class="line">tracking error</div>
+</div>
+</td>
+<td><p>-20</p></td>
+<td><p>20</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While the ranges above denote the possible values for observation space of
+each element, it is not reflective of the allowed values of the state space
+in an un-terminated episode. Particularly:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The cart x-position (index 0) can be take values between
+<code class="docutils literal notranslate"><span class="pre">(-20,</span> <span class="pre">20)</span></code>, but the episode terminates if the cart leaves the
+<code class="docutils literal notranslate"><span class="pre">(-10,</span> <span class="pre">10)</span></code> range.</p></li>
+<li><p>The pole angle can be observed between  <code class="docutils literal notranslate"><span class="pre">(-0.698,</span> <span class="pre">.698)</span></code> radians
+(or <strong>±40°</strong>), but the episode terminates if the pole angle is not
+in  the range <code class="docutils literal notranslate"><span class="pre">(-.349,</span> <span class="pre">.349)</span></code> (or <strong>±20°</strong>)</p></li>
+</ul>
+</div></blockquote>
+</div>
+</dd>
+<dt>Actions:</dt><dd><p><strong>Type</strong>: Box(1)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Action</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>The controller Force</p></td>
+<td><p>-20</p></td>
+<td><p>20</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The velocity that is reduced or increased by the applied force is not fixed
+and it depends on the angle the pole is pointing. The center of gravity of
+the pole varies the amount of energy needed to move the cart underneath it.</p>
+</div>
+</dd>
+<dt>Cost:</dt><dd><p>A cost, computed using the <a class="reference internal" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.cost" title="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.cost"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CartPoleTrackingCost.cost()</span></code></a> method, is given for each
+simulation step, including the terminal step. This cost is defined as a error
+between a state variable and a reference value. The cost is set to the maximum
+cost when the episode is terminated. The cost is defined as:</p>
+<div class="math notranslate nohighlight">
+\[cost = (x - x_{ref})^2 + (\theta / \theta_{threshold})^2\]</div>
+</dd>
+<dt>Starting State:</dt><dd><p>The position is assigned a random value in <code class="docutils literal notranslate"><span class="pre">[-5,5]</span></code> and the other states are
+assigned a uniform random value in <code class="docutils literal notranslate"><span class="pre">[-0.2..0.2]</span></code>.</p>
+</dd>
+<dt>Episode Termination:</dt><dd><ul class="simple">
+<li><p>Pole Angle is more than 60 degrees.</p></li>
+<li><p>Cart Position is more than 10 m (center of the cart reaches the edge of the
+display).</p></li>
+<li><p>Episode length is greater than 200.</p></li>
+<li><p>The cost is greater than a threshold (100 by default). This threshold can
+be changed using the <code class="docutils literal notranslate"><span class="pre">max_cost</span></code> environment argument.</p></li>
+</ul>
+</dd>
+<dt>Solved Requirements:</dt><dd><p>Considered solved when the average cost is less than or equal to 50 over
+100 consecutive trials.</p>
+</dd>
+<dt>How to use:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stable_gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:CartPoleTrackingCost-v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On reset, the <code class="docutils literal notranslate"><span class="pre">options</span></code> parameter allows the user to change the bounds used to
+determine the new random state when <code class="docutils literal notranslate"><span class="pre">random=True</span></code>.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.state" title="Permalink to this definition"></a></dt>
+<dd><p>The current state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.t" title="Permalink to this definition"></a></dt>
+<dd><p>Current time step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.tau">
+<span class="sig-name descname"><span class="pre">tau</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.tau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.tau" title="Permalink to this definition"></a></dt>
+<dd><p>The time step size. Also available as <code class="docutils literal notranslate"><span class="pre">self.dt</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.target_pos">
+<span class="sig-name descname"><span class="pre">target_pos</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.target_pos" title="Permalink to this definition"></a></dt>
+<dd><p>The target position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.constraint_pos">
+<span class="sig-name descname"><span class="pre">constraint_pos</span></span><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.constraint_pos" title="Permalink to this definition"></a></dt>
+<dd><p>The constraint position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.kinematics_integrator">
+<span class="sig-name descname"><span class="pre">kinematics_integrator</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.kinematics_integrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.kinematics_integrator" title="Permalink to this definition"></a></dt>
+<dd><p>The kinematics integrator used to update the state.
+Options are <code class="docutils literal notranslate"><span class="pre">euler</span></code> and <code class="docutils literal notranslate"><span class="pre">semi-implicit</span> <span class="pre">euler</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.theta_threshold_radians">
+<span class="sig-name descname"><span class="pre">theta_threshold_radians</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.theta_threshold_radians"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.theta_threshold_radians" title="Permalink to this definition"></a></dt>
+<dd><p>The angle at which the pole is considered to be
+at a terminal state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.x_threshold">
+<span class="sig-name descname"><span class="pre">x_threshold</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.x_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.x_threshold" title="Permalink to this definition"></a></dt>
+<dd><p>The position at which the cart is considered to be at a
+terminal state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_v">
+<span class="sig-name descname"><span class="pre">max_v</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_v" title="Permalink to this definition"></a></dt>
+<dd><p>The maximum velocity of the cart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_w">
+<span class="sig-name descname"><span class="pre">max_w</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_w"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_w" title="Permalink to this definition"></a></dt>
+<dd><p>The maximum angular velocity of the pole.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_cost">
+<span class="sig-name descname"><span class="pre">max_cost</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.max_cost" title="Permalink to this definition"></a></dt>
+<dd><p>The maximum cost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Initialise a new CartPoleTrackingCost environment instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>render_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Gym rendering mode. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>reference_target_position</strong> – The reference target position, by default
+<code class="docutils literal notranslate"><span class="pre">0.0</span></code> (i.e. the mean of the reference signal).</p></li>
+<li><p><strong>reference_amplitude</strong> – The reference amplitude, by default <code class="docutils literal notranslate"><span class="pre">7.0</span></code>.</p></li>
+<li><p><strong>reference_frequency</strong> – The reference frequency, by default <code class="docutils literal notranslate"><span class="pre">0.005</span></code>.</p></li>
+<li><p><strong>max_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><em>optional</em>) – The maximum cost allowed before the episode is
+terminated. Defaults to <code class="docutils literal notranslate"><span class="pre">100.0</span></code>.</p></li>
+<li><p><strong>clip_action</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>, </em><em>optional</em>) – Whether the actions should be clipped if
+they are greater than the set action limit. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>exclude_reference_from_observation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the reference
+should be excluded from the observation. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>exclude_reference_error_from_observation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether the error
+should be excluded from the observation. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>action_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type of the
+action space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
+<li><p><strong>observation_space_dtype</strong> (<em>union</em><em>[</em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.1)"><em>numpy.dtype</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – The data type
+of the observation space. Defaults to <code class="docutils literal notranslate"><span class="pre">np.float64</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.metadata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render_mode">
+<span class="sig-name descname"><span class="pre">render_mode</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.render_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render_mode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">max_cost</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._clip_action">
+<span class="sig-name descname"><span class="pre">_clip_action</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._clip_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._clip_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_space_dtype">
+<span class="sig-name descname"><span class="pre">_action_space_dtype</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._action_space_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._observation_space_dtype">
+<span class="sig-name descname"><span class="pre">_observation_space_dtype</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._observation_space_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._observation_space_dtype" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_dtype_conversion_warning">
+<span class="sig-name descname"><span class="pre">_action_dtype_conversion_warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._action_dtype_conversion_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_dtype_conversion_warning" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.force_mag">
+<span class="sig-name descname"><span class="pre">force_mag</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.force_mag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.force_mag" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">tau</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.02</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.tau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">kinematics_integrator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'euler'</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.kinematics_integrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">theta_threshold_radians</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.theta_threshold_radians"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">x_threshold</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.x_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">max_v</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">max_w</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.max_w"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_from_observation">
+<span class="sig-name descname"><span class="pre">_exclude_reference_from_observation</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._exclude_reference_from_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_from_observation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_error_from_observation">
+<span class="sig-name descname"><span class="pre">_exclude_reference_error_from_observation</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._exclude_reference_error_from_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._exclude_reference_error_from_observation" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.high">
+<span class="sig-name descname"><span class="pre">high</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.high"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.high" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.action_space">
+<span class="sig-name descname"><span class="pre">action_space</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.action_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.action_space" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.observation_space">
+<span class="sig-name descname"><span class="pre">observation_space</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.observation_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.observation_space" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reward_range">
+<span class="sig-name descname"><span class="pre">reward_range</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reward_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reward_range" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_width">
+<span class="sig-name descname"><span class="pre">screen_width</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">600</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.screen_width"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_width" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_height">
+<span class="sig-name descname"><span class="pre">screen_height</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">400</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.screen_height"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen_height" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen">
+<span class="sig-name descname"><span class="pre">screen</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.screen" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.clock">
+<span class="sig-name descname"><span class="pre">clock</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.clock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.clock" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.isopen">
+<span class="sig-name descname"><span class="pre">isopen</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.isopen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.isopen" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.steps_beyond_terminated">
+<span class="sig-name descname"><span class="pre">steps_beyond_terminated</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.steps_beyond_terminated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.steps_beyond_terminated" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">t</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_clip_warning">
+<span class="sig-name descname"><span class="pre">_action_clip_warning</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._action_clip_warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._action_clip_warning" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state">
+<span class="sig-name descname"><span class="pre">_init_state</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._init_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state_range">
+<span class="sig-name descname"><span class="pre">_init_state_range</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._init_state_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._init_state_range" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_target_pos">
+<span class="sig-name descname"><span class="pre">reference_target_pos</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reference_target_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_target_pos" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_amplitude">
+<span class="sig-name descname"><span class="pre">reference_amplitude</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reference_amplitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_amplitude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_frequency">
+<span class="sig-name descname"><span class="pre">reference_frequency</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reference_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference_frequency" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_of_cart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_of_pole</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gravity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.set_params" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the most important system parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The pole length.</p></li>
+<li><p><strong>mass_of_cart</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Cart mass.</p></li>
+<li><p><strong>mass_of_pole</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Pole mass.</p></li>
+<li><p><strong>gravity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The gravity constant.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.get_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.get_params" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieves the most important system parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>length(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): The pole length.</p></li>
+<li><p>pole_mass (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): The pole mass.</p></li>
+<li><p>pole_mass (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): The cart mass.</p></li>
+<li><p>gravity (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): The gravity constant.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset_params">
+<span class="sig-name descname"><span class="pre">reset_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reset_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset_params" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the most important system parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reference" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the current value of the periodic cart reference signal that is
+tracked by the cart-pole system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – The current time step.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The current reference value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.cost" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the cost for a given cart position (x) and a pole angle (theta).</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Args:</dt><dd><p>x (float): The current cart position.
+theta (float): The current pole angle (rads).</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>cost (float): The current cost.</p></li>
+<li><p>r_1 (float): The current position reference.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.step" title="Permalink to this definition"></a></dt>
+<dd><p>Take step into the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><em>numpy.ndarray</em></a>) – The action we want to perform in the environment.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.ndarray</span></code>): Environment observation.</p></li>
+<li><p>cost (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>): Cost of the action.</p></li>
+<li><p>terminated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode is terminated.</p></li>
+<li><p>truncated (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>): Whether the episode was truncated. This
+value is set by wrappers when for example a time limit is reached or
+the agent goes out of bounds.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Additional information about the environment.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset gymnasium environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em>, </em><em>optional</em>) – A random seed for the environment. By default
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a><em>, </em><em>optional</em>) – A dictionary containing additional options for
+resetting the environment. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>. Not used in this
+environment.</p></li>
+<li><p><strong>random</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether we want to randomly initialise the
+environment. By default True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>tuple containing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>obs (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>): Initial environment observation.</p></li>
+<li><p>info (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>): Dictionary containing additional information.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.render" title="Permalink to this definition"></a></dt>
+<dd><p>Render one frame of the environment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close down the viewer</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.total_mass">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_mass</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.total_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.total_mass" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Property</span> <span class="pre">that</span> <span class="pre">returns</span> <span class="pre">the</span> <span class="pre">full</span> <span class="pre">mass</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">system.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._com_length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_com_length</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost._com_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost._com_length" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Property</span> <span class="pre">that</span> <span class="pre">returns</span> <span class="pre">the</span> <span class="pre">position</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">center</span> <span class="pre">of</span> <span class="pre">mass.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.polemass_length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polemass_length</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.polemass_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.polemass_length" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Property</span> <span class="pre">that</span> <span class="pre">returns</span> <span class="pre">the</span> <span class="pre">pole</span> <span class="pre">mass</span> <span class="pre">times</span> <span class="pre">the</span> <span class="pre">COM</span> <span class="pre">length.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.pole_mass_length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pole_mass_length</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.pole_mass_length"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.pole_mass_length" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">:attr:`polemass_length`.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_pole">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mass_pole</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.mass_pole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_pole" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">:attr:`masspole`.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_cart">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mass_cart</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.mass_cart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.mass_cart" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">:attr:`masscart`.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.dt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dt</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.dt" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Property</span> <span class="pre">that</span> <span class="pre">also</span> <span class="pre">makes</span> <span class="pre">the</span> <span class="pre">timestep</span> <span class="pre">available</span> <span class="pre">under</span> <span class="pre">the</span> <span class="pre">:attr:`dt`</span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">attribute.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.physics_time">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">physics_time</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#CartPoleTrackingCost.physics_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.CartPoleTrackingCost.physics_time" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Returns</span> <span class="pre">the</span> <span class="pre">physics</span> <span class="pre">time.</span> <span class="pre">Alias</span> <span class="pre">for</span> <span class="pre">:attr:`.t`.</span></span></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.env">
+<span class="sig-prename descclassname"><span class="pre">stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.</span></span><span class="sig-name descname"><span class="pre">env</span></span><a class="reference internal" href="../../../../../../_modules/stable_gym/envs/classic_control/cartpole_tracking_cost/cartpole_tracking_cost.html#env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#stable_gym.envs.classic_control.cartpole_tracking_cost.cartpole_tracking_cost.env" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="stable_gym.envs.classic_control.cartpole_tracking_cost" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../ex3_ekf/index.html" class="btn btn-neutral float-right" title="stable_gym.envs.classic_control.ex3_ekf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+stable_gym.envs.classic_control.ex3_ekf.ex3_ekf
+===============================================
+
+.. py:module:: stable_gym.envs.classic_control.ex3_ekf.ex3_ekf
+
+.. autoapi-nested-parse::
+
+   The noisy master slave system (Ex3EKF) gymnasium environment.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   stable_gym.envs.classic_control.ex3_ekf.ex3_ekf.EPISODES
+   stable_gym.envs.classic_control.ex3_ekf.ex3_ekf.RANDOM_STEP
+   stable_gym.envs.classic_control.ex3_ekf.ex3_ekf.env
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.classic_control.ex3_ekf.ex3_ekf.Ex3EKF
+
+
+Module Contents
+---------------
+
+.. py:data:: EPISODES
+   :value: 10
+
+
+.. py:data:: RANDOM_STEP
+   :value: True
+
+
+.. py:class:: Ex3EKF(render_mode=None, clipped_action=True)
+
+   Bases: :py:obj:`gymnasium.Env`
+
+
+   Noisy master slave system
+
+   Description:
+       The goal of the agent in the Ex3EKF environment is to act in such a way that
+       estimator perfectly estimated the original noisy system. By doing this it serves
+       as a RL based stationary Kalman filter. First presented by `Wu et al. 2023`_.
+
+   Observation:
+       **Type**: Box(4)
+
+       +-----+------------------------+----------------------+--------------------+
+       | Num | Observation            | Min                  | Max                |
+       +=====+========================+======================+====================+
+       | 0   | The estimated angle    | -10000 rad           | 10000 rad          |
+       +-----+------------------------+----------------------+--------------------+
+       | 1   | The estimated frequency| -10000 hz            | 10000 hz           |
+       +-----+------------------------+----------------------+--------------------+
+       | 2   | Actual angle           | -10000 rad           | 10000 rad          |
+       +-----+------------------------+----------------------+--------------------+
+       | 3   | Actual frequency       | -10000 rad           | 10000 rad          |
+       +-----+------------------------+----------------------+--------------------+
+
+   Actions:
+       **Type**: Box(2)
+
+       +-----+-----------------------------------------------+
+       | Num | Action                                        |
+       +=====+===============================================+
+       | 0   | First action coming from the RL Kalman filter |
+       +-----+-----------------------------------------------+
+       | 1   | Second action coming from the RL Kalman filter|
+       +-----+-----------------------------------------------+
+
+   Cost:
+       A cost, computed as the sum of the squared differences between the estimated and the actual states:
+
+       .. math::
+
+           C = {(\hat{x}_1 - x_1)}^2 + {(\hat{x}_2 - x_2)}^2
+
+   Starting State:
+       All observations are assigned a uniform random value in ``[-0.05..0.05]``
+
+   Episode Termination:
+       -   When the step cost is higher than 100.
+
+   Solved Requirements:
+       Considered solved when the average cost is lower than 300.
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: t
+
+      The current time step.
+
+      :type: float
+
+   .. attribute:: dt
+
+      The environment step size. Also available as :attr:`.tau`.
+
+      :type: float
+
+   .. attribute:: sigma
+
+      The variance of the system noise.
+
+      :type: float
+
+   .. _`Wu et al. 2023`: https://www.sciencedirect.com/science/article/pii/S0005109823001528
+
+   Initialise new Ex3EKF environment instance.
+
+   :param render_mode: The render mode you want to use. Defaults to
+                       ``None``. Not used in this environment.
+   :type render_mode: str, optional
+   :param clipped_action: Whether the actions should be clipped if
+                          they are greater than the set action limit. Defaults to ``True``.
+   :type clipped_action: str, optional
+
+
+   .. py:attribute:: _action_clip_warning
+      :value: False
+
+
+
+   .. py:attribute:: t
+      :value: 0.0
+
+
+
+   .. py:attribute:: dt
+      :value: 0.1
+
+
+
+   .. py:attribute:: q1
+      :value: 0.01
+
+
+
+   .. py:attribute:: g
+      :value: 9.81
+
+
+
+   .. py:attribute:: l_net
+      :value: 1.0
+
+
+
+   .. py:attribute:: mean1
+      :value: [0, 0]
+
+
+
+   .. py:attribute:: cov1
+
+
+   .. py:attribute:: mean2
+      :value: 0
+
+
+
+   .. py:attribute:: cov2
+      :value: 0.01
+
+
+
+   .. py:attribute:: missing_rate
+      :value: 0
+
+
+
+   .. py:attribute:: sigma
+      :value: 0
+
+
+
+   .. py:attribute:: high
+
+
+   .. py:attribute:: action_space
+
+
+   .. py:attribute:: observation_space
+
+
+   .. py:attribute:: reward_range
+      :value: (0.0, 100.0)
+
+
+
+   .. py:attribute:: _clipped_action
+
+
+   .. py:attribute:: viewer
+      :value: None
+
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: output
+      :value: None
+
+
+
+   .. py:attribute:: steps_beyond_done
+      :value: None
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      :param action: The action we want to perform in the environment.
+      :type action: numpy.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   `None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reference(x)
+
+      Returns the current value of the periodic reference signal that is tracked by
+      the Synthetic oscillatory network.
+
+      :param x: The reference value.
+      :type x: float
+
+      :returns: The current reference value.
+      :rtype: float
+
+
+
+   .. py:method:: render(mode='human')
+      :abstractmethod:
+
+
+      Render one frame of the environment.
+
+      :param mode: Gym rendering mode. The default mode will do something
+                   human friendly, such as pop up a window.
+      :type mode: str, optional
+
+      :raises NotImplementedError: Will throw a NotImplimented error since the render
+          method has not yet been implemented.
+
+      .. note:: This currently is not yet implemented.
+
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+
+   .. py:property:: physics_time
+      Returns the physics time. Alias for :attr:`.t`.
+
+
+.. py:data:: env
+

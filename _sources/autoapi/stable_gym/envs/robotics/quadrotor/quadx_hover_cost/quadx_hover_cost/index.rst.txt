@@ -1,0 +1,291 @@
+stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost
+====================================================================
+
+.. py:module:: stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost
+
+.. autoapi-nested-parse::
+
+   The QuadXHoverCost gymnasium environment.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost.EPISODES
+   stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost.RANDOM_STEP
+   stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost.env
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.quadrotor.quadx_hover_cost.quadx_hover_cost.QuadXHoverCost
+
+
+Module Contents
+---------------
+
+.. py:data:: EPISODES
+   :value: 10
+
+
+.. py:data:: RANDOM_STEP
+   :value: True
+
+
+.. py:class:: QuadXHoverCost(flight_dome_size=3.0, angle_representation='quaternion', agent_hz=40, render_mode=None, render_resolution=(480, 480), include_health_penalty=True, health_penalty_size=None, action_space_dtype=np.float64, observation_space_dtype=np.float64, **kwargs)
+
+   Bases: :py:obj:`PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv`, :py:obj:`gymnasium.utils.EzPickle`
+
+
+   Custom QuadXHover Bullet gymnasium environment.
+
+   .. note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Source:
+       Modified version of the `QuadXHover environment`_ found in the
+       :PyFlyt:`PyFlyt package <>`. This environment was first described by `Tai et al. 2023`_.
+       In this modified version:
+
+       -   The reward has been changed to a cost. This was done by negating the reward always
+           to be positive definite.
+       -   A health penalty has been added. This penalty is applied when the quadrotor moves
+           outside the flight dome or crashes. The penalty equals the maximum episode steps
+           minus the steps taken or a user-defined penalty.
+       -   The ``max_duration_seconds`` has been removed. Instead, the ``max_episode_steps``
+           parameter of the :class:`gym.wrappers.TimeLimit` wrapper is used to limit
+           the episode duration.
+
+       The rest of the environment is the same as the original QuadXHover environment.
+       Please refer to the `original codebase <https://github.com/jjshoots/PyFlyt>`__,
+       :PyFlyt:`the PyFlyt documentation <>` or the accompanying
+       `article of Tai et al. 2023`_ for more information.
+
+   .. _`QuadXHover environment`: https://jjshoots.github.io/PyFlyt/documentation/gym_envs/quadx_envs/quadx_hover_env.html
+   .. _`Tai et al. 2023`: https://arxiv.org/abs/2304.01305
+   .. _`article of Tai et al. 2023`: https://arxiv.org/abs/2304.01305
+
+   Modified cost:
+       A cost, computed using the :meth:`QuadXHoverCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is defined as the
+       Euclidean distance error between the quadrotors' current position and a desired
+       hover position (i.e. :math:`p=x_{x,y,z}=[0,0,1]`) and the error between the
+       quadrotors' current angular roll and pitch and their zero values. A health penalty
+       can also be included in the cost. This health penalty is added when the drone
+       leaves the flight dome or crashes. It equals the ``max_episode_steps`` minus the
+       number of steps taken in the episode or a fixed value. The cost is computed as:
+
+       .. math::
+
+           cost = \| p_{drone} - p_{hover} \| + \| \theta_{roll,pitch} \| + p_{health}
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:QuadXHoverCost-v1")
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: agent_hz
+
+      The agent looprate.
+
+      :type: int
+
+   .. attribute:: initial_physics_time
+
+      The simulation startup time. The physics time at
+      the start of the episode after all the initialisation has been done.
+
+      :type: float
+
+   Initialise a new QuadXHoverCost environment instance.
+
+   :param flight_dome_size: Size of the allowable flying area. By
+                            default ``3.0``.
+   :type flight_dome_size: float, optional
+   :param angle_representation: The angle representation to use.
+                                Can be ``"euler"`` or ``"quaternion"``. By default ``"quaternion"``.
+   :type angle_representation: str, optional
+   :param agent_hz: Looprate of the agent to environment interaction.
+                    By default ``40``.
+   :type agent_hz: int, optional
+   :param render_mode: The render mode. Can be ``"human"`` or
+                       ``None``. By default ``None``.
+   :type render_mode: None | str, optional
+   :param render_resolution: The render resolution. By
+                             default ``(480, 480)``.
+   :type render_resolution: tuple[int, int], optional
+   :param include_health_penalty: Whether to penalize the quadrotor
+                                  if it becomes unhealthy (i.e. if it falls over). Defaults to ``True``.
+   :type include_health_penalty: bool, optional
+   :param health_penalty_size: The size of the unhealthy penalty.
+                               Defaults to ``None``. Meaning the penalty is equal to the max episode
+                               steps and the steps taken.
+   :type health_penalty_size: int, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float64``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+   :param \*\*kwargs: Additional keyword arguments passed to the
+                      :class:`~PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv`
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: initial_physics_time
+      :value: None
+
+
+
+   .. py:attribute:: _max_episode_steps_applied
+      :value: False
+
+
+
+   .. py:attribute:: agent_hz
+
+
+   .. py:attribute:: _include_health_penalty
+
+
+   .. py:attribute:: _health_penalty_size
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:method:: cost()
+
+      Compute the cost of the current state.
+
+      :returns:
+
+                tuple containing:
+
+                    -   cost (:obj:`float`): The cost.
+                    -   info (:obj:`dict`): Dictionary containing additional information
+                        about the cost.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      .. note::
+          This method overrides the
+          :meth:`~PyFlyt.gym_envs.quadx_envs.quadx_hover_env.QuadXHoverEnv.step`
+          method such that the new cost function is used.
+
+      :param action: Action to take in the environment.
+      :type action: np.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached
+                        or the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:property:: time_limit_max_episode_steps
+      The maximum number of steps that the environment can take before it is
+      truncated by the :class:`gymnasium.wrappers.TimeLimit` wrapper.
+
+
+   .. py:property:: time_limit
+      The maximum duration of the episode in seconds.
+
+
+   .. py:property:: dt
+      The environment step size.
+
+      :returns:
+
+                The simulation step size. Returns ``None`` if the environment is
+                    not yet initialized.
+      :rtype: (float)
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+      :returns:
+
+                The simulation step size. Returns ``None`` if the environment is
+                    not yet initialized.
+      :rtype: (float)
+
+
+   .. py:property:: t
+      Environment time.
+
+
+   .. py:property:: physics_time
+      Returns the physics time.
+
+
+.. py:data:: env
+

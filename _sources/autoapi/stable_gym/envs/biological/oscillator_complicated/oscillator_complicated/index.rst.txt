@@ -1,0 +1,573 @@
+stable_gym.envs.biological.oscillator_complicated.oscillator_complicated
+========================================================================
+
+.. py:module:: stable_gym.envs.biological.oscillator_complicated.oscillator_complicated
+
+.. autoapi-nested-parse::
+
+   A more challenging (i.e. complicated) version of the `Oscillator gymnasium environment`_
+   with an additional protein, mRNA transcription concentration variable and light input.
+
+   .. _`Oscillator gymnasium environment`: https://rickstaa.dev/stable-gym/envs/biological/oscillator.html
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   stable_gym.envs.biological.oscillator_complicated.oscillator_complicated.EPISODES
+   stable_gym.envs.biological.oscillator_complicated.oscillator_complicated.RANDOM_STEP
+   stable_gym.envs.biological.oscillator_complicated.oscillator_complicated.env
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.biological.oscillator_complicated.oscillator_complicated.OscillatorComplicated
+
+
+Module Contents
+---------------
+
+.. py:data:: EPISODES
+   :value: 10
+
+
+.. py:data:: RANDOM_STEP
+   :value: True
+
+
+.. py:class:: OscillatorComplicated(render_mode=None, max_cost=np.inf, reference_target_position=8.0, reference_amplitude=7.0, reference_frequency=1 / 200, reference_phase_shift=0.0, clip_action=True, exclude_reference_from_observation=False, exclude_reference_error_from_observation=False, action_space_dtype=np.float64, observation_space_dtype=np.float64)
+
+   Bases: :py:obj:`gymnasium.Env`
+
+
+   Challenging (i.e. complicated) oscillatory network environment. This environment
+   class is based on the :class:`~stable_gym.envs.biological.oscillator.oscillator.Oscillator`
+   environment class but has an additional protein, mRNA transcription and light input.
+
+   .. Note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Description:
+       The goal of the agent in the oscillator environment is to act in such a way that
+       one of the proteins of the synthetic oscillatory network follows a supplied
+       reference signal.
+
+   Source:
+       This environment corresponds to the Oscillator environment used in the paper
+       `Han et al. 2020`_. In our implementation several additional features were added
+       to the environment to make it more flexible and easier to use:
+
+           - Environment arguments now allow for modification of the reference signal
+             parameters.
+           - System parameters can now be individually adjusted for each protein,
+             rather than applying the same parameters across all proteins.
+           - The reference can be omitted from the observation.
+           - Reference error can be included in the info dictionary.
+           - The observation space was expanded to accurately reproduce the plots
+             presented in `Han et al. 2020`_, which was not possible with the original
+             code's observation space.
+           - Added an adjustable ``max_cost`` threshold for episode termination,
+             defaulting to :math:`\infty` to match the original environment.
+
+   .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288
+
+   Observation:
+       **Type**: Box(9) or Box(10) depending on the ``exclude_reference_error_from_observation`` argument.
+
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | Num | Observation                                     | Min               | Max               |
+       +=====+=================================================+===================+===================+
+       | 0   | Lacl mRNA transcripts concentration             | 0                 | :math:`\infty`    |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 1   | tetR mRNA transcripts concentration             | 0                 | :math:`\infty`    |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 2   | CI mRNA transcripts concentration               | 0                 | :math:`\infty`    |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 3   | Extra protein mRNA transcripts concentration    | 0                 | :math:`\infty`    |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 4   || lacI (repressor) protein concentration         | 0                 | :math:`\infty`    |
+       |     || (Inhibits transcription of the tetR gene)      |                   |                   |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 5   || tetR (repressor) protein concentration         | 0                 | :math:`\infty`    |
+       |     || (Inhibits transcription of CI gene)            |                   |                   |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 6   || CI (repressor) protein concentration           | 0                 | :math:`\infty`    |
+       |     || (Inhibits transcription of extra protein gene) |                   |                   |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 7   || Extra (repressor) protein concentration        | 0                 | :math:`\infty`    |
+       |     || (Inhibits transcription of lacI gene)          |                   |                   |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | 8   | The reference we want to follow                 | 0                 | :math:`\infty`    |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+       | (9) || **Optional** - The error between the current   | -:math:`\infty`   | :math:`\infty`    |
+       |     || value of protein 1 and the reference           |                   |                   |
+       +-----+-------------------------------------------------+-------------------+-------------------+
+
+   Actions:
+       **Type**: Box(3)
+
+       +-----+------------------------------------------------------------+---------+---------+
+       | Num | Action                                                     | Min     |   Max   |
+       +=====+============================================================+=========+=========+
+       | 0   || Relative intensity of light signal that induce the        | 0       | 1       |
+       |     || expression of the Lacl mRNA gene.                         |         |         |
+       +-----+------------------------------------------------------------+---------+---------+
+       | 1   || Relative intensity of light signal that induce the        | 0       | 1       |
+       |     || expression of the tetR mRNA gene.                         |         |         |
+       +-----+------------------------------------------------------------+---------+---------+
+       | 2   || Relative intensity of light signal that induce the        | 0       | 1       |
+       |     || expression of the CI mRNA gene.                           |         |         |
+       +-----+------------------------------------------------------------+---------+---------+
+       | 3   || Relative intensity of light signal that induce the        | 0       | 1       |
+       |     || expression of the extra protein mRNA gene.                |         |         |
+       +-----+------------------------------------------------------------+---------+---------+
+
+   Cost:
+       A cost, computed as the sum of the squared differences between the estimated and the actual states:
+
+       .. math::
+
+           C = {p_1 - r_1}^2
+
+   Starting State:
+       All observations are assigned a uniform random value in ``[0..5]``
+
+   Episode Termination:
+       - An episode is terminated when the maximum step limit is reached.
+       - The step exceeds a threshold (default is :math:`\infty`). This threshold can
+         be adjusted using the `max_cost` environment argument.
+
+   Solved Requirements:
+       Considered solved when the average cost is lower than 300.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:OscillatorComplicated-v1")
+
+       On reset, the ``options`` parameter allows the user to change the bounds used to
+       determine the new random state when ``random=True``.
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: t
+
+      The current time step.
+
+      :type: float
+
+   .. attribute:: dt
+
+      The environment step size. Also available as :attr:`.tau`.
+
+      :type: float
+
+   .. attribute:: sigma
+
+      The variance of the system noise.
+
+      :type: float
+
+   .. attribute:: max_cost
+
+      The maximum cost allowed before the episode is terminated.
+
+      :type: float
+
+   Initialise a new OscillatorComplicated environment instance.
+
+   :param render_mode: The render mode you want to use. Defaults to
+                       ``None``. Not used in this environment.
+   :type render_mode: str, optional
+   :param max_cost: The maximum cost allowed before the episode is
+                    terminated. Defaults to :attr:`np.inf`.
+   :type max_cost: float, optional
+   :param reference_target_position: The reference target position, by default
+                                     ``8.0`` (i.e. the mean of the reference signal).
+   :param reference_amplitude: The reference amplitude, by default ``7.0``.
+   :param reference_frequency: The reference frequency, by default ``0.005``.
+   :param reference_phase_shift: The reference phase shift, by default ``0.0``.
+   :param clip_action: Whether the actions should be clipped if
+                       they are greater than the set action limit. Defaults to ``True``.
+   :type clip_action: str, optional
+   :param exclude_reference_from_observation: Whether the reference
+                                              should be excluded from the observation. Defaults to ``False``.
+   :type exclude_reference_from_observation: bool, optional
+   :param exclude_reference_error_from_observation: Whether the error
+                                                    should be excluded from the observation. Defaults to ``False``.
+   :type exclude_reference_error_from_observation: bool, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float64``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+
+
+   .. py:attribute:: max_cost
+
+
+   .. py:attribute:: _action_clip_warning
+      :value: False
+
+
+
+   .. py:attribute:: _clip_action
+
+
+   .. py:attribute:: _exclude_reference_from_observation
+
+
+   .. py:attribute:: _exclude_reference_error_from_observation
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: t
+      :value: 0.0
+
+
+
+   .. py:attribute:: dt
+      :value: 1.0
+
+
+
+   .. py:attribute:: _init_state
+
+
+   .. py:attribute:: _init_state_range
+
+
+   .. py:attribute:: K1
+      :value: 1.0
+
+
+
+   .. py:attribute:: K2
+      :value: 1.0
+
+
+
+   .. py:attribute:: K3
+      :value: 1.0
+
+
+
+   .. py:attribute:: K4
+      :value: 1.0
+
+
+
+   .. py:attribute:: a1
+      :value: 1.6
+
+
+
+   .. py:attribute:: a2
+      :value: 1.6
+
+
+
+   .. py:attribute:: a3
+      :value: 1.6
+
+
+
+   .. py:attribute:: a4
+      :value: 1.6
+
+
+
+   .. py:attribute:: gamma1
+      :value: 0.16
+
+
+
+   .. py:attribute:: gamma2
+      :value: 0.16
+
+
+
+   .. py:attribute:: gamma3
+      :value: 0.16
+
+
+
+   .. py:attribute:: gamma4
+      :value: 0.16
+
+
+
+   .. py:attribute:: beta1
+      :value: 0.16
+
+
+
+   .. py:attribute:: beta2
+      :value: 0.16
+
+
+
+   .. py:attribute:: beta3
+      :value: 0.16
+
+
+
+   .. py:attribute:: beta4
+      :value: 0.16
+
+
+
+   .. py:attribute:: c1
+      :value: 0.06
+
+
+
+   .. py:attribute:: c2
+      :value: 0.06
+
+
+
+   .. py:attribute:: c3
+      :value: 0.06
+
+
+
+   .. py:attribute:: c4
+      :value: 0.06
+
+
+
+   .. py:attribute:: b1
+      :value: 5.0
+
+
+
+   .. py:attribute:: b2
+      :value: 5.0
+
+
+
+   .. py:attribute:: b3
+      :value: 5.0
+
+
+
+   .. py:attribute:: b4
+      :value: 5.0
+
+
+
+   .. py:attribute:: delta1
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta2
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta3
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta4
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta5
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta6
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta7
+      :value: 0.0
+
+
+
+   .. py:attribute:: delta8
+      :value: 0.0
+
+
+
+   .. py:attribute:: obs_low
+
+
+   .. py:attribute:: obs_high
+
+
+   .. py:attribute:: action_space
+
+
+   .. py:attribute:: observation_space
+
+
+   .. py:attribute:: reward_range
+
+
+   .. py:attribute:: viewer
+      :value: None
+
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: steps_beyond_done
+      :value: None
+
+
+
+   .. py:attribute:: reference_target_pos
+
+
+   .. py:attribute:: reference_amplitude
+
+
+   .. py:attribute:: reference_frequency
+
+
+   .. py:attribute:: phase_shift
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      :param action: The action we want to perform in the environment.
+      :type action: numpy.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None, random=True)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+      :param random: Whether we want to randomly initialise the
+                     environment. By default True.
+      :type random: bool, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reference(t)
+
+      Returns the current value of the periodic reference signal that is tracked by
+      the Synthetic oscillatory network.
+
+      :param t: The current time step.
+      :type t: float
+
+      :returns: The current reference value.
+      :rtype: float
+
+      .. note::
+
+          This uses the general form of a periodic signal:
+
+          .. math::
+
+              y(t) = A \sin(\omega t + \phi) + C \\
+              y(t) = A \sin(2 \pi f t + \phi) + C \\
+              y(t) = A \sin(\frac{2 \pi}{T} t + \phi) + C
+
+          Where:
+
+          -   :math:`t` is the time.
+          -   :math:`A` is the amplitude of the signal.
+          -   :math:`\omega` is the frequency of the signal.
+          -   :math:`f` is the frequency of the signal.
+          -   :math:`T` is the period of the signal.
+          -   :math:`\phi` is the phase of the signal.
+          -   :math:`C` is the offset of the signal.
+
+
+
+   .. py:method:: render(mode='human')
+      :abstractmethod:
+
+
+      Render one frame of the environment.
+
+      :param mode: Gym rendering mode. The default mode will do something
+                   human friendly, such as pop up a window.
+      :type mode: str, optional
+
+      :raises NotImplementedError: Will throw a NotImplimented error since the render
+          method has not yet been implemented.
+
+      .. note:: This currently is not yet implemented.
+
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+
+   .. py:property:: physics_time
+      Returns the physics time. Alias for :attr:`.t`.
+
+
+.. py:data:: env
+

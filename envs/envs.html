@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environments &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Oscillator gymnasium environment" href="biological/oscillator.html" />
+    <link rel="prev" title="How to use" href="../get_started/usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#biological-environments">Biological environments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="biological/oscillator.html">Oscillator gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="biological/oscillator_complicated.html">Oscillator Complicated gymnasium environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#classic-control-environments">Classic control environments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classic_control/ex3_ekf.html">Ex3EKF gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classic_control/cartpole_cost.html">CartPoleCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classic_control/cartpole_tracking_cost.html">CartPoleTrackingCost gymnasium environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mujoco-environments">Mujoco environments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/ant_cost.html">AntCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/half_cheetah_cost.html">HalfCheetahCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/hopper_cost.html">HopperCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/humanoid_cost.html">HumanoidCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/swimmer_cost.html">SwimmerCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mujoco/walker2d_cost.html">Walker2dCost gymnasium environment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robotics-environment">Robotics environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="robotics/fetch_reach_cost.html">FetchReachCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robotics/minitaur_bullet_cost.html">MinitaurBulletCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robotics/quadx_hover_cost.html">QuadXHoverCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robotics/quadx_tracking_cost.html">QuadXTrackingCost gymnasium environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robotics/quadx_waypoints_cost.html">QuadXWaypointsCost gymnasium environment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Environments</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/rickstaa/stable-gym/blob/main/docs/source/envs/envs.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="environments">
+<span id="envs"></span><h1>Environments<a class="headerlink" href="#environments" title="Permalink to this heading"></a></h1>
+<p>The <a class="reference external" href="https://github.com/rickstaa/stable-gym/">Stable Gym package</a> provides a variety of environments for training and testing
+<a class="reference external" href="https://github.com/rickstaa/stable-learning-control/">(stable) reinforcement learning (RL) algorithms</a>.</p>
+<section id="biological-environments">
+<h2>Biological environments<a class="headerlink" href="#biological-environments" title="Permalink to this heading"></a></h2>
+<p>Gym environments that are based on Biological systems.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="biological/oscillator.html">Oscillator gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="biological/oscillator_complicated.html">Oscillator Complicated gymnasium environment</a></li>
+</ul>
+</div>
+</section>
+<section id="classic-control-environments">
+<h2>Classic control environments<a class="headerlink" href="#classic-control-environments" title="Permalink to this heading"></a></h2>
+<p>Environments that are based on classical control problems or <a class="reference external" href="https://gymnasium.farama.org/environments/classic_control">classical control</a>
+environments found in the <a class="reference external" href="https://gymnasium.farama.org/">gymnasium</a> library.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classic_control/ex3_ekf.html">Ex3EKF gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classic_control/cartpole_cost.html">CartPoleCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classic_control/cartpole_tracking_cost.html">CartPoleTrackingCost gymnasium environment</a></li>
+</ul>
+</div>
+</section>
+<section id="mujoco-environments">
+<h2>Mujoco environments<a class="headerlink" href="#mujoco-environments" title="Permalink to this heading"></a></h2>
+<p>Environments that are based on the on <a class="reference external" href="https://mujoco.org/">Mujoco</a> or <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco">Mujoco gymnasium</a> environments.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/ant_cost.html">AntCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/half_cheetah_cost.html">HalfCheetahCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/hopper_cost.html">HopperCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/humanoid_cost.html">HumanoidCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/swimmer_cost.html">SwimmerCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mujoco/walker2d_cost.html">Walker2dCost gymnasium environment</a></li>
+</ul>
+</div>
+</section>
+<section id="robotics-environment">
+<h2>Robotics environment<a class="headerlink" href="#robotics-environment" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="robotics/fetch_reach_cost.html">FetchReachCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotics/minitaur_bullet_cost.html">MinitaurBulletCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotics/quadx_hover_cost.html">QuadXHoverCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotics/quadx_tracking_cost.html">QuadXTrackingCost gymnasium environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robotics/quadx_waypoints_cost.html">QuadXWaypointsCost gymnasium environment</a></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ROS robotic environments from the Stable Gym package have been relocated to a
+distinct package known as <a class="reference external" href="https://github.com/rickstaa/ros-gazebo-gym/">Ros Gazebo Gym</a>. When integrating this package with
+stable RL agents, such as those available in the <a class="reference external" href="https://github.com/rickstaa/stable-learning-control/">Stable Learning Control package</a>,
+it’s crucial to configure the <code class="docutils literal notranslate"><span class="pre">positive_reward</span></code> argument as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../get_started/usage.html" class="btn btn-neutral float-left" title="How to use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="biological/oscillator.html" class="btn btn-neutral float-right" title="Oscillator gymnasium environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

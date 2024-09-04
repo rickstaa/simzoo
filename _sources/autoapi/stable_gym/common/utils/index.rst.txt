@@ -1,0 +1,240 @@
+stable_gym.common.utils
+=======================
+
+.. py:module:: stable_gym.common.utils
+
+.. autoapi-nested-parse::
+
+   Utility functions that are used in multiple Stable Gym gymnasium environments.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   stable_gym.common.utils.colorize
+   stable_gym.common.utils.get_flattened_values
+   stable_gym.common.utils.get_flattened_keys
+   stable_gym.common.utils.abbreviate
+   stable_gym.common.utils.get_lowest_next_int
+   stable_gym.common.utils.friendly_list
+   stable_gym.common.utils.strip_underscores
+   stable_gym.common.utils.inject_value
+   stable_gym.common.utils.verify_number_and_cast
+   stable_gym.common.utils.maybe_parse_reset_bounds
+   stable_gym.common.utils.change_dict_key
+   stable_gym.common.utils.convert_gym_box_to_gymnasium_box
+   stable_gym.common.utils.change_precision
+
+
+Module Contents
+---------------
+
+.. py:function:: colorize(string, color, bold=False, highlight=False)
+
+   Colorize a string.
+
+   .. seealso::
+       This function wraps the :meth:`gym.utils.colorize` function to make sure that it
+       also works with empty color strings.
+
+   :param string: The string you want to colorize.
+   :type string: str
+   :param color: The color you want to use.
+   :type color: str
+   :param bold: Whether you want the text to be bold. Defaults to
+                ``False``.
+   :type bold: bool, optional
+   :param highlight: Whether you want to highlight the text. Defaults to
+                     ``False``.
+   :type highlight: bool, optional
+
+   :returns: Colorized string.
+   :rtype: str
+
+
+.. py:function:: get_flattened_values(input_obj)
+
+   Retrieves all the values that are present in a nested dictionary and appends them
+   to a list. Its like a recursive version of the :meth:`dict.values()` method.
+
+   :param input_obj: The input dictionary from which you want
+                     to retrieve all the values.
+   :type input_obj: dict
+
+   :returns:
+
+             A list containing all the values that were present in the nested
+                 dictionary.
+   :rtype: list
+
+
+.. py:function:: get_flattened_keys(input_obj, include_root=False)
+
+   Retrieves all the keys that are present in a nested dictionary and appends them
+   to a list. Its like a recursive version of the :meth:`dict.keys()` method.
+
+   :param input_obj: The input dictionary from which you want
+                     to retrieve all the keys.
+   :type input_obj: dict
+   :param include_root: Whether you want to include the root level keys. Defaults
+                        to ``False``.
+   :type include_root: bool
+
+   :returns:
+
+             A list containing all the keys that were present in the nested
+                 dictionary.
+   :rtype: list
+
+
+.. py:function:: abbreviate(input_item, length=1, max_length=4, capitalize=True)
+
+   Creates unique abbreviations for a string or list of strings.
+
+   :param input_item: The string of list of strings which you want to
+                      abbreviate.
+   :type input_item: union[str, list]
+   :param length: The desired length of the abbreviation. Defaults to
+                  ``1``.
+   :type length: int, optional
+   :param max_length: The maximum length of the abbreviation. Defaults to
+                      4.
+   :type max_length: int, optional
+   :param capitalize: Whether the abbrevaitions should be capitalized.
+                      Defaults to True.
+   :type capitalize: bool, optional
+
+   :returns: List with abbreviations.
+   :rtype: list
+
+
+.. py:function:: get_lowest_next_int(input_item)
+
+   Retrieves the lowest next integer that is not present in a string or float list.
+
+   :param input_item: The input for which you want to determine
+                      the next lowest interger.
+   :type input_item: union[int, str, list]
+
+   :returns: The next lowest integer.
+   :rtype: int
+
+
+.. py:function:: friendly_list(input_list, apostrophes=False)
+
+   Transforms a list to a human friendly format (separated by commas and ampersand).
+
+   :param input_list: The input list.
+   :type input_list: list
+   :param apostrophes: Whether the list items should be encapsuled with
+                       apostrophes. Defaults to ``False``.
+   :type apostrophes: bool, optional
+
+   :returns: Human friendly list string.
+   :rtype: str
+
+
+.. py:function:: strip_underscores(text, position='all')
+
+   Strips leading and/or trailing underscores from a string.
+
+   :param text: The input string.
+   :type text: str
+   :param position: From which position underscores should be removed.
+                    Options are 'leading', 'trailing' & 'both'. Defaults to "both".
+   :type position: str, optional
+
+   :returns: String without the underscores.
+   :rtype: str
+
+
+.. py:function:: inject_value(input_item, value, round_accuracy=2, order=False, axis=0)
+
+   Injects a value into a list or dictionary if it is not yet present.
+
+   :param input_item: The input list or dictionary.
+   :type input_item: union[list,dict]
+   :param value: The value you want to inject.
+   :type value: float
+   :param round_accuracy: The accuracy used for checking whether a value
+                          is present. Defaults to 2.
+   :type round_accuracy: int, optional
+   :param order: Whether the list should be ordered when returned.
+                 Defaults to ``false``.
+   :type order: bool, optional
+   :param axis: The axis along which you want to inject the value. Only
+                used when the input is a numpy array. Defaults to ``0``.
+   :type axis: int, optional
+
+   :returns: The list or dictionary that contains the value.
+   :rtype: union[list,dict]
+
+
+.. py:function:: verify_number_and_cast(x)
+
+   Verify parameter is a single number and cast to a float.
+
+
+.. py:function:: maybe_parse_reset_bounds(options, default_low, default_high)
+
+   This function can be called during a reset() to customize the sampling
+   ranges for setting the initial state distributions.
+
+   :param options: Options passed in to reset().
+   :param default_low: Default lower limit to use, if none specified in options.
+   :param default_high: Default upper limit to use, if none specified in options.
+
+   :returns:
+
+             a tuple containing:
+
+                 - low (:obj:`np.ndarray`): Lower limit for each dimension.
+                 - high ():obj:`np.ndarray`): Upper limit for each dimension.
+   :rtype: (tuple)
+
+
+.. py:function:: change_dict_key(d, old_key, new_key, default_value=None)
+
+   Changes the key of a dictionary.
+
+   :param d: The dictionary.
+   :type d: dict
+   :param old_key: The old key.
+   :type old_key: str
+   :param new_key: The new key.
+   :type new_key: str
+   :param default_value: The default value to use if the old key is not
+                         present in the dictionary. Defaults to ``None``.
+   :type default_value: any, optional
+
+
+.. py:function:: convert_gym_box_to_gymnasium_box(gym_box_space, **kwargs)
+
+   Converts a gym box space to a gymnasium box space.
+
+   :param gym_box_space: The gym box space.
+   :type gym_box_space: gym.spaces.Box
+   :param \*\*kwargs: Additional keyword arguments that are passed to the gymnasium box
+                      space.
+
+   :returns: The gymnasium box space.
+   :rtype: gymnasium.spaces.Box
+
+
+.. py:function:: change_precision(input_value, precision=16)
+
+   Changes the precision of a value.
+
+   :param input_value: The input value.
+   :type input_value: object
+   :param precision: The precision (i.e. number of decimals) to use.
+                     Defaults to ``16``. If ``None``, the input value is returned as is.
+   :type precision: int, optional
+
+   :returns: The input value with the new precision.
+   :rtype: object
+
+

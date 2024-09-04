@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stable_gym.envs.mujoco.walker2d_cost.walker2d_cost &mdash; Stable Gym 0.20.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/modify.css?v=519ed47b" />
+
+  
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js?v=ee9ae116"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html">
+            
+              <img src="../../../../../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.20.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../get_started/usage.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../envs/envs.html">Environments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/contributing.html">Contribute to stable-gym</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/add_new_envs.html">Add new environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/doc_dev.html">Build the documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dev/license.html">License</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">Stable Gym</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../../../stable_gym.html">stable_gym</a></li>
+      <li class="breadcrumb-item active">stable_gym.envs.mujoco.walker2d_cost.walker2d_cost</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for stable_gym.envs.mujoco.walker2d_cost.walker2d_cost</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The Walker2dCost gymnasium environment.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">gymnasium.envs.mujoco.walker2d_v4</span> <span class="kn">import</span> <span class="n">Walker2dEnv</span>
+
+<div class="viewcode-block" id="EPISODES"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.EPISODES">[docs]</a><span class="n">EPISODES</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># Number of env episodes to run when __main__ is called.</span></div>
+<div class="viewcode-block" id="RANDOM_STEP"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.RANDOM_STEP">[docs]</a><span class="n">RANDOM_STEP</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Use random action in __main__. Zero action otherwise.</span></div>
+
+
+<span class="c1"># TODO: Update solving criteria after training.</span>
+<div class="viewcode-block" id="Walker2dCost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost">[docs]</a><span class="k">class</span> <span class="nc">Walker2dCost</span><span class="p">(</span><span class="n">Walker2dEnv</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">EzPickle</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Custom Walker2d gymnasium environment.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Can also be used in a vectorized manner. See the</span>
+<span class="sd">        :gymnasium:`gym.vector &lt;api/vector&gt;` documentation.</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        This is a modified version of the Walker2d Mujoco environment found in the</span>
+<span class="sd">        :gymnasium:`gymnasium library &lt;environments/mujoco/walker2d&gt;`. This modification</span>
+<span class="sd">        was first described by `Han et al. 2020 &lt;https://arxiv.org/abs/2004.14288&gt;`_.</span>
+<span class="sd">        Compared to the original Walker2d environment in this modified version:</span>
+
+<span class="sd">        -   The objective was changed to a velocity-tracking task. To do this, the reward</span>
+<span class="sd">            is replaced with a cost. This cost is the squared difference between the</span>
+<span class="sd">            Walker2d&#39;s forward velocity and a reference value (error). Additionally, also</span>
+<span class="sd">            a control cost and health penalty can be included in the cost.</span>
+<span class="sd">        -   Three **optional** variables were added to the observation space; The reference velocity, the reference error</span>
+<span class="sd">            (i.e. the difference between the walker2d&#39;s forward velocity and the reference) and the walker2d&#39;s forward velocity.</span>
+<span class="sd">            These variables can be enabled using the ``exclude_reference_from_observation``,</span>
+<span class="sd">            ``exclude_reference_error_from_observation`` and ``exclude_velocity_from_observation`` environment arguments.</span>
+
+<span class="sd">        The rest of the environment is the same as the original Walker2d environment.</span>
+<span class="sd">        Below, the modified cost is described. For more information about the environment</span>
+<span class="sd">        (e.g. observation space, action space, episode termination, etc.), please refer</span>
+<span class="sd">        to the :gymnasium:`gymnasium library &lt;environments/mujoco/walker2d&gt;`.</span>
+
+<span class="sd">    Modified cost:</span>
+<span class="sd">        A cost, computed using the :meth:`Walker2dCost.cost` method, is given for each</span>
+<span class="sd">        simulation step, including the terminal step. This cost is defined as the error</span>
+<span class="sd">        between the Walkers&#39;s forward velocity and a reference value. A control</span>
+<span class="sd">        cost and health penalty can also be included in the cost. The cost is computed as:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            cost = w_{forward\_velocity} \times (x_{velocity} - x_{reference\_x\_velocity})^2 + w_{ctrl} \times c_{ctrl} + p_{health}</span>
+
+<span class="sd">    Solved Requirements:</span>
+<span class="sd">        Considered solved when the average cost is less than or equal to 50 over</span>
+<span class="sd">        100 consecutive trials.</span>
+
+<span class="sd">    How to use:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import stable_gyms</span>
+<span class="sd">            import gymnasium as gym</span>
+<span class="sd">            env = gym.make(&quot;stable_gym:Walker2dCost-v1&quot;)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        state (numpy.ndarray): The current system state.</span>
+<span class="sd">        dt (float): The environment step size.  Also available as :attr:`.tau`.</span>
+<span class="sd">        reference_forward_velocity (float): The forward velocity that the agent should</span>
+<span class="sd">            try to track.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">reference_forward_velocity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">randomise_reference_forward_velocity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">randomise_reference_forward_velocity_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
+        <span class="n">forward_velocity_weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">include_ctrl_cost</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">include_health_penalty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">health_penalty_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">terminate_when_unhealthy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">healthy_z_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">healthy_angle_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="n">reset_noise_scale</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">,</span>
+        <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">exclude_reference_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">exclude_reference_error_from_observation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">exclude_x_velocity_from_observation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">action_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="n">observation_space_dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a new Walker2dCost environment instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            reference_forward_velocity (float, optional): The forward velocity that the</span>
+<span class="sd">                agent should try to track. Defaults to ``1.0``.</span>
+<span class="sd">            randomise_reference_forward_velocity (bool, optional): Whether to randomize</span>
+<span class="sd">                the reference forward velocity. Defaults to ``False``.</span>
+<span class="sd">            randomise_reference_forward_velocity_range (tuple, optional): The range of</span>
+<span class="sd">                the random reference forward velocity. Defaults to ``(0.5, 1.5)``.</span>
+<span class="sd">            forward_velocity_weight (float, optional): The weight used to scale the</span>
+<span class="sd">                forward velocity error. Defaults to ``1.0``.</span>
+<span class="sd">            include_ctrl_cost (bool, optional): Whether you also want to penalize the</span>
+<span class="sd">                2D walker if it takes actions that are too large. Defaults to ``False``.</span>
+<span class="sd">            include_health_penalty (bool, optional): Whether to penalize the 2D walker</span>
+<span class="sd">                if it becomes unhealthy (i.e. if it falls over). Defaults to ``True``.</span>
+<span class="sd">            health_penalty_size (int, optional): The size of the unhealthy penalty.</span>
+<span class="sd">                Defaults to ``10``.</span>
+<span class="sd">            ctrl_cost_weight (float, optional): The weight used to scale the control</span>
+<span class="sd">                cost. Defaults to ``1e-3``.</span>
+<span class="sd">            terminate_when_unhealthy (bool, optional): Whether to terminate the episode</span>
+<span class="sd">                when the 2D walker becomes unhealthy. Defaults to ``True``.</span>
+<span class="sd">            healthy_z_range (tuple, optional): The range of healthy z values. Defaults</span>
+<span class="sd">                to ``(0.8, 2.0)``.</span>
+<span class="sd">            healthy_angle_range (tuple, optional): The range of healthy angles. Defaults</span>
+<span class="sd">                to ``(-1.0, 1.0)``,</span>
+<span class="sd">            reset_noise_scale (float, optional): Scale of random perturbations of the</span>
+<span class="sd">                initial position and velocity. Defaults to ``5e-3``.</span>
+<span class="sd">            exclude_current_positions_from_observation (bool, optional): Whether to omit</span>
+<span class="sd">                the x- and y-coordinates of the front tip from observations. Excluding</span>
+<span class="sd">                the position can serve as an inductive bias to induce position-agnostic</span>
+<span class="sd">                behaviour in policies. Defaults to ``True``.</span>
+<span class="sd">            exclude_reference_from_observation (bool, optional): Whether the reference</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``False``.</span>
+<span class="sd">            exclude_reference_error_from_observation (bool, optional): Whether the error</span>
+<span class="sd">                should be excluded from the observation. Defaults to ``True``.</span>
+<span class="sd">            exclude_x_velocity_from_observation (bool, optional): Whether to omit the</span>
+<span class="sd">                x- component of the velocity from observations. Defaults to ``False``.</span>
+<span class="sd">            action_space_dtype (union[numpy.dtype, str], optional): The data type of the</span>
+<span class="sd">                action space. Defaults to ``np.float32``.</span>
+<span class="sd">            observation_space_dtype (union[numpy.dtype, str], optional): The data type</span>
+<span class="sd">                of the observation space. Defaults to ``np.float64``.</span>
+<span class="sd">            **kwargs: Extra keyword arguments to pass to the</span>
+<span class="sd">                :class:`~gymnasium.envs.mujoco.walker2d_v4.Walker2dEnv` class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Walker2dCost.reference_forward_velocity"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.reference_forward_velocity">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span> <span class="o">=</span> <span class="n">reference_forward_velocity</span></div>
+<div class="viewcode-block" id="Walker2dCost._randomise_reference_forward_velocity"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._randomise_reference_forward_velocity">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_randomise_reference_forward_velocity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">randomise_reference_forward_velocity</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="Walker2dCost._randomise_reference_forward_velocity_range"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._randomise_reference_forward_velocity_range">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_randomise_reference_forward_velocity_range</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">randomise_reference_forward_velocity_range</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="Walker2dCost._forward_velocity_weight"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._forward_velocity_weight">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_forward_velocity_weight</span> <span class="o">=</span> <span class="n">forward_velocity_weight</span></div>
+<div class="viewcode-block" id="Walker2dCost._include_ctrl_cost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._include_ctrl_cost">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_include_ctrl_cost</span> <span class="o">=</span> <span class="n">include_ctrl_cost</span></div>
+<div class="viewcode-block" id="Walker2dCost._include_health_penalty"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._include_health_penalty">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_include_health_penalty</span> <span class="o">=</span> <span class="n">include_health_penalty</span></div>
+<div class="viewcode-block" id="Walker2dCost._health_penalty_size"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._health_penalty_size">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_health_penalty_size</span> <span class="o">=</span> <span class="n">health_penalty_size</span></div>
+<div class="viewcode-block" id="Walker2dCost._exclude_reference_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._exclude_reference_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span> <span class="o">=</span> <span class="n">exclude_reference_from_observation</span></div>
+<div class="viewcode-block" id="Walker2dCost._exclude_reference_error_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._exclude_reference_error_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">)</span></div>
+<div class="viewcode-block" id="Walker2dCost._exclude_x_velocity_from_observation"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._exclude_x_velocity_from_observation">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_x_velocity_from_observation</span> <span class="o">=</span> <span class="n">exclude_x_velocity_from_observation</span></div>
+<div class="viewcode-block" id="Walker2dCost._action_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._action_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span> <span class="o">=</span> <span class="n">action_space_dtype</span></div>
+<div class="viewcode-block" id="Walker2dCost._observation_space_dtype"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._observation_space_dtype">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span> <span class="o">=</span> <span class="n">observation_space_dtype</span></div>
+<div class="viewcode-block" id="Walker2dCost._action_dtype_conversion_warning"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost._action_dtype_conversion_warning">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+        <span class="c1"># Validate input arguments.</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">randomise_reference_forward_velocity</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="n">exclude_reference_from_observation</span>
+            <span class="ow">and</span> <span class="n">exclude_reference_error_from_observation</span>
+        <span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;You cannot exclude the reference and reference error from the observation &quot;</span>
+            <span class="s2">&quot;if you randomize the reference forward velocity.&quot;</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Walker2dCost.state"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.state">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="Walker2dCost.dt"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.dt">[docs]</a>
+        <span class="c1"># Initialise the Walker2dEnv class.</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">ctrl_cost_weight</span><span class="o">=</span><span class="n">ctrl_cost_weight</span><span class="p">,</span>
+            <span class="n">terminate_when_unhealthy</span><span class="o">=</span><span class="n">terminate_when_unhealthy</span><span class="p">,</span>
+            <span class="n">healthy_z_range</span><span class="o">=</span><span class="n">healthy_z_range</span><span class="p">,</span>
+            <span class="n">healthy_angle_range</span><span class="o">=</span><span class="n">healthy_angle_range</span><span class="p">,</span>
+            <span class="n">reset_noise_scale</span><span class="o">=</span><span class="n">reset_noise_scale</span><span class="p">,</span>
+            <span class="n">exclude_current_positions_from_observation</span><span class="o">=</span><span class="n">exclude_current_positions_from_observation</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Change action space dtype if necessary.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">dtype</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">low</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">high</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">,</span>
+                <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">np_random</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Extend observation space if necessary.</span>
+<div class="viewcode-block" id="Walker2dCost.low"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.low">[docs]</a>        <span class="n">low</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">low</span></div>
+<div class="viewcode-block" id="Walker2dCost.high"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.high">[docs]</a>        <span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">high</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_x_velocity_from_observation</span><span class="p">:</span>
+            <span class="n">low</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+<div class="viewcode-block" id="Walker2dCost.observation_space"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.observation_space">[docs]</a>        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="p">,</span>
+            <span class="n">high</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">,</span>
+            <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">np_random</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+        <span class="c1"># Reinitialize the EzPickle class.</span>
+        <span class="c1"># NOTE: Done to ensure the args of the Walker2dCost class are also pickled.</span>
+        <span class="c1"># NOTE: Ensure that all args are passed to the EzPickle class!</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">EzPickle</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">reference_forward_velocity</span><span class="p">,</span>
+            <span class="n">randomise_reference_forward_velocity</span><span class="p">,</span>
+            <span class="n">randomise_reference_forward_velocity_range</span><span class="p">,</span>
+            <span class="n">forward_velocity_weight</span><span class="p">,</span>
+            <span class="n">include_ctrl_cost</span><span class="p">,</span>
+            <span class="n">include_health_penalty</span><span class="p">,</span>
+            <span class="n">health_penalty_size</span><span class="p">,</span>
+            <span class="n">ctrl_cost_weight</span><span class="p">,</span>
+            <span class="n">terminate_when_unhealthy</span><span class="p">,</span>
+            <span class="n">healthy_z_range</span><span class="p">,</span>
+            <span class="n">healthy_angle_range</span><span class="p">,</span>
+            <span class="n">reset_noise_scale</span><span class="p">,</span>
+            <span class="n">exclude_current_positions_from_observation</span><span class="p">,</span>
+            <span class="n">exclude_reference_from_observation</span><span class="p">,</span>
+            <span class="n">exclude_reference_error_from_observation</span><span class="p">,</span>
+            <span class="n">exclude_x_velocity_from_observation</span><span class="p">,</span>
+            <span class="n">action_space_dtype</span><span class="o">=</span><span class="n">action_space_dtype</span><span class="p">,</span>
+            <span class="n">observation_space_dtype</span><span class="o">=</span><span class="n">observation_space_dtype</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Walker2dCost.cost"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.cost">[docs]</a>    <span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_velocity</span><span class="p">,</span> <span class="n">ctrl_cost</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the cost of a given x velocity and control cost.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_velocity (float): The Walker2d&#39;s x velocity.</span>
+<span class="sd">            ctrl_cost (float): The control cost.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   cost (float): The cost of the action.</span>
+<span class="sd">                -   info (:obj:`dict`): Additional information about the cost.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">velocity_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_forward_velocity_weight</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span>
+            <span class="n">x_velocity</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span>
+        <span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">velocity_cost</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_include_ctrl_cost</span><span class="p">:</span>
+            <span class="n">cost</span> <span class="o">+=</span> <span class="n">ctrl_cost</span>
+
+        <span class="c1"># Add extra penalty if the 2D walker becomes unhealthy.</span>
+        <span class="n">health_penalty</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_include_health_penalty</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_healthy</span><span class="p">:</span>
+                <span class="n">health_penalty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_health_penalty_size</span>
+                <span class="n">cost</span> <span class="o">+=</span> <span class="n">health_penalty</span>
+
+        <span class="k">return</span> <span class="n">cost</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s2">&quot;cost_velocity&quot;</span><span class="p">:</span> <span class="n">velocity_cost</span><span class="p">,</span>
+            <span class="s2">&quot;cost_ctrl&quot;</span><span class="p">:</span> <span class="n">ctrl_cost</span><span class="p">,</span>
+            <span class="s2">&quot;penalty_health&quot;</span><span class="p">:</span> <span class="n">health_penalty</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Walker2dCost.step"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take step into the environment.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This method overrides the</span>
+<span class="sd">            :meth:`~gymnasium.envs.mujoco.walker2d_v4.Walker2dEnv.step` method</span>
+<span class="sd">            such that the new cost function is used.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (np.ndarray): Action to take in the environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`np.ndarray`): Environment observation.</span>
+<span class="sd">                -   cost (:obj:`float`): Cost of the action.</span>
+<span class="sd">                -   terminated (:obj:`bool`): Whether the episode is terminated.</span>
+<span class="sd">                -   truncated (:obj:`bool`): Whether the episode was truncated. This</span>
+<span class="sd">                    value is set by wrappers when for example a time limit is reached or</span>
+<span class="sd">                    the agent goes out of bounds.</span>
+<span class="sd">                -   info (:obj:`dict`): Additional information about the environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Convert action to correct data type if needed.</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;The data type of the action that is supplied to the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;ros_gazebo_gym:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&#39; environment (</span><span class="si">{</span><span class="n">action</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">) &quot;</span>
+                    <span class="s2">&quot;does not match the data type of the action space &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">). The action data type will &quot;</span>
+                    <span class="s2">&quot;be converted to the action space data type.&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_action_dtype_conversion_warning</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">action</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_space_dtype</span><span class="p">)</span>
+
+        <span class="n">obs</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="n">ctrl_cost</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">control_cost</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">cost</span><span class="p">,</span> <span class="n">cost_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;x_velocity&quot;</span><span class="p">],</span> <span class="n">ctrl_cost</span><span class="p">)</span>
+
+        <span class="c1"># Add reference, x velocity and reference error to observation.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;x_velocity&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_x_velocity_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;x_velocity&quot;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">obs</span>
+
+        <span class="c1"># Update info dictionary and change observation dtype.</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cost_info</span><span class="p">)</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">,</span>
+                <span class="s2">&quot;state_of_interest&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;x_velocity&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;reference_error&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;x_velocity&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span></div>
+
+<div class="viewcode-block" id="Walker2dCost.reset"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset gymnasium environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            seed (int, optional): A random seed for the environment. By default</span>
+<span class="sd">                ``None``.</span>
+<span class="sd">            options (dict, optional): A dictionary containing additional options for</span>
+<span class="sd">                resetting the environment. By default ``None``. Not used in this</span>
+<span class="sd">                environment.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (tuple): tuple containing:</span>
+
+<span class="sd">                -   obs (:obj:`numpy.ndarray`): Initial environment observation.</span>
+<span class="sd">                -   info (:obj:`dict`): Dictionary containing additional information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">cost_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="c1"># Randomize the reference forward velocity if requested.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_randomise_reference_forward_velocity</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">np_random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_randomise_reference_forward_velocity_range</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Add reference, x velocity and reference error to observation.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_reference_error_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_x_velocity_from_observation</span><span class="p">:</span>
+            <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">obs</span>
+
+        <span class="c1"># Update info dictionary and change observation dtype.</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cost_info</span><span class="p">)</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">,</span>
+                <span class="s2">&quot;state_of_interest&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="s2">&quot;reference_error&quot;</span><span class="p">:</span> <span class="mf">0.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_forward_velocity</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observation_space_dtype</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">info</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Walker2dCost.tau"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.tau">[docs]</a>    <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for the environment step size. Done for compatibility with the</span>
+<span class="sd">        other gymnasium environments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Walker2dCost.t"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.t">[docs]</a>    <span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Environment time.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">time</span></div>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Walker2dCost.physics_time"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.Walker2dCost.physics_time">[docs]</a>    <span class="k">def</span> <span class="nf">physics_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the physics time.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting up &#39;Walker2dCost&#39; environment.&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="env"><a class="viewcode-back" href="../../../../../autoapi/stable_gym/envs/mujoco/walker2d_cost/walker2d_cost/index.html#stable_gym.envs.mujoco.env">[docs]</a>    <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;stable_gym:Walker2dCost&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Run episodes.</span>
+    <span class="n">episode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">paths</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Performing &#39;</span><span class="si">{</span><span class="n">EPISODES</span><span class="si">}</span><span class="s2">&#39; in the &#39;Walker2dCost&#39; environment...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">EPISODES</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">RANDOM_STEP</span>
+            <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Episode: </span><span class="si">{</span><span class="n">episode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Finished &#39;Walker2dCost&#39; environment simulation.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Plot results per episode.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Plotting episode data...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Episode: </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">env</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>  <span class="c1"># NOTE: Change if you want to plot less states.</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">path</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Walker2dCost episode &#39;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Close plot to see next episode...&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Done&quot;</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rick Staa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

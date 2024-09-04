@@ -1,0 +1,207 @@
+stable_gym.envs.robotics.fetch.fetch_reach_cost
+===============================================
+
+.. py:module:: stable_gym.envs.robotics.fetch.fetch_reach_cost
+
+.. autoapi-nested-parse::
+
+   Modified version of the FetchReach Mujoco environment found in the
+   :gymnasium-robotics:`Gymnasium Robotics library <envs/fetch/>`. This modification was
+   first described by `Han et al. 2020`_. In this modified version:
+
+   -   The reward was replaced with a cost. This was done by taking the absolute value of
+       the reward.
+
+   .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/stable_gym/envs/robotics/fetch/fetch_reach_cost/fetch_reach_cost/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.fetch.fetch_reach_cost.FetchReachCost
+
+
+Package Contents
+----------------
+
+.. py:class:: FetchReachCost(action_space_dtype=np.float32, observation_space_dtype=np.float64, **kwargs)
+
+   Bases: :py:obj:`gymnasium_robotics.envs.fetch.reach.MujocoFetchReachEnv`, :py:obj:`gymnasium.utils.EzPickle`
+
+
+   Custom FetchReach gymnasium robotics environment.
+
+   .. note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Source:
+       Modified version of the FetchReach Mujoco environment found in the
+       `Gymnasium Robotics library <https://robotics.farama.org/envs/fetch/>`_.
+       This modification was first described by
+       `Han et al. 2020 <https://arxiv.org/abs/2004.14288>`_. In this modified version:
+
+       -   The reward was replaced with a cost. This was done by taking the absolute
+           value of the reward.
+
+       The rest of the environment is the same as the original FetchReach environment.
+       Below, the modified cost is described. For more information about the
+       environment (e.g. observation space, action space, episode termination, etc.),
+       please refer to the
+       :gymnasium-robotics:`gymnasium robotics library <envs/fetch/reach/>`.
+
+   Modified cost:
+       A cost, computed using the :meth:`FetchReachCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is defined as the error
+       between FetchReach's end-effector position and the desired goal position (i.e. Euclidean distance).
+       The cost is computed as:
+
+       .. math::
+
+           cost = \left | reward \right |
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gyms
+           import gymnasium as gym
+           env = gym.make("stable_gym:FetchReachCost-v1")
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: dt
+
+      The environment step size. Also available as :attr:`.tau`.
+
+      :type: float
+
+   ..  attention::
+       Accepts all arguments of the original :class:`~gymnasium_robotics.envs.fetch.reach.MujocoFetchReachEnv`
+       class except for the ``reward_type`` argument. This is because we require dense
+       rewards to calculate the cost.
+
+   Initialise a new FetchReachCost environment instance.
+
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float32``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+   :param \*\*kwargs: Keyword arguments passed to the original
+                      :class:`~gymnasium_robotics.envs.fetch.reach.MujocoFetchReachEnv` class.
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: action_space
+
+
+   .. py:method:: cost(reward)
+
+      Calculate the cost.
+
+      :param reward: The reward returned from the FetchReach environment.
+      :type reward: float
+
+      :returns: The cost (i.e. negated reward).
+      :rtype: float
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      .. note::
+          This method overrides the
+          :meth:`~gymnasium_robotics.envs.fetch.fetch_env.MujocoFetchEnv.step` method
+          such that the new cost function is used.
+
+      :param action: Action to take in the environment.
+      :type action: np.ndarray
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset(seed=None, options=None)
+
+      Reset gymnasium environment.
+
+      :param seed: A random seed for the environment. By default
+                   ``None``.
+      :type seed: int, optional
+      :param options: A dictionary containing additional options for
+                      resetting the environment. By default ``None``. Not used in this
+                      environment.
+      :type options: dict, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`numpy.ndarray`): Initial environment observation.
+                    -   info (:obj:`dict`): Dictionary containing additional information.
+      :rtype: (tuple)
+
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+
+   .. py:property:: t
+      Environment time.
+
+
+   .. py:property:: physics_time
+      Returns the physics time.
+
+

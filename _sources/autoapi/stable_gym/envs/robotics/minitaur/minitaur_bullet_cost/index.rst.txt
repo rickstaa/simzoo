@@ -1,0 +1,438 @@
+stable_gym.envs.robotics.minitaur.minitaur_bullet_cost
+======================================================
+
+.. py:module:: stable_gym.envs.robotics.minitaur.minitaur_bullet_cost
+
+.. autoapi-nested-parse::
+
+   This package contains a modified version of the `MinitaurBullet environment`_ found in
+   the :pybullet:`pybullet package <>`. This environment first appeared in a paper by `Tan et al. 2018`_.
+   The version found here is based on the modification given by `Han et al. 2020`_. In this modified version:
+
+   -   The objective was changed to a velocity-tracking task. To do this, the reward is replaced with a cost.
+       This cost is the squared difference between the Minitaur's forward velocity and a reference value (error).
+   -   A minimal backward velocity bound is added to prevent the Minitaur from
+       walking backwards.
+   -   Users are given the option to modify the Minitaur fall criteria and thus
+       the episode termination criteria.
+
+   .. _`MinitaurBullet environment`: https://github.com/bulletphysics/bullet3/tree/master/examples/pybullet/gym/pybullet_envs/bullet/minitaur_gym_env.py
+   .. _`Tan et al. 2018`: https://arxiv.org/abs/1804.10332
+   .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/stable_gym/envs/robotics/minitaur/minitaur_bullet_cost/minitaur_bullet_cost/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   stable_gym.envs.robotics.minitaur.minitaur_bullet_cost.MinitaurBulletCost
+
+
+Package Contents
+----------------
+
+.. py:class:: MinitaurBulletCost(reference_forward_velocity=1.0, randomise_reference_forward_velocity=False, randomise_reference_forward_velocity_range=(0.5, 1.5), forward_velocity_weight=1.0, include_energy_cost=False, energy_weight=0.005, include_shake_cost=False, shake_weight=0.01, include_drift_cost=False, drift_weight=0.01, distance_limit=float('inf'), render=False, include_health_penalty=True, health_penalty_size=None, backward_velocity_bound=-0.5, fall_criteria_up_rotation=0.85, fall_criteria_z_position=0.13, exclude_reference_from_observation=False, exclude_reference_error_from_observation=True, exclude_x_velocity_from_observation=False, action_space_dtype=np.float32, observation_space_dtype=np.float64, **kwargs)
+
+   Bases: :py:obj:`pybullet_envs.bullet.minitaur_gym_env.MinitaurBulletEnv`, :py:obj:`gymnasium.utils.EzPickle`
+
+
+   Custom Minitaur Bullet gymnasium environment.
+
+   .. note::
+       Can also be used in a vectorized manner. See the
+       :gymnasium:`gym.vector <api/vector>` documentation.
+
+   Source:
+       Modified version of the `Minitaur environment`_ found in the
+       :pybullet:`pybullet package <>`. This modification was first described by
+       `Han et al. 2020`_. In this modified version:
+
+       -   The objective was changed to a velocity-tracking task. To do this, the
+           reward is replaced with a cost. This cost is the squared difference between
+           the Minitaur's forward velocity and a reference value (error). Additionally,
+           also a energy cost and health penalty can be included in the cost.
+       -   A minimal backward velocity bound is added to prevent the Minitaur from
+           walking backwards.
+       -   Users are given the option to modify the Minitaur fall criteria, and thus
+           the episode termination criteria.
+
+       The rest of the environment is the same as the original Minitaur environment.
+       Please refer to the
+       `original codebase <https://github.com/bulletphysics/bullet3/tree/master/examples/pybullet/gym/pybullet_envs/bullet/minitaur_gym_env.py>`__
+       or `the article of Tan et al. 2018`_ on which the Minitaur environment is based for more information.
+
+       .. important::
+           In `Han et al. 2020`_, the authors disabled the termination criteria. In our implementation, we have
+           kept them for consistency with the original Minitaur environment. The termination criteria can be
+           enabled by setting the :arg:`fall_criteria_up_rotation` and :arg:`fall_criteria_z_position` to
+           :obj:`np.inf`.
+
+   .. _`Minitaur environment`: https://arxiv.org/abs/1804.10332
+   .. _`Han et al. 2020`: https://arxiv.org/abs/2004.14288
+   .. _`the article of Tan et al. 2018`: https://arxiv.org/abs/1804.10332
+
+   Observation:
+       **Type**: Box(28)
+
+       Contains angles, velocities, and torques of all motors. Optionally, it can also include the reference, reference error, and x velocity.
+
+   Actions:
+       **Type**: Box(8)
+
+       A list of desired motor angles for eight motors.
+
+   Modified cost:
+       A cost, computed using the :meth:`MinitaurBulletCost.cost` method, is given for each
+       simulation step, including the terminal step. This cost is defined as the error
+       between the Minitaur's forward velocity and a reference value. A control
+       cost and health penalty can also be included in the cost. This health penalty
+       equals the ``max_episode_steps`` minus the number of steps taken in the episode
+       or a fixed value. The cost is computed as:
+
+       .. math::
+
+           cost = w_{forward\_velocity} \times (x_{velocity} - x_{reference\_x\_velocity})^2 + w_{ctrl} \times c_{ctrl} + p_{health}
+
+   Starting State:
+       The robot always starts at the same position and orientation, with zero
+       velocity.
+
+   Episode Termination:
+       -   The episode is terminated if the Minitaur falls, meaning that the
+           the orientation between the base and the world is greater than a threshold or
+           the base is too close to the ground.
+       -   Optionally, the episode can be terminated if the Minitaur walks backwards.
+
+   Solved Requirements:
+       Considered solved when the average cost is less than or equal to 50 over
+       100 consecutive trials.
+
+   How to use:
+       .. code-block:: python
+
+           import stable_gym
+           import gymnasium as gym
+           env = gym.make("stable_gym:MinitaurBulletCost-v1")
+
+   .. attribute:: state
+
+      The current system state.
+
+      :type: numpy.ndarray
+
+   .. attribute:: t
+
+      The current environment time.
+
+      :type: float
+
+   .. attribute:: reference_forward_velocity
+
+      The forward velocity that the agent should
+      try to track.
+
+      :type: float
+
+   .. attention::
+       Since the :meth:`~pybullet_envs.bullet.minitaur_gym_env.MinitaurBulletEnv`
+       is not yet compatible with :gymnasium:`gymnasium v>=0.26.0 <>`, the
+       :class:`gym.wrappers.EnvCompatibility` wrapper is used. This has the
+       side effect that the ``render_mode`` argument is not working. Instead,
+       the ``render`` argument should be used.
+
+   Initialise a new MinitaurBulletCost environment instance.
+
+   :param reference_forward_velocity: The forward velocity that the
+                                      agent should try to track. Defaults to ``1.0``.
+   :type reference_forward_velocity: float, optional
+   :param randomise_reference_forward_velocity: Whether to randomize
+                                                the reference forward velocity. Defaults to ``False``.
+   :type randomise_reference_forward_velocity: bool, optional
+   :param randomise_reference_forward_velocity_range: The range of
+                                                      the random reference forward velocity. Defaults to ``(0.5, 1.5)``.
+   :type randomise_reference_forward_velocity_range: tuple, optional
+   :param forward_velocity_weight: The weight used to scale the
+                                   forward velocity error. Defaults to ``1.0``.
+   :type forward_velocity_weight: float, optional
+   :param include_energy_cost: Whether to include the energy cost in
+                               the cost function (i.e. energy of the motors). Defaults to ``False``.
+   :type include_energy_cost: bool, optional
+   :param energy_weight: The weight used to scale the energy cost.
+                         Defaults to ``0.005``.
+   :type energy_weight: float, optional
+   :param include_shake_cost: Whether to include the shake cost in
+                              the cost function (i.e. moving up and down). Defaults to ``False``.
+   :type include_shake_cost: bool, optional
+   :param shake_weight: The weight used to scale the shake cost.
+                        Defaults to ``0.01``.
+   :type shake_weight: float, optional
+   :param include_drift_cost: Whether to include the drift cost in
+                              the cost function (i.e. movement in the y direction). Defaults to
+                              ``False``.
+   :type include_drift_cost: bool, optional
+   :param drift_weight: The weight used to scale the drift cost.
+                        Defaults to ``0.01``.
+   :type drift_weight: float, optional
+   :param distance_limit: The max distance (in meters) that the
+                          agent can travel before the episode is terminated. Defaults to
+                          ``float("inf")``.
+   :type distance_limit: float, optional
+   :param render: Whether to render the environment. Defaults to
+                  ``False``.
+   :type render: bool, optional
+   :param include_health_penalty: Whether to penalize the Minitaur if
+                                  it becomes unhealthy (i.e. if it falls over). Defaults to ``True``.
+   :type include_health_penalty: bool, optional
+   :param health_penalty_size: The size of the unhealthy penalty.
+                               Defaults to ``None``. Meaning the penalty is equal to the max episode
+                               steps and the steps taken.
+   :type health_penalty_size: int, optional
+   :param backward_velocity_bound: The max backward velocity (in meters per
+                                   second) before the episode is terminated. Defaults to ``-0.5``.
+   :type backward_velocity_bound: float
+   :param fall_criteria_up_rotation: The max up rotation (in radians) between
+                                     the base and the world before the episode is terminated. Defaults to
+                                     ``0.85``.
+   :type fall_criteria_up_rotation: float
+   :param fall_criteria_z_position: The max z position (in meters) before the
+                                    episode is terminated. Defaults to ``0.13``.
+   :type fall_criteria_z_position: float
+   :param exclude_reference_from_observation: Whether the reference
+                                              should be excluded from the observation. Defaults to ``False``.
+   :type exclude_reference_from_observation: bool, optional
+   :param exclude_reference_error_from_observation: Whether the error
+                                                    should be excluded from the observation. Defaults to ``True``.
+   :type exclude_reference_error_from_observation: bool, optional
+   :param exclude_x_velocity_from_observation: Whether to omit the
+                                               x- component of the velocity from observations. Defaults to ``False``.
+   :type exclude_x_velocity_from_observation: bool, optional
+   :param action_space_dtype: The data type of the
+                              action space. Defaults to ``np.float32``.
+   :type action_space_dtype: union[numpy.dtype, str], optional
+   :param observation_space_dtype: The data type
+                                   of the observation space. Defaults to ``np.float64``.
+   :type observation_space_dtype: union[numpy.dtype, str], optional
+   :param \*\*kwargs: Extra keyword arguments to pass to the :class:`MinitaurBulletEnv`
+                      class.
+
+
+   .. py:attribute:: metadata
+
+
+   .. py:attribute:: state
+      :value: None
+
+
+
+   .. py:attribute:: t
+      :value: 0.0
+
+
+
+   .. py:attribute:: reference_forward_velocity
+
+
+   .. py:attribute:: _randomise_reference_forward_velocity
+
+
+   .. py:attribute:: _randomise_reference_forward_velocity_range
+
+
+   .. py:attribute:: _forward_velocity_weight
+
+
+   .. py:attribute:: _include_energy_cost
+
+
+   .. py:attribute:: _energy_weight
+
+
+   .. py:attribute:: _include_shake_cost
+
+
+   .. py:attribute:: _shake_weight
+
+
+   .. py:attribute:: _include_drift_cost
+
+
+   .. py:attribute:: _drift_weight
+
+
+   .. py:attribute:: _include_health_penalty
+
+
+   .. py:attribute:: _health_penalty_size
+
+
+   .. py:attribute:: _backward_velocity_bound
+
+
+   .. py:attribute:: _fall_criteria_up_rotation
+
+
+   .. py:attribute:: _fall_criteria_z_position
+
+
+   .. py:attribute:: _exclude_reference_from_observation
+
+
+   .. py:attribute:: _exclude_reference_error_from_observation
+
+
+   .. py:attribute:: _exclude_x_velocity_from_observation
+
+
+   .. py:attribute:: _action_space_dtype
+
+
+   .. py:attribute:: _observation_space_dtype
+
+
+   .. py:attribute:: _action_dtype_conversion_warning
+      :value: False
+
+
+
+   .. py:attribute:: observation_space
+
+
+   .. py:attribute:: action_space
+
+
+   .. py:attribute:: low
+
+
+   .. py:attribute:: high
+
+
+   .. py:method:: cost(x_velocity, energy_cost, drift_cost, shake_cost)
+
+      Compute the cost of a given base x velocity, energy cost, shake cost and
+      drift cost.
+
+      :param x_velocity: The Minitaurs's base x velocity.
+      :type x_velocity: float
+      :param energy_cost: The energy cost (i.e. motor cost).
+      :type energy_cost: float
+      :param drift_cost: The drift (y movement) cost.
+      :type drift_cost: float
+      :param shake_cost: The shake (z movement) cost.
+      :type shake_cost: float
+
+      :returns:
+
+                tuple containing:
+
+                    -   cost (float): The cost of the action.
+                    -   info (:obj:`dict`): Additional information about the cost.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: step(action)
+
+      Take step into the environment.
+
+      .. note::
+          This method overrides the
+          :meth:`~pybullet_envs.bullet.minitaur_gym_env.MinitaurBulletEnv.step` method
+          such that the new cost function is used.
+
+      :param action: Action to take in the environment.
+      :type action: np.ndarray
+      :param render_mode: The render mode to use. Defaults to ``None``.
+      :type render_mode: str, optional
+
+      :returns:
+
+                tuple containing:
+
+                    -   obs (:obj:`np.ndarray`): Environment observation.
+                    -   cost (:obj:`float`): Cost of the action.
+                    -   terminated (:obj:`bool`): Whether the episode is terminated.
+                    -   truncated (:obj:`bool`): Whether the episode was truncated. This
+                        value is set by wrappers when for example a time limit is reached or
+                        the agent goes out of bounds.
+                    -   info (:obj:`dict`): Additional information about the environment.
+      :rtype: (tuple)
+
+
+
+   .. py:method:: reset()
+
+      Reset gymnasium environment.
+
+      :returns: Initial environment observation.
+      :rtype: (np.ndarray)
+
+
+
+   .. py:method:: _termination()
+
+      Check whether the episode is terminated.
+
+      .. note::
+          This method overrides the :meth:`_termination` method of the original
+          Minitaur environment so that we can also set a minimum velocity criteria.
+
+      :returns: Boolean value that indicates whether the episode is terminated.
+      :rtype: (bool)
+
+
+
+   .. py:method:: is_fallen()
+
+      Check whether the minitaur has fallen.
+
+      If the up directions (i.e. angle) between the base and the world are larger
+      (the dot product is smaller than :attr:`._fall_criteria_up_rotation`) or the
+      base is close to the ground (the height is smaller than
+      :attr:`._fall_criteria_z_position`), the minitaur is considered fallen.
+
+      .. note::
+          This method overrides the :meth:`is_fallen` method of the original
+          Minitaur environment to give users the ability to set the fall criteria.
+
+      :returns: Boolean value that indicates whether the minitaur has fallen.
+      :rtype: (bool)
+
+
+
+   .. py:property:: time_limit_max_episode_steps
+      The maximum number of steps that the environment can take before it is
+      truncated by the :class:`gymnasium.wrappers.TimeLimit` wrapper.
+
+
+   .. py:property:: base_velocity
+      The base velocity of the minitaur.
+
+
+   .. py:property:: dt
+      The environment step size.
+
+
+   .. py:property:: tau
+      Alias for the environment step size. Done for compatibility with the
+      other gymnasium environments.
+
+
+   .. py:property:: physics_time
+      Returns the physics time.
+
+      .. note::
+          The Minitaur uses 100 steps to setup the system. This is why we add 100 time
+          steps.
+
+
