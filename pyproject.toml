@@ -67,7 +67,7 @@ documentation = "https://rickstaa.dev/stable-gym"
 packages = ["stable_gym"]
 
 [tool.setuptools.dynamic]
-readme = { file = "README.md", content_type = "text/markdown" }
+readme = { file = "README.md", content-type = "text/markdown" }
 
 [tool.setuptools_scm]
 
