@@ -30,7 +30,7 @@ dependencies = [
     "gymnasium[classic_control]>=0.29.1",
     "gymnasium[mujoco]>=0.29.1",
     "gymnasium-robotics>=1.2.2",
-    "mujoco==2.3.7", # TODO: Can be removed when https://github.com/Farama-Foundation/Gymnasium/pull/746 is released. # noqa: E501
+    "mujoco==3.1.6", # TODO: Can be removed when https://github.com/Farama-Foundation/Gymnasium/pull/746 is released. # noqa: E501
     "matplotlib>=3.7.1",
     "iteration_utilities>=0.11.0",
     "pybullet>=3.2.5",
